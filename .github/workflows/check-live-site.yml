@@ -1,0 +1,123 @@
+name: Check live website
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/check-live-site.yml']
+
+permissions:
+  contents: read
+  pages: read
+
+jobs:
+  diagnose:
+    if: github.repository == 'Maksimas-win/bukiskis-parama'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Read the published source files
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          persist-credentials: false
+
+      - name: Inspect Pages configuration and verify public files
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import concurrent.futures, hashlib, json, os, pathlib, urllib.request
+          base = 'https://maksimas-win.github.io/bukiskis-parama/'
+          out = pathlib.Path(os.environ['RUNNER_TEMP']) / 'site-diagnostics'
+          out.mkdir(parents=True, exist_ok=True)
+          request = urllib.request.Request(
+              'https://api.github.com/repos/Maksimas-win/bukiskis-parama/pages',
+              headers={'Authorization': 'Bearer ' + os.environ['GH_TOKEN'],
+                       'Accept': 'application/vnd.github+json'})
+          try:
+              with urllib.request.urlopen(request, timeout=25) as r:
+                  data = json.load(r)
+              safe = {k: data.get(k) for k in ('html_url', 'status', 'build_type', 'source', 'https_enforced')}
+          except Exception as e:
+              safe = {'error': str(e)}
+          print('PAGES_CONFIGURATION ' + json.dumps(safe))
+          paths = sorted(p for p in pathlib.Path('docs').rglob('*') if p.is_file() and p.name != '.nojekyll')
+          def check(p):
+              rel = p.relative_to('docs').as_posix()
+              url = base + rel
+              row = {'path': rel, 'url': url}
+              try:
+                  req = urllib.request.Request(url, headers={'User-Agent': 'GPM-site-diagnostics/1.0'})
+                  with urllib.request.urlopen(req, timeout=25) as r:
+                      body = r.read()
+                      row.update(status=r.status, content_type=r.headers.get('Content-Type'), final_url=r.url,
+                                 size=len(body), matches_source=body == p.read_bytes())
+                  row['sha256'] = hashlib.sha256(body).hexdigest()
+              except Exception as e:
+                  row.update(status='ERROR', error=str(e), matches_source=False)
+              return row
+          with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
+              rows = list(pool.map(check, paths))
+          for row in rows:
+              print('PUBLIC_FILE ' + json.dumps(row))
+          try:
+              with urllib.request.urlopen(base, timeout=25) as r:
+                  root = {'url': r.url, 'status': r.status, 'matches_root_index': r.read() == pathlib.Path('docs/index.html').read_bytes()}
+          except Exception as e:
+              root = {'error': str(e)}
+          print('PUBLIC_ROOT ' + json.dumps(root))
+          failed = [r for r in rows if not r['matches_source'] or r['status'] != 200]
+          report = {'pages': safe, 'root': root, 'files': rows, 'failed': len(failed)}
+          (out / 'http-report.json').write_text(json.dumps(report, indent=2), encoding='utf-8')
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as summary:
+              summary.write(f'## Live HTTP check\n{len(rows)} files checked; {len(failed)} errors or source mismatches.\n')
+              summary.write('Public URL: ' + base + '\n')
+          print(f'HTTP_RESULT checked={len(rows)} failed={len(failed)}')
+          PY
+
+      - name: Check actual Chrome rendering
+        run: |
+          python3 - <<'PY'
+          import json, os, pathlib, re, shutil, subprocess
+          out = pathlib.Path(os.environ['RUNNER_TEMP']) / 'site-diagnostics'
+          chrome = shutil.which('google-chrome') or shutil.which('chromium') or shutil.which('chromium-browser')
+          if not chrome:
+              print('BROWSER_UNAVAILABLE: HTTP checks are not browser interaction tests.')
+              raise SystemExit(0)
+          print('CHROME', subprocess.run([chrome, '--version'], capture_output=True, text=True).stdout.strip())
+          base = 'https://maksimas-win.github.io/bukiskis-parama/'
+          flags = [chrome, '--headless', '--no-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--no-first-run', '--virtual-time-budget=5000']
+          reports = []
+          for name, size, suffix in [('desktop', '1440,1050', ''), ('mobile', '390,844', 'ru/')]:
+              url = base + suffix
+              try:
+                  result = subprocess.run(flags + ['--window-size=' + size, '--dump-dom', url], capture_output=True, text=True, timeout=45)
+                  html = result.stdout
+                  (out / (name + '.html')).write_text(html, encoding='utf-8')
+                  title = re.search(r'<title>(.*?)</title>', html, re.S)
+                  body = re.search(r'<body\b[^>]*>', html)
+                  row = {'view': name, 'url': url, 'exit_code': result.returncode,
+                         'title': title.group(1) if title else None,
+                         'body': body.group(0) if body else None,
+                         'javascript_initialized': bool(body and 'enhanced' in body.group(0)),
+                         'guide_present': 'guide-panel-0' in html,
+                         'calculator_present': 'single-result' in html}
+                  print('BROWSER_RESULT ' + json.dumps(row, ensure_ascii=False))
+                  reports.append(row)
+                  shot = subprocess.run(flags + ['--window-size=' + size, '--screenshot=' + str(out / (name + '.png')), url], capture_output=True, text=True, timeout=45)
+                  print('SCREENSHOT', name, 'created=' + str((out / (name + '.png')).exists()))
+              except Exception as e:
+                  row = {'view': name, 'error': str(e)}
+                  print('BROWSER_ERROR ' + json.dumps(row))
+                  reports.append(row)
+          (out / 'browser-report.json').write_text(json.dumps(reports, indent=2, ensure_ascii=False), encoding='utf-8')
+          PY
+
+      - name: Save diagnosis evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: live-site-diagnostics
+          path: ${{ runner.temp }}/site-diagnostics/
+          retention-days: 3
+          if-no-files-found: warn
