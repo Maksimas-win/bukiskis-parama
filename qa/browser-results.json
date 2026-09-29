@@ -1,0 +1,146 @@
+[
+  {
+    "language": "ru",
+    "width": 1440,
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "language": "ru",
+    "width": 768,
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "language": "ru",
+    "width": 390,
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "language": "ru",
+    "width": 320,
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "language": "lt",
+    "width": 1440,
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "language": "lt",
+    "width": 768,
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "language": "lt",
+    "width": 390,
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "language": "lt",
+    "width": 320,
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "language": "en",
+    "width": 1440,
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "language": "en",
+    "width": 768,
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "language": "en",
+    "width": 390,
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "language": "en",
+    "width": 320,
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "language": "pl",
+    "width": 1440,
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "language": "pl",
+    "width": 768,
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "language": "pl",
+    "width": 390,
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "language": "pl",
+    "width": 320,
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "language": "de",
+    "width": 1440,
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "language": "de",
+    "width": 768,
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "language": "de",
+    "width": 390,
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "language": "de",
+    "width": 320,
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "language": "uk",
+    "width": 1440,
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "language": "uk",
+    "width": 768,
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "language": "uk",
+    "width": 390,
+    "horizontalOverflow": false,
+    "errors": []
+  },
+  {
+    "language": "uk",
+    "width": 320,
+    "horizontalOverflow": false,
+    "errors": []
+  }
+]

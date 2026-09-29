@@ -1,0 +1,22 @@
+{
+  "community": {
+    "filename": "community-outline.svg",
+    "kind": "schematic illustration, not a photograph",
+    "source": "Original neutral facilities illustration; no religious imagery"
+  },
+  "kitchen": {
+    "filename": "kitchen-concept.webp",
+    "url": "https://raw.githubusercontent.com/Maksimas-win/bukiskis-virtuve/main/assets/images/concept-storage.webp",
+    "kind": "concept visualisation, NOT completed work",
+    "source": "Maksimas-win/bukiskis-virtuve",
+    "gitBlobSha": "a1e0abc4514e43263716d03eed35481880acc890",
+    "verified": "2026-09-29"
+  },
+  "shelter": {
+    "filename": "shelter-concept.webp",
+    "url": "https://raw.githubusercontent.com/Maksimas-win/bukiskis-pavesine/main/assets/images/pavesine-breziniai-red-roof.webp",
+    "kind": "concept visualisation, NOT completed work",
+    "source": "Maksimas-win/bukiskis-pavesine",
+    "verified": "2026-09-29"
+  }
+}

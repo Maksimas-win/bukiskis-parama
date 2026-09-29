@@ -1,0 +1,46 @@
+{
+  "name": "bukiskis-parama",
+  "defaultLanguage": "ru",
+  "languages": ["ru", "lt", "en", "pl", "de", "uk"],
+  "publicBaseUrl": "",
+  "indexingEnabled": false,
+  "reviewed": "2026-09-29",
+  "campaign": {
+    "year": 2027,
+    "taxYear": 2026,
+    "start": "2027-01-01",
+    "deadline": "2027-05-03",
+    "lastTaxYear": 2030,
+    "recipientVerified": false,
+    "gpmBankAccountVerified": false
+  },
+  "parish": {
+    "legalName": "Bukiškio stačiatikių Kristaus Gimimo parapija",
+    "code": "301004570",
+    "iban": "LT407044060006244432",
+    "bank": "AB SEB bankas",
+    "bic": "CBVILT2X",
+    "purpose": "Auka parapijai",
+    "phone": "+37063693506",
+    "phoneDisplay": "+370 636 93 506",
+    "website": "https://bukiski-hram.net/"
+  },
+  "eds": "https://deklaravimas.vmi.lt/",
+  "video": {
+    "id": "MXLFmLWIQr8",
+    "audioLanguage": "lt",
+    "source": "https://www.vmi.lt/evmi/kaip-galiu-paskirti-pajamu-mokescio-dali-pasirinktam-paramos-gavejui-ir-/-ar-politinei-organizacijai"
+  },
+  "projectLinks": [
+    "https://bukiski-hram.net/",
+    "https://maksimas-win.github.io/bukiskis-virtuve/",
+    "https://maksimas-win.github.io/bukiskis-pavesine/"
+  ],
+  "sources": [
+    "https://www.vmi.lt/evmi/paramos-skyrimas-34-str.-1",
+    "https://www.vmi.lt/evmi/labdaros-ir-paramos-istatymo-pakeitimai-nuo-2027-m.",
+    "https://www.vmi.lt/evmi/kaip-galiu-paskirti-pajamu-mokescio-dali-pasirinktam-paramos-gavejui-ir-/-ar-politinei-organizacijai",
+    "https://www.vmi.lt/evmi/ar-kartu-su-prasymu-fr0512-privalau-pateikti-metine-pajam%C5%B3-mokescio-deklaracija-gpm311",
+    "https://www.vmi.lt/evmi/paramos-skyrimas-34-str.-1"
+  ]
+}
