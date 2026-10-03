@@ -1,0 +1,114 @@
+name: Review the 3D percent introduction
+
+on:
+  push:
+    branches: [feat/scroll-3d-percent]
+    paths:
+      - '.release/intro3d/**'
+      - '.github/workflows/intro3d-review.yml'
+      - 'src/**'
+      - 'scripts/**'
+      - 'tests/**'
+      - 'package.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: intro3d-review
+  cancel-in-progress: false
+
+jobs:
+  review:
+    if: github.repository == 'Maksimas-win/bukiskis-parama' && github.ref == 'refs/heads/feat/scroll-3d-percent'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: feat/scroll-3d-percent
+      - name: Restore the checksummed source bundle only on the first run
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import base64, hashlib, io, pathlib, tarfile
+          root = pathlib.Path.cwd()
+          if (root / 'src/assets/intro3d.js').exists():
+              print('3D sources already installed; keeping subsequent edits.')
+              raise SystemExit(0)
+          source = root / '.release/intro3d/source.b64'
+          if not source.exists():
+              raise SystemExit('Source bundle not uploaded yet. The next source-bundle push will start the review.')
+          data = base64.b64decode(''.join(source.read_text(encoding='ascii').split()), validate=True)
+          expected = '034dcd5541121c999889f27eca90123615b5ff393558834454d9cb680b4eaeeb'
+          if hashlib.sha256(data).hexdigest() != expected:
+              raise SystemExit('Checksum mismatch; nothing extracted.')
+          allowed = {'src/assets/intro3d.js', 'src/assets/intro3d.css',
+                     'src/assets/percent3d-mesh.js', 'src/assets/percent3d-LICENSE.txt',
+                     'src/locales/intro3d.json', 'scripts/build-intro3d.mjs',
+                     'scripts/check-intro3d.mjs', 'tests/intro3d.test.cjs',
+                     'package.json', 'qa/INTRO3D.md'}
+          with tarfile.open(fileobj=io.BytesIO(data), mode='r:xz') as archive:
+              members = archive.getmembers()
+              if {m.name for m in members} != allowed or len(members) != len(allowed):
+                  raise SystemExit('Unexpected source manifest.')
+              if sum(m.size for m in members) > 200000:
+                  raise SystemExit('Unexpected source size.')
+              for m in members:
+                  target = root / m.name
+                  if not m.isfile() or not target.resolve().is_relative_to(root):
+                      raise SystemExit('Unsafe archive entry.')
+              for m in members:
+                  target = root / m.name
+                  target.parent.mkdir(parents=True, exist_ok=True)
+                  target.write_bytes(archive.extractfile(m).read())
+          PY
+      - name: Save reviewable source files to the isolated branch
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/assets/intro3d.js src/assets/intro3d.css src/assets/percent3d-mesh.js src/assets/percent3d-LICENSE.txt src/locales/intro3d.json scripts/build-intro3d.mjs scripts/check-intro3d.mjs tests/intro3d.test.cjs package.json qa/INTRO3D.md
+          if ! git diff --cached --quiet; then
+            git commit -m 'Add native 3D percent scene, six-language copy and regression tests'
+            git push origin HEAD:feat/scroll-3d-percent
+          fi
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - name: Build the complete existing site and run all tests
+        env:
+          SITE_URL: https://maksimas-win.github.io/bukiskis-parama/
+        run: |
+          npm run build
+          npm test
+      - name: Install a development-only browser test runner
+        run: |
+          npm install --prefix /tmp/intro3d-qa --no-audit --no-fund --save-exact playwright@1.56.1
+          /tmp/intro3d-qa/node_modules/.bin/playwright install --with-deps chromium
+      - name: Test desktop, mobile, six languages and fallbacks
+        env:
+          PLAYWRIGHT_PACKAGE_JSON: /tmp/intro3d-qa/package.json
+        run: node scripts/check-intro3d.mjs
+      - name: Save the tested generated site to the isolated branch
+        run: |
+          git add docs
+          if ! git diff --cached --quiet; then
+            git commit -m 'Build tested 3D introduction for GitHub Pages in six languages'
+            git push origin HEAD:feat/scroll-3d-percent
+          fi
+      - name: Prepare a review snapshot
+        if: always()
+        run: |
+          mkdir -p qa/intro3d-review
+          tar -cJf qa/intro3d-review/source-snapshot.tar.xz src scripts tests docs package.json AGENTS.md README.md
+      - name: Upload screenshots and the review snapshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: intro3d-review
+          path: qa/intro3d-review
+          retention-days: 7
