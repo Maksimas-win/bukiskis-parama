@@ -1,0 +1,105 @@
+name: Review public GPM helper
+
+on:
+  push:
+    branches: [feat/gpm-helper]
+    paths:
+      - '.release/gpm-helper/**'
+      - '.github/workflows/gpm-helper-review.yml'
+      - 'src/**'
+      - 'scripts/**'
+      - 'tests/**'
+      - 'package.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gpm-helper-review
+  cancel-in-progress: false
+
+jobs:
+  review:
+    if: github.repository == 'Maksimas-win/bukiskis-parama' && github.ref == 'refs/heads/feat/gpm-helper'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: feat/gpm-helper
+      - name: Import checksummed public-only sources once
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import base64, hashlib, io, pathlib, tarfile
+          root = pathlib.Path.cwd()
+          if (root / 'scripts/build-gpm-helper.mjs').exists():
+              print('Sources already installed; preserving subsequent edits.')
+              raise SystemExit(0)
+          pieces = [root / '.release/gpm-helper' / f'part-{n}.b64' for n in range(3)]
+          encoded = ''.join(''.join(p.read_text(encoding='ascii').split()) for p in pieces)
+          data = base64.b64decode(encoded, validate=True)
+          if hashlib.sha256(data).hexdigest() != '407f1a6c51f5bee31a63c490ad8d75adbed8380a938dd91ac1c282d03e142932':
+              raise SystemExit('Source checksum mismatch; no files extracted.')
+          allowed = {'src/assets/gpm-helper.js', 'src/assets/gpm-helper.css',
+                     'src/locales/gpm-helper.ui.json', 'scripts/build-gpm-helper.mjs',
+                     'scripts/check-gpm-helper.mjs', 'tests/gpm-helper.test.cjs',
+                     'qa/GPM_HELPER.md', 'package.json'}
+          with tarfile.open(fileobj=io.BytesIO(data), mode='r:xz') as archive:
+              members = archive.getmembers()
+              if len(members) != len(allowed) or {m.name for m in members} != allowed:
+                  raise SystemExit('Unexpected source manifest.')
+              if sum(m.size for m in members) > 180000:
+                  raise SystemExit('Unexpected source size.')
+              for m in members:
+                  target = root / m.name
+                  if not m.isfile() or not target.resolve().is_relative_to(root):
+                      raise SystemExit('Unsafe archive entry.')
+              for m in members:
+                  target = root / m.name
+                  target.parent.mkdir(parents=True, exist_ok=True)
+                  target.write_bytes(archive.extractfile(m).read())
+          print('Imported 8 public-only source files. No private studio data included.')
+          PY
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - name: Build all six languages and run regression tests
+        env:
+          SITE_URL: https://maksimas-win.github.io/bukiskis-parama/
+        run: |
+          npm run build
+          npm test
+      - name: Install development-only browser test runner
+        run: |
+          npm install --prefix /tmp/gpm-qa --no-audit --no-fund --save-exact playwright@1.56.1
+          /tmp/gpm-qa/node_modules/.bin/playwright install --with-deps chromium
+      - name: Verify HTTP rendering, CSP, accessibility and local answers
+        env:
+          PLAYWRIGHT_PACKAGE_JSON: /tmp/gpm-qa/package.json
+        run: node scripts/check-gpm-helper.mjs
+      - name: Save only tested public sources and generated site
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/assets/gpm-helper.js src/assets/gpm-helper.css src/locales/gpm-helper.ui.json scripts/build-gpm-helper.mjs scripts/check-gpm-helper.mjs tests/gpm-helper.test.cjs qa/GPM_HELPER.md package.json docs
+          if ! git diff --cached --quiet; then
+            git commit -m 'Add tested six-language GPM reference chatbot and generated Pages site'
+            git push origin HEAD:feat/gpm-helper
+          fi
+      - name: Prepare review snapshot
+        if: always()
+        run: |
+          mkdir -p qa/gpm-review
+          tar -cJf qa/gpm-review/source-snapshot.tar.xz src scripts tests docs package.json AGENTS.md qa/GPM_HELPER.md
+      - name: Upload browser screenshots and test evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gpm-helper-review
+          path: qa/gpm-review
+          retention-days: 7
