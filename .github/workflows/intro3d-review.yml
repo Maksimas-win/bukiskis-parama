@@ -4,7 +4,6 @@ on:
   push:
     branches: [feat/scroll-3d-percent]
     paths:
-      - '.release/intro3d/**'
       - '.github/workflows/intro3d-review.yml'
       - 'src/**'
       - 'scripts/**'
@@ -30,52 +29,6 @@ jobs:
       - uses: actions/checkout@v6
         with:
           ref: feat/scroll-3d-percent
-      - name: Restore the checksummed source bundle only on the first run
-        shell: bash
-        run: |
-          python3 - <<'PY'
-          import base64, hashlib, io, pathlib, tarfile
-          root = pathlib.Path.cwd()
-          if (root / 'src/assets/intro3d.js').exists():
-              print('3D sources already installed; keeping subsequent edits.')
-              raise SystemExit(0)
-          source = root / '.release/intro3d/source.b64'
-          if not source.exists():
-              raise SystemExit('Source bundle not uploaded yet. The next source-bundle push will start the review.')
-          data = base64.b64decode(''.join(source.read_text(encoding='ascii').split()), validate=True)
-          expected = '034dcd5541121c999889f27eca90123615b5ff393558834454d9cb680b4eaeeb'
-          if hashlib.sha256(data).hexdigest() != expected:
-              raise SystemExit('Checksum mismatch; nothing extracted.')
-          allowed = {'src/assets/intro3d.js', 'src/assets/intro3d.css',
-                     'src/assets/percent3d-mesh.js', 'src/assets/percent3d-LICENSE.txt',
-                     'src/locales/intro3d.json', 'scripts/build-intro3d.mjs',
-                     'scripts/check-intro3d.mjs', 'tests/intro3d.test.cjs',
-                     'package.json', 'qa/INTRO3D.md'}
-          with tarfile.open(fileobj=io.BytesIO(data), mode='r:xz') as archive:
-              members = archive.getmembers()
-              if {m.name for m in members} != allowed or len(members) != len(allowed):
-                  raise SystemExit('Unexpected source manifest.')
-              if sum(m.size for m in members) > 200000:
-                  raise SystemExit('Unexpected source size.')
-              for m in members:
-                  target = root / m.name
-                  if not m.isfile() or not target.resolve().is_relative_to(root):
-                      raise SystemExit('Unsafe archive entry.')
-              for m in members:
-                  target = root / m.name
-                  target.parent.mkdir(parents=True, exist_ok=True)
-                  target.write_bytes(archive.extractfile(m).read())
-          PY
-      - name: Save reviewable source files to the isolated branch
-        shell: bash
-        run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add src/assets/intro3d.js src/assets/intro3d.css src/assets/percent3d-mesh.js src/assets/percent3d-LICENSE.txt src/locales/intro3d.json scripts/build-intro3d.mjs scripts/check-intro3d.mjs tests/intro3d.test.cjs package.json qa/INTRO3D.md
-          if ! git diff --cached --quiet; then
-            git commit -m 'Add native 3D percent scene, six-language copy and regression tests'
-            git push origin HEAD:feat/scroll-3d-percent
-          fi
       - uses: actions/setup-node@v6
         with:
           node-version: '22'
@@ -95,6 +48,8 @@ jobs:
         run: node scripts/check-intro3d.mjs
       - name: Save the tested generated site to the isolated branch
         run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add docs
           if ! git diff --cached --quiet; then
             git commit -m 'Build tested 3D introduction for GitHub Pages in six languages'

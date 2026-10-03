@@ -1,0 +1,68 @@
+{
+  "ru": {
+    "kicker": "Ваш выбор имеет значение",
+    "title": ["Дайте помощи", "правильное направление."],
+    "description": "Не упустите возможность поддержать тех, кому доверяете. Узнайте, как правильно направить до 1,2 % GPM.",
+    "primary": "Как направить 1,2 %",
+    "secondary": "Рассчитать сумму",
+    "skip": "Сразу к содержанию",
+    "scroll": "Прокрутите — начните с выбора",
+    "arrival": ["Ваш выбор.", "Реальная помощь."],
+    "arrivalNote": "Проверьте получателя. Укажите долю. Подайте заявление через EDS."
+  },
+  "lt": {
+    "kicker": "Jūsų pasirinkimas svarbus",
+    "title": ["Suteikite paramai", "prasmingą kryptį."],
+    "description": "Nepraleiskite progos padėti tiems, kuriais pasitikite. Sužinokite, kaip tinkamai skirti iki 1,2 % GPM.",
+    "primary": "Kaip skirti 1,2 %",
+    "secondary": "Apskaičiuoti sumą",
+    "skip": "Pereiti prie turinio",
+    "scroll": "Slinkite — pradėkite nuo pasirinkimo",
+    "arrival": ["Jūsų pasirinkimas.", "Tikra pagalba."],
+    "arrivalNote": "Patikrinkite gavėją. Nurodykite dalį. Pateikite prašymą per EDS."
+  },
+  "en": {
+    "kicker": "Your choice matters",
+    "title": ["Give your support", "a meaningful direction."],
+    "description": "Take the opportunity to support those you trust. Find out how to allocate up to 1.2% of your GPM income tax.",
+    "primary": "How to allocate 1.2%",
+    "secondary": "Calculate the amount",
+    "skip": "Skip to the content",
+    "scroll": "Scroll — it starts with your choice",
+    "arrival": ["Your choice.", "Real support."],
+    "arrivalNote": "Check the recipient. Set the percentage. Submit your request through EDS."
+  },
+  "pl": {
+    "kicker": "Twój wybór ma znaczenie",
+    "title": ["Nadaj swojej pomocy", "właściwy kierunek."],
+    "description": "Skorzystaj z możliwości wsparcia tych, którym ufasz. Dowiedz się, jak prawidłowo przekazać do 1,2% podatku GPM.",
+    "primary": "Jak przekazać 1,2%",
+    "secondary": "Oblicz kwotę",
+    "skip": "Przejdź do treści",
+    "scroll": "Przewiń — zacznij od wyboru",
+    "arrival": ["Twój wybór.", "Realna pomoc."],
+    "arrivalNote": "Sprawdź odbiorcę. Określ udział procentowy. Złóż wniosek przez EDS."
+  },
+  "de": {
+    "kicker": "Ihre Entscheidung zählt",
+    "title": ["Geben Sie Ihrer Hilfe", "eine sinnvolle Richtung."],
+    "description": "Nutzen Sie die Möglichkeit, Menschen und Organisationen Ihres Vertrauens zu unterstützen. Erfahren Sie, wie Sie bis zu 1,2 % Ihrer GPM-Einkommensteuer zuweisen.",
+    "primary": "So weisen Sie 1,2 % zu",
+    "secondary": "Betrag berechnen",
+    "skip": "Direkt zum Inhalt",
+    "scroll": "Scrollen — Ihre Entscheidung ist der Anfang",
+    "arrival": ["Ihre Entscheidung.", "Konkrete Hilfe."],
+    "arrivalNote": "Empfänger prüfen. Anteil festlegen. Antrag über EDS einreichen."
+  },
+  "uk": {
+    "kicker": "Ваш вибір має значення",
+    "title": ["Надайте допомозі", "правильний напрямок."],
+    "description": "Не втратьте нагоди підтримати тих, кому довіряєте. Дізнайтеся, як правильно спрямувати до 1,2 % GPM.",
+    "primary": "Як спрямувати 1,2 %",
+    "secondary": "Розрахувати суму",
+    "skip": "Одразу до змісту",
+    "scroll": "Прокрутіть — почніть із вибору",
+    "arrival": ["Ваш вибір.", "Реальна допомога."],
+    "arrivalNote": "Перевірте отримувача. Вкажіть частку. Подайте заяву через EDS."
+  }
+}
