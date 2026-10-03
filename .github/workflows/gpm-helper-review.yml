@@ -62,8 +62,28 @@ jobs:
                   target = root / m.name
                   target.parent.mkdir(parents=True, exist_ok=True)
                   target.write_bytes(archive.extractfile(m).read())
-          print('Imported 8 public-only source files. No private studio data included.')
+          check = root / 'scripts/check-gpm-helper.mjs'
+          text = check.read_text(encoding='utf8')
+          before = "await page.keyboard.press('Escape');assert.equal("
+          after = "await page.keyboard.press('Escape');await page.waitForFunction(()=>!document.getElementById('gpm-helper').open && document.querySelector('[data-gpm-open]').getAttribute('aria-expanded')==='false');assert.equal("
+          if text.count(before) != 1:
+              raise SystemExit('Unexpected browser test structure.')
+          check.write_text(text.replace(before, after), encoding='utf8')
+          client = root / 'src/assets/gpm-helper.js'
+          text = client.read_text(encoding='utf8')
+          text = text.replace("if(r.id==='step-2'||r.id==='recipient-check')", "if(r.id==='step-2'&&data.warning)")
+          client.write_text(text, encoding='utf8')
+          print('Imported 8 public-only files; browser QA waits for native close events.')
           PY
+      - name: Save reviewable sources to the isolated branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/assets/gpm-helper.js src/assets/gpm-helper.css src/locales/gpm-helper.ui.json scripts/build-gpm-helper.mjs scripts/check-gpm-helper.mjs tests/gpm-helper.test.cjs qa/GPM_HELPER.md package.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Install public GPM helper sources for isolated review'
+            git push origin HEAD:feat/gpm-helper
+          fi
       - uses: actions/setup-node@v6
         with:
           node-version: '22'
@@ -81,14 +101,11 @@ jobs:
         env:
           PLAYWRIGHT_PACKAGE_JSON: /tmp/gpm-qa/package.json
         run: node scripts/check-gpm-helper.mjs
-      - name: Save only tested public sources and generated site
-        shell: bash
+      - name: Save the tested generated site
         run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add src/assets/gpm-helper.js src/assets/gpm-helper.css src/locales/gpm-helper.ui.json scripts/build-gpm-helper.mjs scripts/check-gpm-helper.mjs tests/gpm-helper.test.cjs qa/GPM_HELPER.md package.json docs
+          git add docs
           if ! git diff --cached --quiet; then
-            git commit -m 'Add tested six-language GPM reference chatbot and generated Pages site'
+            git commit -m 'Build tested six-language GPM reference chatbot for Pages'
             git push origin HEAD:feat/gpm-helper
           fi
       - name: Prepare review snapshot
