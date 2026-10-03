@@ -13,6 +13,7 @@
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const compact = matchMedia('(max-height: 560px), (max-width: 370px) and (max-height: 700px)');
   const finePointer = matchMedia('(pointer: fine)');
+  const highContrast = matchMedia('(forced-colors: active)');
   const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
   const smooth = (a, b, x) => { const t = clamp((x - a) / (b - a)); return t * t * (3 - 2 * t); };
   let gl, program, parts = [], raf = 0, failed = false, visible = true;
@@ -60,7 +61,10 @@
     for (const ring of shape.rings) for (let i=0;i<ring.length;i++) {
       const a=ring[i], b=ring[(i+1)%ring.length], dx=v[b][0]-v[a][0], dy=v[b][1]-v[a][1], len=Math.hypot(dx,dy);
       const n=[dy/len,-dx/len,0];
-      for (const [id,z] of [[a,.135],[a,-.135],[b,-.135],[a,.135],[b,-.135],[b,.135]]) vertex(v[id],z,n);
+      for (const [id,z] of [[a,.135],[a,-.135],[b,-.135],[a,.135],[b,-.135],[b,.135]]) {
+        const soft=outward[id][0]*n[0]+outward[id][1]*n[1]>.95;
+        vertex(v[id],z,soft?[outward[id][0],outward[id][1],0]:n);
+      }
       for (const sign of [1,-1]) {
         const face=sign*.16, side=sign*.135;
         const corners=[[inset[a],face,a],[v[a],side,a],[v[b],side,b],[inset[a],face,a],[v[b],side,b],[inset[b],face,b]];
@@ -114,7 +118,7 @@
       offset+=shape.advance+(i===2?.06:0); return part;
     });
     gl.enable(gl.DEPTH_TEST); gl.enable(gl.CULL_FACE); gl.enable(gl.BLEND);
-    gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA); gl.clearColor(0,0,0,0);
+    gl.blendFuncSeparate(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA,gl.ONE,gl.ONE_MINUS_SRC_ALPHA); gl.clearColor(0,0,0,0);
   }
   function readProgress() {
     if (!root.classList.contains('is-animated')) { targetP=0; return; }
@@ -122,7 +126,7 @@
     targetP=clamp((headerHeight-rect.top)/Math.max(1,root.offsetHeight-pin.offsetHeight));
   }
   function updateMode() {
-    root.classList.toggle('is-animated',!failed&&!reduced.matches&&!compact.matches);
+    root.classList.toggle('is-animated',!failed&&!reduced.matches&&!compact.matches&&!highContrast.matches);
     p=targetP=0; x=y=targetX=targetY=0; readProgress(); p=targetP; requestFrame();
   }
   function resize() {
@@ -145,7 +149,7 @@
     const entry=reduced.matches?1:smooth(0,1100,now-started);
     const fly=smooth(.025,.94,p), fade=1-smooth(.72,1,p);
     const aspect=viewport.width/viewport.height;
-    const distance=Math.max(2.9,2.02/(Math.tan(Math.PI/10)*aspect));
+    const distance=Math.max(3.8,2.4/(Math.tan(Math.PI/10)*aspect));
     const pv=multiply(perspective(aspect),translation(0,0,-distance));
     let base=multiply(rotation(2,-.045),rotation(1,-.20+x*.13));
     base=multiply(base,rotation(0,.12+y*.10));
@@ -173,6 +177,7 @@
   function fallback() {
     failed=true; cancelAnimationFrame(raf); raf=0;
     root.classList.remove('has-webgl','is-animated');
+    document.body.classList.remove('intro3d-in-view');
     copy.style.opacity='1'; copy.style.transform='none'; arrival.style.opacity='0';
     observer?.disconnect(); resizeObserver?.disconnect();
     if (gl && !gl.isContextLost()) { parts.forEach(part=>gl.deleteBuffer(part.buffer)); if(program) gl.deleteProgram(program); }
@@ -193,10 +198,12 @@
     addEventListener('pageshow',()=>{resize();previous=performance.now();requestFrame();});
     reduced.addEventListener('change',()=>{updateMode();resize();});
     compact.addEventListener('change',()=>{updateMode();resize();});
+    highContrast.addEventListener('change',()=>{updateMode();resize();});
     canvas.addEventListener('webglcontextlost',event=>{event.preventDefault();fallback();});
     if ('IntersectionObserver' in window) {
       observer=new IntersectionObserver(entries=>{
         visible=entries[0].isIntersecting;
+        document.body.classList.toggle('intro3d-in-view',visible);
         if(visible){previous=performance.now();readProgress();requestFrame();} else {cancelAnimationFrame(raf);raf=0;}
       },{rootMargin:'100px'}); observer.observe(root);
     }

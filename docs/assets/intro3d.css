@@ -37,3 +37,6 @@
 @media(prefers-reduced-motion:reduce){.intro3d.is-animated{height:auto}.intro3d.is-animated .intro3d__pin{position:relative;top:auto;height:auto;min-height:calc(100svh - var(--intro-header))}.intro3d__primary{transition:none}.intro3d__hint,.intro3d__progress{visibility:hidden}}
 @media(forced-colors:active){.intro3d__pin{background:Canvas;color:CanvasText}.intro3d__canvas{display:none}.intro3d.has-webgl .intro3d__fallback{visibility:visible;color:CanvasText;text-shadow:none}.intro3d__copy h2,.intro3d__copy h2 span,.intro3d__copy>p{color:CanvasText}}
 @media print{.intro3d{display:none!important}}
+
+/* Avoid duplicate fixed actions while the introduction is visible. */
+body.intro3d-in-view .mobile-cta{visibility:hidden;pointer-events:none}
