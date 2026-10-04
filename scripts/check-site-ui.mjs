@@ -32,14 +32,24 @@ try {
    page.on('request',request=>requests.push(request.url()));
    await page.goto(`${base}/${lang}/index.html`);
    const notice=page.locator('#cookie-notice');
+   const welcome=page.locator('#photo-dialog');
+   assert.ok(await welcome.isVisible(),'The appeal must open automatically on first entry');
+   assert.ok(!await notice.isVisible(),'The cookie notice must wait until the welcome dialog closes');
+   assert.match(await page.locator('#dialog-image').getAttribute('src'),/parish-support-appeal\.png$/);
+   await page.waitForFunction(()=>document.querySelector('#dialog-image').complete&&document.querySelector('#dialog-image').naturalWidth===2750);
+   await page.screenshot({path:path.join(output,`welcome-${lang}-${width}.png`)});
+   await page.keyboard.press('Escape');
+   await notice.waitFor({state:'visible'});
+   assert.ok(await page.locator('.brand').evaluate(el=>el===document.activeElement));
+   assert.equal(await page.evaluate(()=>scrollY),0,'Closing the welcome dialog must preserve the entry position');
    assert.ok(await notice.isVisible());
    assert.ok(!requests.some(url=>/youtube|googlevideo|doubleclick/.test(url)));
-   assert.ok(!requests.some(url=>url.includes('parish-support-appeal.png')),'Poster must not load before its dialog opens');
    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
    await page.screenshot({path:path.join(output,`notice-${lang}-${width}.png`)});
    await page.locator('[data-cookie-confirm]').click();
    assert.ok(!await notice.isVisible());
    await page.reload();
+   assert.ok(!await welcome.isVisible(),'The appeal must not repeat on reload in the same tab');
    assert.ok(!await notice.isVisible(),'Acknowledgement should survive a reload');
    const t=JSON.parse(fs.readFileSync(path.join(root,`src/locales/${lang}.json`),'utf8'));
    for(const index of [1,2,3]) {
@@ -77,6 +87,11 @@ try {
    assert.ok(await notice.isVisible());
    await page.locator('[data-cookie-confirm]').click();
    assert.ok(await page.locator('[data-cookie-open]').evaluate(el=>el===document.activeElement));
+   const nextLang=lang==='ru'?'lt':'ru';
+   await page.goto(`${base}/${nextLang}/index.html`);
+   assert.ok(!await welcome.isVisible(),'Changing language must not repeat the appeal in the same tab');
+   await page.goto(`${base}/${nextLang}/privacy.html`);
+   assert.equal(await page.locator('#photo-dialog').count(),0,'The privacy page must remain directly accessible');
    assert.deepEqual(errors,[]);assert.deepEqual(missing,[]);
    results.push({lang,width,dialogs:3,acknowledgement:true,passed:true});
    await context.close();
@@ -84,13 +99,18 @@ try {
  }
  for(const scenario of ['cached-assets','storage-blocked']) {
   const context=await browser.newContext({viewport:{width:390,height:844},reducedMotion:'reduce'});
-  if(scenario==='storage-blocked') await context.addInitScript(()=>Object.defineProperty(window,'localStorage',{get(){throw new DOMException('Blocked','SecurityError');}}));
+  if(scenario==='storage-blocked') await context.addInitScript(()=>{
+   for(const key of ['localStorage','sessionStorage']) Object.defineProperty(window,key,{get(){throw new DOMException('Blocked','SecurityError');}});
+  });
   const page=await context.newPage();
   if(scenario==='cached-assets') {
    const legacy=fs.readFileSync(path.join(directory,'ru/index.html'),'utf8').replaceAll('assets/js/','assets/').replaceAll('assets/css/','assets/').replaceAll('assets/img/','assets/images/');
    await page.route(`${base}/ru/index.html`,route=>route.fulfill({contentType:'text/html',body:legacy}));
   }
   await page.goto(`${base}/ru/index.html`);
+  assert.ok(await page.locator('#photo-dialog').isVisible());
+  await page.locator('#photo-dialog [data-close-dialog]').first().click();
+  await page.locator('#cookie-notice').waitFor({state:'visible'});
   await page.locator('[data-cookie-confirm]').click();
   assert.ok(!await page.locator('#cookie-notice').isVisible());
   await page.locator('.project-preview[data-photo="2"]').click();

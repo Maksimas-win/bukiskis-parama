@@ -58,7 +58,7 @@ for(const lang of config.languages){
 }
 test('Source scripts do not use tracking, remote fonts, personal-data storage or APIs',()=>{
  const app=read('src/app.js');
- assert.doesNotMatch(app,/localStorage|sessionStorage|document\.cookie|\bfetch\(|XMLHttpRequest|sendBeacon|googletag|gtag\(/);
+ assert.doesNotMatch(app,/localStorage|document\.cookie|\bfetch\(|XMLHttpRequest|sendBeacon|googletag|gtag\(/);
  assert.ok(app.includes('youtube-nocookie.com/embed/'));
  assert.doesNotMatch(read('docs/index.html'),/fonts\.googleapis|googletagmanager|facebook\.net/);
  assert.ok(fs.existsSync(path.join(root,'docs/.nojekyll')));

@@ -263,7 +263,7 @@
   "projectDetails": "Mehr erfahren",
   "cookieNotice": {
     "title": "Cookies und Datenschutz",
-    "body": "Diese Website verwendet keine Werbe- oder Analyse-Cookies. YouTube wird erst nach einem separaten Klick geladen. Im Browser wird nur Ihre Bestätigung dieses Hinweises gespeichert.",
+    "body": "Diese Website verwendet keine Werbe- oder Analyse-Cookies. YouTube wird erst nach einem separaten Klick geladen. Ihr Browser speichert die Bestätigung dieses Hinweises und ob der Gemeindeaufruf bereits angezeigt wurde; Letzteres gilt bis zum Schließen des Tabs.",
     "confirm": "Bestätigen",
     "privacy": "Zum Datenschutz",
     "reopen": "Cookies"

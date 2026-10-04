@@ -24,6 +24,10 @@ try{
   page.on('pageerror',e=>errors.push(String(e)));page.on('console',m=>{if(m.type()==='error'&&!m.text().includes('favicon'))errors.push(m.text());});
   page.on('request',r=>requests.push(r.url()));
   await page.goto(`${base}/${lang}/index.html`,{waitUntil:'networkidle'});
+  if(await page.locator('#photo-dialog').isVisible()) {
+   await page.keyboard.press('Escape');
+   await page.locator('#cookie-notice').waitFor({state:'visible'});
+  }
   if(await page.locator('[data-cookie-confirm]').isVisible()) await page.locator('[data-cookie-confirm]').click();await page.waitForTimeout(250);
   assert.ok(!requests.some(u=>u.includes('gpm-data-')),'corpus must be lazy');
   await page.locator('[data-gpm-open]').click();await page.waitForFunction(()=>!!window.GPM_HELPER_DATA);
@@ -50,6 +54,10 @@ try{
   result.push({lang,width:w,height:h,passed:true,requests:requests.length,errors});await page.close();
  }
  const page=await browser.newPage({javaScriptEnabled:false});await page.goto(base+'/');
+  if(await page.locator('#photo-dialog').isVisible()) {
+   await page.keyboard.press('Escape');
+   await page.locator('#cookie-notice').waitFor({state:'visible'});
+  }
   if(await page.locator('[data-cookie-confirm]').isVisible()) await page.locator('[data-cookie-confirm]').click();
  assert.equal(await page.locator('[data-gpm-open]').isHidden(),true);assert.equal(await page.locator('#faq').isVisible(),true);
  result.push({scenario:'no-JavaScript',passed:true});await page.close();

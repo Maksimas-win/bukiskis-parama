@@ -180,7 +180,8 @@
   let dialogTrigger;
   if (dialog && typeof dialog.showModal === 'function') {
     function closeDialog() { dialog.close(); }
-    $$('[data-photo]').forEach(button => button.addEventListener('click', () => {
+    function openProject(button, automatic = false) {
+      if (dialog.open) return;
       const index = Number(button.dataset.photo);
       const source = $(`[data-photo-asset="${index}"]`);
       if (!source) return;
@@ -208,9 +209,10 @@
       $('#hotspot-description').hidden = !showHotspots;
       setHotspot(0);
       document.body.classList.add('modal-open');
-      dialogTrigger = button;
+      dialogTrigger = automatic ? $('.brand') : button;
       dialog.showModal();
-    }));
+    }
+    $$('[data-photo]').forEach(button => button.addEventListener('click', () => openProject(button)));
     function setHotspot(index) {
       $$('[data-hotspot]').forEach(item => item.setAttribute('aria-pressed', String(Number(item.dataset.hotspot) === index)));
       $('#hotspot-title').textContent = t.hotspots[index][0];
@@ -229,6 +231,17 @@
       const box = dialog.getBoundingClientRect();
       if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) closeDialog();
     });
+    // Remember only whether this tab has already shown the welcome appeal.
+    const welcomeKey = 'bukiskis-parama:appeal:v1';
+    let welcomeSeen = false;
+    try { welcomeSeen = window.sessionStorage.getItem(welcomeKey) === 'shown'; } catch (_) {}
+    const welcomeButton = $('[data-photo="1"]');
+    if (!welcomeSeen && welcomeButton && $('[data-photo-asset="1"]')?.dataset.dialogSrc) {
+      openProject(welcomeButton, true);
+      if (dialog.open) {
+        try { window.sessionStorage.setItem(welcomeKey, 'shown'); } catch (_) {}
+      }
+    }
   } else {
     $$('[data-photo]').forEach(button => button.remove());
   }

@@ -1,3 +1,9 @@
+# 0.5.3 — 2026-10-05
+
+- Automatically show the parish appeal once per tab session; retain manual reopening, keyboard closing and focus restoration.
+- Show the cookie notice after the welcome dialog closes and explain the local session flag in all six languages.
+- Check first entry, reload, language navigation and unavailable browser storage in browser regression tests.
+
 # 0.5.2 — 2026-10-04
 
 - Show the owner-supplied parish appeal in the first support dialog, with the complete image, a full-size link and readable text in six languages. Load the image only when that dialog opens.

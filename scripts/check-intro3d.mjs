@@ -36,6 +36,10 @@ try {
   page.on('console',m=>{if(m.type()==='error'&&!m.text().includes('favicon')) errors.push(m.text());});
   page.on('request',r=>{if(!r.url().startsWith(base)&&!r.url().startsWith('data:')) external.push(r.url());});
   await page.goto(`${base}/${lang}/index.html`,{waitUntil:'networkidle'});
+  if(await page.locator('#photo-dialog').isVisible()) {
+   await page.keyboard.press('Escape');
+   await page.locator('#cookie-notice').waitFor({state:'visible'});
+  }
   if(await page.locator('[data-cookie-confirm]').isVisible()) await page.locator('[data-cookie-confirm]').click();
   await page.waitForTimeout(1350);
   const info=await page.evaluate(()=>{
@@ -78,6 +82,10 @@ try {
    HTMLCanvasElement.prototype.getContext=function(type,...args){return /webgl/i.test(type)?null:original.call(this,type,...args);};
   });
   await page.goto(`${base}/ru/index.html`);
+  if(await page.locator('#photo-dialog').isVisible()) {
+   await page.keyboard.press('Escape');
+   await page.locator('#cookie-notice').waitFor({state:'visible'});
+  }
   if(await page.locator('[data-cookie-confirm]').isVisible()) await page.locator('[data-cookie-confirm]').click();await page.waitForTimeout(300);
   assert.ok(await page.locator('.intro3d__fallback').isVisible());
   assert.ok(await page.locator('.intro3d__primary').isVisible());

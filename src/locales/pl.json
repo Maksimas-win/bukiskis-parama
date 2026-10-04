@@ -263,7 +263,7 @@
   "projectDetails": "Więcej informacji",
   "cookieNotice": {
     "title": "Pliki cookie i prywatność",
-    "body": "Strona nie używa reklamowych ani analitycznych plików cookie. Film YouTube jest ładowany dopiero po osobnym kliknięciu. W przeglądarce zapisujemy wyłącznie potwierdzenie tego komunikatu.",
+    "body": "Strona nie używa reklamowych ani analitycznych plików cookie. Film YouTube jest ładowany dopiero po osobnym kliknięciu. Przeglądarka zapisuje potwierdzenie tego komunikatu oraz informację o wyświetleniu apelu parafii; ta druga jest przechowywana do zamknięcia karty.",
     "confirm": "Potwierdź",
     "privacy": "O prywatności",
     "reopen": "Pliki cookie"

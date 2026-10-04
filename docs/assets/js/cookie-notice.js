@@ -17,7 +17,11 @@
   }
   let acknowledged = false;
   try { acknowledged = window.localStorage.getItem(key) === 'acknowledged'; } catch (_) {}
-  if (!acknowledged) show();
+  if (!acknowledged) {
+    const welcome = document.getElementById('photo-dialog');
+    if (welcome?.open) welcome.addEventListener('close', show, {once: true});
+    else show();
+  }
   confirm.addEventListener('click', () => {
     try { window.localStorage.setItem(key, 'acknowledged'); } catch (_) {}
     hide();

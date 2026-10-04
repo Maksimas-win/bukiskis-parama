@@ -263,7 +263,7 @@
   "projectDetails": "View details",
   "cookieNotice": {
     "title": "Cookies and privacy",
-    "body": "This site uses no advertising or analytics cookies. YouTube loads only after a separate click. Only your acknowledgement of this notice is saved in your browser.",
+    "body": "This site uses no advertising or analytics cookies. YouTube loads only after a separate click. Your browser saves acknowledgement of this notice and whether the parish appeal has been shown; the latter lasts until the tab is closed.",
     "confirm": "Confirm",
     "privacy": "About privacy",
     "reopen": "Cookies"

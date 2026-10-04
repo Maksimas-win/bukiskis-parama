@@ -18,4 +18,5 @@
 - The GPM explanation, instructions, video, FAQ and official sources must precede optional parish support. Parish legal details remain accurate and visible only in context.
 - Do not turn the generic recipient instruction into an instruction to choose one specific recipient. The parish code is an explicitly labelled example.
 
-- Owner-authorized exception (2026-10-04): show the supplied parish-support-appeal.png, including its original symbols, only inside the voluntary parish-support dialog after the visitor opens it. Preserve the neutral GPM guide and do not use this poster in the hero, favicon or social preview.
+- Owner-authorized exception (2026-10-04): show the supplied parish-support-appeal.png, including its original symbols, only inside the voluntary parish-support dialog. Preserve the neutral GPM guide and do not use this poster in the hero, favicon or social preview.
+- Owner-authorized update (2026-10-05): automatically open that appeal once per tab session on entry. Closing it must restore access to the guide. Show the unacknowledged cookie notice afterward; manual reopening remains available.
