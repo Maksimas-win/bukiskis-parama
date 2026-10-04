@@ -267,5 +267,17 @@
     "confirm": "Bestätigen",
     "privacy": "Zum Datenschutz",
     "reopen": "Cookies"
+  },
+  "parishAppeal": {
+    "heading": "Liebe Gemeindemitglieder!",
+    "paragraphs": [
+      "Wir danken allen von Herzen, die unsere Kirche bereits unterstützen.",
+      "Unsere Kirche braucht weiterhin Ihre Hilfe. Bitte unterstützen Sie uns finanziell, wenn es Ihnen möglich ist. Besonders wichtig sind die Deckung der Nebenkosten und die laufenden Bedürfnisse der Gemeinde.",
+      "Auch ein kleiner Beitrag ist wertvoll. Vielen Dank für Ihre Hilfe und Unterstützung!"
+    ],
+    "caption": "Aufruf der Gemeinde · Original auf Russisch",
+    "imageAlt": "Spendenaufruf für die Kirche: Dank an die Gemeinde, Hilfe bei Nebenkosten und laufenden Bedürfnissen sowie Bankverbindung für Spenden.",
+    "openImage": "Bild in voller Größe öffnen",
+    "donate": "Zu den Spendenangaben"
   }
 }

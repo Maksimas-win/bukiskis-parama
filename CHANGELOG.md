@@ -1,3 +1,7 @@
+# 0.5.2 — 2026-10-04
+
+- Show the owner-supplied parish appeal in the first support dialog, with the complete image, a full-size link and readable text in six languages. Load the image only when that dialog opens.
+
 # 0.5.1 — 2026-10-04
 
 - Restore legacy asset URLs for cached pages after the asset migration.

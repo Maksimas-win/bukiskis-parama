@@ -267,5 +267,17 @@
     "confirm": "Potwierdź",
     "privacy": "O prywatności",
     "reopen": "Pliki cookie"
+  },
+  "parishAppeal": {
+    "heading": "Drodzy parafianie!",
+    "paragraphs": [
+      "Z całego serca dziękujemy wszystkim, którzy już wspierają naszą świątynię.",
+      "Nasza świątynia nadal potrzebuje waszej pomocy. Prosimy, w miarę możliwości, o wsparcie finansowe. Szczególnie ważne jest pokrycie opłat za media i bieżących potrzeb parafii.",
+      "Nawet niewielka wpłata ma duże znaczenie. Dziękujemy za pomoc i wsparcie!"
+    ],
+    "caption": "Apel parafii · oryginał w języku rosyjskim",
+    "imageAlt": "Apel o wsparcie świątyni: podziękowanie parafianom, pomoc w opłacaniu mediów i bieżących potrzeb oraz dane do darowizn.",
+    "openImage": "Otwórz obraz w pełnym rozmiarze",
+    "donate": "Przejdź do danych do przelewu"
   }
 }

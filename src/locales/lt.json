@@ -267,5 +267,17 @@
     "confirm": "Patvirtinti",
     "privacy": "Apie privatumą",
     "reopen": "Slapukai"
+  },
+  "parishAppeal": {
+    "heading": "Mieli parapijiečiai!",
+    "paragraphs": [
+      "Nuoširdžiai dėkojame visiems, kurie jau remia mūsų šventovę.",
+      "Mūsų šventovei vis dar reikia jūsų pagalbos. Jei turite galimybę, prašome suteikti finansinę paramą. Ypač svarbu padengti komunalines išlaidas ir dabartinius parapijos poreikius.",
+      "Net ir nedidelis indėlis labai svarbus. Dėkojame už jūsų pagalbą ir paramą!"
+    ],
+    "caption": "Parapijos kreipimasis · originalas rusų kalba",
+    "imageAlt": "Kreipimasis dėl paramos šventovei: padėka parapijiečiams, pagalba apmokant komunalines išlaidas ir tenkinant dabartinius poreikius, aukojimo rekvizitai.",
+    "openImage": "Atverti viso dydžio vaizdą",
+    "donate": "Pereiti prie rekvizitų"
   }
 }

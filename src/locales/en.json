@@ -267,5 +267,17 @@
     "confirm": "Confirm",
     "privacy": "About privacy",
     "reopen": "Cookies"
+  },
+  "parishAppeal": {
+    "heading": "Dear parishioners!",
+    "paragraphs": [
+      "We sincerely thank everyone who is already supporting our church.",
+      "Our church still needs your help. Please consider providing financial support if you can. Covering utility bills and the current needs of the parish is especially important.",
+      "Even a small contribution makes a difference. Thank you for your help and support!"
+    ],
+    "caption": "Parish appeal · original in Russian",
+    "imageAlt": "Church support appeal: thanks to parishioners, help with utility bills and current needs, and donation bank details.",
+    "openImage": "Open the full-size image",
+    "donate": "Go to donation details"
   }
 }

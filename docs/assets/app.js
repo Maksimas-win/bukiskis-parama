@@ -187,13 +187,21 @@
       const project = Math.max(0, index - 1);
       const item = t.projects[project];
       const image = $('#dialog-image');
+      const isAppeal = index === 1 && Boolean(source.dataset.dialogSrc) && Boolean(t.parishAppeal);
       const isFallback = source.dataset.usingFallback === 'true';
       const showHotspots = index === 2 && !isFallback;
-      image.src = source.currentSrc || source.src;
-      image.alt = source.alt;
+      image.src = isAppeal ? source.dataset.dialogSrc : source.currentSrc || source.src;
+      image.alt = isAppeal ? t.parishAppeal.imageAlt : source.alt;
+      image.width = isAppeal ? 2750 : 720;
+      image.height = isAppeal ? 1938 : 460;
+      dialog.classList.toggle('is-appeal', isAppeal);
+      const original = $('#dialog-original');
+      if (original) { original.href = image.src; original.hidden = !isAppeal; }
+      const appealDetails = $('#dialog-appeal-details');
+      if (appealDetails) appealDetails.hidden = !isAppeal;
       $('#dialog-title').textContent = item[0];
       $('#dialog-description').textContent = item[2];
-      $('#dialog-caption').textContent = isFallback ? data.illustrationLabel : index <= 1 ? t.heroPhotoNote : t.conceptLabel;
+      $('#dialog-caption').textContent = isAppeal ? t.parishAppeal.caption : isFallback ? data.illustrationLabel : index <= 1 ? t.heroPhotoNote : t.conceptLabel;
       $('#dialog-project-link').href = config.projectLinks[project];
       $('#dialog-project-link').firstChild.textContent = item[3];
       $('#hotspots').hidden = !showHotspots;
@@ -211,6 +219,7 @@
     $$('[data-hotspot]').forEach(button => button.addEventListener('click', () => setHotspot(Number(button.dataset.hotspot))));
     $('#dialog-image').addEventListener('error', () => { $('#dialog-caption').textContent = t.imageUnavailable; });
     $$('[data-close-dialog]').forEach(button => button.addEventListener('click', closeDialog));
+    $('[data-close-appeal]')?.addEventListener('click', closeDialog);
     dialog.addEventListener('close', () => {
       document.body.classList.remove('modal-open');
       dialogTrigger?.focus({ preventScroll: true });

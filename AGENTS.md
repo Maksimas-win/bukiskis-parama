@@ -17,3 +17,5 @@
 - The site is an INFORMATION GUIDE, not a church-themed fundraising landing page. No crosses, religious symbols, church silhouettes or church photographs in the interface, favicon or social preview.
 - The GPM explanation, instructions, video, FAQ and official sources must precede optional parish support. Parish legal details remain accurate and visible only in context.
 - Do not turn the generic recipient instruction into an instruction to choose one specific recipient. The parish code is an explicitly labelled example.
+
+- Owner-authorized exception (2026-10-04): show the supplied parish-support-appeal.png, including its original symbols, only inside the voluntary parish-support dialog after the visitor opens it. Preserve the neutral GPM guide and do not use this poster in the hero, favicon or social preview.

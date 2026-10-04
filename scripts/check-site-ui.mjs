@@ -9,7 +9,7 @@ import {fileURLToPath} from 'node:url';
 const root=fileURLToPath(new URL('../',import.meta.url));
 const directory=path.join(root,'docs'), output=path.join(root,'qa/site-ui');
 const {chromium}=createRequire(process.env.PLAYWRIGHT_PACKAGE_JSON||'/tmp/site-qa/package.json')('playwright');
-const mime={'.html':'text/html; charset=utf-8','.js':'application/javascript','.css':'text/css','.svg':'image/svg+xml','.webp':'image/webp'};
+const mime={'.html':'text/html; charset=utf-8','.js':'application/javascript','.css':'text/css','.svg':'image/svg+xml','.webp':'image/webp','.png':'image/png'};
 const server=http.createServer((req,res)=>{
  const pathname=new URL(req.url,'http://localhost').pathname;
  const file=path.resolve(directory,'.'+(pathname.endsWith('/')?pathname+'index.html':pathname));
@@ -34,6 +34,7 @@ try {
    const notice=page.locator('#cookie-notice');
    assert.ok(await notice.isVisible());
    assert.ok(!requests.some(url=>/youtube|googlevideo|doubleclick/.test(url)));
+   assert.ok(!requests.some(url=>url.includes('parish-support-appeal.png')),'Poster must not load before its dialog opens');
    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
    await page.screenshot({path:path.join(output,`notice-${lang}-${width}.png`)});
    await page.locator('[data-cookie-confirm]').click();
@@ -47,6 +48,17 @@ try {
     assert.ok(await page.locator('#photo-dialog').isVisible());
     assert.equal(await page.locator('#dialog-title').innerText(),t.projects[index-1][0]);
     assert.equal(await page.locator('#dialog-description').innerText(),t.projects[index-1][2]);
+    if(index===1) {
+     await page.waitForFunction(()=>document.querySelector('#dialog-image').complete&&document.querySelector('#dialog-image').naturalWidth===2750);
+     assert.match(await page.locator('#dialog-image').getAttribute('src'),/parish-support-appeal\.png$/);
+     assert.ok(await page.locator('#dialog-original').isVisible());
+     assert.match(await page.locator('#dialog-appeal-details').innerText(),new RegExp(t.parishAppeal.heading));
+     const dimensions=await page.locator('#dialog-image').evaluate(image=>({width:image.clientWidth,height:image.clientHeight}));
+     assert.ok(Math.abs(dimensions.width/dimensions.height-2750/1938)<0.02,'The complete poster must retain its aspect ratio');
+    } else {
+     assert.ok(!await page.locator('#dialog-appeal-details').isVisible());
+     assert.ok(!await page.locator('#dialog-original').isVisible());
+    }
     if(index===2) {
      await page.locator('[data-hotspot="1"]').click();
      assert.equal(await page.locator('#hotspot-title').innerText(),t.hotspots[1][0]);
