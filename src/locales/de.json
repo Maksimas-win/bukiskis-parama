@@ -259,5 +259,13 @@
     "title": "Seite nicht gefunden",
     "body": "Der Link wurde möglicherweise geändert. Öffnen Sie den 1,2-%-GPM-Leitfaden oder wählen Sie eine Sprache.",
     "home": "Leitfaden öffnen"
+  },
+  "projectDetails": "Mehr erfahren",
+  "cookieNotice": {
+    "title": "Cookies und Datenschutz",
+    "body": "Diese Website verwendet keine Werbe- oder Analyse-Cookies. YouTube wird erst nach einem separaten Klick geladen. Im Browser wird nur Ihre Bestätigung dieses Hinweises gespeichert.",
+    "confirm": "Bestätigen",
+    "privacy": "Zum Datenschutz",
+    "reopen": "Cookies"
   }
 }

@@ -259,5 +259,13 @@
     "title": "Puslapis nerastas",
     "body": "Nuoroda galėjo pasikeisti. Grįžkite į 1,2 % GPM gidą arba pasirinkite kalbą.",
     "home": "Atverti gidą"
+  },
+  "projectDetails": "Plačiau",
+  "cookieNotice": {
+    "title": "Slapukai ir privatumas",
+    "body": "Svetainėje nėra reklamos ar analitikos slapukų. YouTube vaizdo įrašas įkeliamas tik atskirai paspaudus. Naršyklėje išsaugomas tik šio pranešimo patvirtinimas.",
+    "confirm": "Patvirtinti",
+    "privacy": "Apie privatumą",
+    "reopen": "Slapukai"
   }
 }

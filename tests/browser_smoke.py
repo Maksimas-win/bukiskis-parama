@@ -36,9 +36,9 @@ with sync_playwright() as p:
  page.locator('#load-video').click(); assert page.locator('#vmi-video').get_attribute('src').startswith('https://www.youtube-nocookie.com/embed/MXLFmLWIQr8')
  assert page.locator('#stop-video').is_visible()
  page.locator('#stop-video').click(); assert page.locator('iframe').count()==0
- page.locator('[data-photo="2"]').click(); assert page.locator('#photo-dialog').is_visible();assert page.locator('#hotspots').is_visible()
+ page.locator('.project-visual [data-photo="2"]').click(); assert page.locator('#photo-dialog').is_visible();assert page.locator('#hotspots').is_visible()
  page.locator('[data-hotspot="1"]').click(); assert page.locator('[data-hotspot="1"]').get_attribute('aria-pressed')=='true'
- page.keyboard.press('Escape'); assert not page.locator('#photo-dialog').is_visible();assert page.locator('[data-photo="2"]').evaluate('(e)=>e===document.activeElement')
+ page.keyboard.press('Escape'); assert not page.locator('#photo-dialog').is_visible();assert page.locator('.project-visual [data-photo="2"]').evaluate('(e)=>e===document.activeElement')
  # Exercise clipboard handler with a browser API stub, never claim permission was tested.
  page.evaluate('''Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async text=>{window.__copied=text}}});Object.defineProperty(window,'isSecureContext',{configurable:true,value:true});''')
  page.locator('[data-copy-details]').click();assert 'LT407044060006244432' in page.evaluate('window.__copied')

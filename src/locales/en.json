@@ -259,5 +259,13 @@
     "title": "Page not found",
     "body": "The link may have changed. Return to the 1.2% GPM guide or choose a language.",
     "home": "Open the guide"
+  },
+  "projectDetails": "View details",
+  "cookieNotice": {
+    "title": "Cookies and privacy",
+    "body": "This site uses no advertising or analytics cookies. YouTube loads only after a separate click. Only your acknowledgement of this notice is saved in your browser.",
+    "confirm": "Confirm",
+    "privacy": "About privacy",
+    "reopen": "Cookies"
   }
 }

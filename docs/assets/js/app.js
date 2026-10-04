@@ -198,16 +198,17 @@
       $('#dialog-project-link').firstChild.textContent = item[3];
       $('#hotspots').hidden = !showHotspots;
       $('#hotspot-description').hidden = !showHotspots;
+      setHotspot(0);
       document.body.classList.add('modal-open');
       dialogTrigger = button;
       dialog.showModal();
     }));
-    $$('[data-hotspot]').forEach(button => button.addEventListener('click', () => {
-      const index = Number(button.dataset.hotspot);
-      $$('[data-hotspot]').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+    function setHotspot(index) {
+      $$('[data-hotspot]').forEach(item => item.setAttribute('aria-pressed', String(Number(item.dataset.hotspot) === index)));
       $('#hotspot-title').textContent = t.hotspots[index][0];
       $('#hotspot-text').textContent = t.hotspots[index][1];
-    }));
+    }
+    $$('[data-hotspot]').forEach(button => button.addEventListener('click', () => setHotspot(Number(button.dataset.hotspot))));
     $('#dialog-image').addEventListener('error', () => { $('#dialog-caption').textContent = t.imageUnavailable; });
     $$('[data-close-dialog]').forEach(button => button.addEventListener('click', closeDialog));
     dialog.addEventListener('close', () => {

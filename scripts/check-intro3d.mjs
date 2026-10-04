@@ -36,6 +36,7 @@ try {
   page.on('console',m=>{if(m.type()==='error'&&!m.text().includes('favicon')) errors.push(m.text());});
   page.on('request',r=>{if(!r.url().startsWith(base)&&!r.url().startsWith('data:')) external.push(r.url());});
   await page.goto(`${base}/${lang}/index.html`,{waitUntil:'networkidle'});
+  if(await page.locator('[data-cookie-confirm]').isVisible()) await page.locator('[data-cookie-confirm]').click();
   await page.waitForTimeout(1350);
   const info=await page.evaluate(()=>{
    const r=document.querySelector('.intro3d'),a=r.querySelector('.intro3d__actions');
@@ -75,7 +76,8 @@ try {
    const original=HTMLCanvasElement.prototype.getContext;
    HTMLCanvasElement.prototype.getContext=function(type,...args){return /webgl/i.test(type)?null:original.call(this,type,...args);};
   });
-  await page.goto(`${base}/ru/index.html`);await page.waitForTimeout(300);
+  await page.goto(`${base}/ru/index.html`);
+  if(await page.locator('[data-cookie-confirm]').isVisible()) await page.locator('[data-cookie-confirm]').click();await page.waitForTimeout(300);
   assert.ok(await page.locator('.intro3d__fallback').isVisible());
   assert.ok(await page.locator('.intro3d__primary').isVisible());
   assert.equal(await page.locator('.intro3d').evaluate(el=>el.classList.contains('is-animated')),false);

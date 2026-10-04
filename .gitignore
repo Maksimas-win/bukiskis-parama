@@ -8,3 +8,4 @@ __pycache__/
 playwright-report/
 test-results/
 qa/live/
+qa/site-ui/

@@ -45,6 +45,7 @@ jobs:
         run: |
           node scripts/check-intro3d.mjs
           node scripts/check-gpm-helper.mjs
+          node scripts/check-site-ui.mjs
       - name: Save browser evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -53,6 +54,7 @@ jobs:
           path: |
             qa/intro3d-review
             qa/gpm-review
+            qa/site-ui
           if-no-files-found: ignore
           retention-days: 7
       - name: Prepare tested Pages artifact

@@ -1,4 +1,4 @@
-BUKISKIS-PARAMA · 0.5.0
+BUKISKIS-PARAMA · 0.5.1
 
 Сайт: https://maksimas-win.github.io/bukiskis-parama/
 

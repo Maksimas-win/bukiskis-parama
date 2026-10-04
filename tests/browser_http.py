@@ -55,7 +55,7 @@ try:
   page.locator('[data-copy="301004570"]').click()
   assert page.evaluate('navigator.clipboard.readText()')=='301004570'
   assert page.locator('.toast').inner_text()=='Скопировано'
-  page.locator('[data-photo="2"]').click();assert page.locator('#hotspots').is_visible()
+  page.locator('.project-visual [data-photo="2"]').click();assert page.locator('#hotspots').is_visible()
   page.locator('[data-hotspot="1"]').click();assert page.locator('#hotspot-title').inner_text()=='Хранение'
   page.keyboard.press('Escape');assert not page.locator('#photo-dialog').is_visible()
   page.locator('#load-video').click();assert page.locator('#vmi-video').count()==1

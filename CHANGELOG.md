@@ -1,3 +1,9 @@
+# 0.5.1 — 2026-10-04
+
+- Restore legacy asset URLs for cached pages after the asset migration.
+- Make project previews clickable, add visible details buttons, keep support text visible and reset photo hotspots on reopen.
+- Add a localized privacy notice with local acknowledgement and a footer reopen control.
+
 # Changelog
 
 ## 0.5.0 — 2026-10-04

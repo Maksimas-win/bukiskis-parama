@@ -259,5 +259,13 @@
     "title": "Nie znaleziono strony",
     "body": "Link mógł się zmienić. Wróć do przewodnika po 1,2% GPM lub wybierz język.",
     "home": "Otwórz przewodnik"
+  },
+  "projectDetails": "Więcej informacji",
+  "cookieNotice": {
+    "title": "Pliki cookie i prywatność",
+    "body": "Strona nie używa reklamowych ani analitycznych plików cookie. Film YouTube jest ładowany dopiero po osobnym kliknięciu. W przeglądarce zapisujemy wyłącznie potwierdzenie tego komunikatu.",
+    "confirm": "Potwierdź",
+    "privacy": "O prywatności",
+    "reopen": "Pliki cookie"
   }
 }
