@@ -54,7 +54,7 @@ try {
    for(const [label,fraction] of [['scroll',.47],['arrival',.94]]){
     await page.evaluate(f=>{const r=document.querySelector('.intro3d'),pin=r.querySelector('.intro3d__pin');
      window.scrollTo({top:(r.offsetHeight-pin.offsetHeight)*f,behavior:'instant'});},fraction);
-    await page.waitForTimeout(600);
+    await page.waitForFunction(f=>Math.abs(Number(document.querySelector('.intro3d').dataset.progress)-f*100)<3,fraction,{timeout:5000});
     await page.screenshot({path:path.join(output,`${name}-${label}.png`)});
     info[label]=await page.locator('.intro3d').getAttribute('data-progress');
     assert.ok(Math.abs(Number(info[label])-fraction*100)<3,`${label}: scroll does not drive the scene`);
@@ -62,7 +62,8 @@ try {
    await page.locator('.intro3d__primary').click();await page.waitForTimeout(800);
    assert.equal(new URL(page.url()).hash,'#guide');
    info.guideTop=await page.locator('#guide').evaluate(el=>el.getBoundingClientRect().top);
-   await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));await page.waitForTimeout(600);
+   await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
+   await page.waitForFunction(()=>Number(document.querySelector('.intro3d').dataset.progress)<2,null,{timeout:5000});
    assert.ok(Number(await page.locator('.intro3d').getAttribute('data-progress'))<2,'Reverse scroll must reassemble the numerals');
    await page.locator('.intro3d__skip').click();await page.waitForTimeout(800);
    assert.equal(new URL(page.url()).hash,'#intro3d-content');
