@@ -248,5 +248,11 @@
         "The 2027 campaign concerns tax on income received in 2026."
       ]
     ]
+  },
+  "support": {
+    "title": "Support the church",
+    "body": "You can help maintain the church and support parish projects. Support is voluntary: use the donation details or visit the church website to learn more about parish life.",
+    "donate": "Donation details",
+    "visit": "Church website"
   }
 }

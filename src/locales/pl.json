@@ -248,5 +248,11 @@
         "Kampania 2027 dotyczy podatku od dochodów uzyskanych w 2026 roku."
       ]
     ]
+  },
+  "support": {
+    "title": "Wesprzyj cerkiew",
+    "body": "Możesz pomóc w utrzymaniu cerkwi i realizacji projektów parafialnych. Wsparcie jest dobrowolne: skorzystaj z danych do darowizny lub odwiedź stronę cerkwi, aby dowiedzieć się więcej o życiu parafii.",
+    "donate": "Dane do darowizny",
+    "visit": "Strona cerkwi"
   }
 }

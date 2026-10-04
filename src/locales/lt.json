@@ -248,5 +248,11 @@
         "2027 metų kampanijoje skiriama mokesčio dalis nuo 2026 metais gautų pajamų."
       ]
     ]
+  },
+  "support": {
+    "title": "Paremkite šventovę",
+    "body": "Galite prisidėti prie šventovės išlaikymo ir parapijos projektų. Parama savanoriška: pasinaudokite aukojimo rekvizitais arba apsilankykite šventovės svetainėje ir sužinokite daugiau apie parapijos gyvenimą.",
+    "donate": "Rekvizitai aukai",
+    "visit": "Šventovės svetainė"
   }
 }

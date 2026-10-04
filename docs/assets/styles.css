@@ -73,3 +73,56 @@ h1,h2,h3{font-weight:650}h2{letter-spacing:-1.8px}h3{font-weight:600}
 main.section h1{font-size:clamp(28px,4.5vw,52px);line-height:1.18;letter-spacing:-1.2px;overflow-wrap:anywhere;margin-bottom:28px}
 /* Keep project links aligned despite different translated heading lengths. */
 .project-card{display:flex;flex-direction:column}.project-visual{flex-shrink:0}.project-content{display:flex;flex-direction:column;flex:1}.project-content p:not(.project-kicker){min-height:0;margin-bottom:18px}.project-content a{margin-top:auto;align-self:flex-start}
+
+/* Closing invitation to support the parish, after the information guide. */
+.parish-support {
+  padding: 0 0 64px;
+}
+.parish-support-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 36px;
+  padding: 40px;
+  background: #edf3fc;
+  border: 1px solid #d6e1f2;
+  border-radius: 22px;
+}
+.parish-support-card h2 {
+  font-size: clamp(28px, 3vw, 40px);
+  line-height: 1.2;
+  margin-bottom: 16px;
+  overflow-wrap: anywhere;
+}
+.parish-support-card p {
+  color: var(--muted);
+  line-height: 1.75;
+}
+.parish-support-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+.parish-support-actions .button {
+  white-space: normal;
+  text-align: center;
+}
+@media (max-width: 730px) {
+  .parish-support { padding-bottom: 40px; }
+  .parish-support-card {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 24px;
+  }
+}
+@media print {
+  .parish-support { padding: 12pt 0; }
+  .parish-support-card {
+    display: block;
+    padding: 12pt;
+    background: none;
+    break-inside: avoid;
+  }
+  .parish-support-actions { margin-top: 10pt; }
+}

@@ -248,5 +248,11 @@
         "Bei der Kampagne 2027 geht es um die Steuer auf Einkünfte aus dem Jahr 2026."
       ]
     ]
+  },
+  "support": {
+    "title": "Unterstützen Sie die Kirche",
+    "body": "Sie können zum Erhalt der Kirche und zu den Projekten der Gemeinde beitragen. Die Unterstützung ist freiwillig: Nutzen Sie die Angaben für eine Spende oder besuchen Sie die Website der Kirche, um mehr über das Gemeindeleben zu erfahren.",
+    "donate": "Angaben für eine Spende",
+    "visit": "Website der Kirche"
   }
 }
