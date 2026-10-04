@@ -1,7 +1,7 @@
 const {test}=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
 const root=path.resolve(__dirname,'..'),read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const core=require('../src/assets/gpm-helper.js');
-function data(lang='ru'){const box={window:{}};vm.runInNewContext(read(`docs/assets/gpm-data-${lang}.js`),box);return box.window.GPM_HELPER_DATA;}
+function data(lang='ru'){const box={window:{}};vm.runInNewContext(read(`docs/assets/js/gpm-data-${lang}.js`),box);return box.window.GPM_HELPER_DATA;}
 test('Public corpus is complete, current-source derived, and isolated from private drafts',()=>{
  for(const lang of ['ru','lt','en','pl','de','uk']){
   const d=data(lang),t=JSON.parse(read(`src/locales/${lang}.json`));assert.equal(d.records.length,24);assert.equal(new Set(d.records.map(r=>r.id)).size,24);
@@ -9,7 +9,7 @@ test('Public corpus is complete, current-source derived, and isolated from priva
   assert.equal(d.calendar.checkedOn,'2026-10-03');assert.equal(d.calendar.deadline,'2027-05-03');
   for(const r of d.records){assert.ok(r.body&&r.url&&r.date);for(const u of r.references)assert.ok(d.allowedUrls.includes(u));}
   const html=read(`docs/${lang}/index.html`);assert.equal((html.match(/id="gpm-helper"/g)||[]).length,1);
-  assert.match(html,/data-gpm-src="..\/assets\/gpm-data-/);assert.doesNotMatch(html,/<script src="[^\"]*gpm-data-/);
+  assert.match(html,/data-gpm-src="..\/assets\/js\/gpm-data-/);assert.doesNotMatch(html,/<script src="[^\"]*gpm-data-/);
   assert.match(read(`docs/${lang}/privacy.html`),/data-gpm-privacy/);
   assert.doesNotMatch(JSON.stringify(d),/AZ-Pack|2000_EUR|private\/|pledged|OPENAI_API_KEY|6200|6100/);
  }
@@ -29,6 +29,27 @@ test('Common GPM questions route to the supported subject, across languages',()=
 test('Known public recipient code is accepted, credentials and identifiers are blocked',()=>{
  assert.equal(core.sensitive('301004570'),false);assert.equal(core.sensitive('Какой срок 2027?'),false);
  for(const q of ['sk-proj-testsecret0123456789','мой код 12345678901','name@example.com','LT407044060006244432','пароль: example123'])assert.equal(core.sensitive(q),true,q);
+});
+
+test('Durations are distinct from recipient counts and existing applications',()=>{
+ const questions = {
+  ru: ['Можно подать на несколько лет?', 'На сколько лет можно подать?', 'На 5 лет?'],
+  lt: ['Ar galima skirti keliems gavėjams penkerius metus?', 'Kiek metų?'],
+  en: ['Can I allocate for several years?', 'For how many tax years?'],
+  pl: ['Czy można przekazać na kilka lat?', 'Na ile lat?'],
+  de: ['Kann ich für mehrere Jahre zuweisen?', 'Für wie viele Steuerjahre?'],
+  uk: ['Чи можна подати на кілька років?', 'На скільки років?']
+ };
+ for (const [lang, queries] of Object.entries(questions)) {
+  for (const query of queries) assert.equal(core.resolve(query, data(lang).records)[0]?.record.id, 'step-3', query);
+ }
+ for (const [query, expected] of [
+  ['Можно поддержать нескольких получателей?', 'faq-2'],
+  ['Can I support five recipients?', 'step-2'],
+  ['Уже подавал на несколько лет', 'faq-3'],
+  ['На 5 лет уже подавал раньше', 'faq-3'],
+  ['How much GPM?', 'calculation']
+ ]) assert.equal(core.resolve(query, data().records)[0]?.record.id, expected, query);
 });
 test('Campaign boundaries never promise current submission after the deadline',()=>{
  const c=data().calendar;assert.equal(core.campaignStatus(c,'2026-10-03'),'before');

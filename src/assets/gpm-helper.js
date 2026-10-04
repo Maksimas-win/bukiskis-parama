@@ -3,6 +3,16 @@
 'use strict';
 const norm=s=>String(s).normalize('NFKD').replace(/\p{M}/gu,'').toLowerCase().replace(/ё/g,'е');
 const words=s=>norm(s).match(/[\p{L}\p{N}]{3,}/gu)||[];
+// Match a duration together with its unit, before broad quantity words.
+const multiYearQuestion = new RegExp([
+ '(?:нескольк\\p{L}*|пять|пяти|5|сколько)\\s+лет',
+ '(?:several|multiple|five|5|how\\s+many)\\s+(?:tax\\s+)?years?',
+ '(?:kelis|kelerius|penkerius|penkis|5|kiek)\\s+(?:mokestinius\\s+)?metus?',
+ '(?:kilka|kilku|piec|pieciu|5|ile)\\s+lat',
+ '(?:mehrere|mehreren|funf|5|wie\\s+viele)\\s+(?:steuer)?jahren?',
+ '(?:кілька|кількох|п[’\u0027ʼ]?ять|п[’\u0027ʼ]?яти|5|скільки)\\s+років',
+ '\\b2030\\b'
+].map(pattern => `(?:${pattern})`).join('|'), 'u');
 function sensitive(s){
  const clean=String(s).replace(/\b301004570\b/g,'');
  return /sk-[\w-]{12,}|[\w.+-]+@[\w.-]+\.[a-z]{2,}|\b[A-Z]{2}\s?\d{2}(?:\s?[A-Z0-9]){12,30}\b|(?:\d[ -]?){9,}|(?:password|пароль|slaptazodis|haslo)\s*[:=]\s*\S+/i.test(norm(clean));
@@ -10,10 +20,10 @@ function sensitive(s){
 const routes=[
  ['faq-4',/gpm\s?311|декларац.*доход|income.*declar|pajamu.*deklar|deklarac.*dochod|einkommensteuererklar|декларац.*дохід/],
  ['faq-3',/уже.*подав|раньше.*подав|заново|повторн|ранее|already|previous|renew|anks[cč]iau|jau.*teik|ponownie|wczesniej|bereits|erneut|вже.*подав|повторно/],
+ ['step-3',multiYearQuestion],
  ['faq-2',/нескольк|раздел|подел|split|several|multiple|keliems|padal|kilku|podziel|mehrere|aufteil|кільк|розділ/],
  ['faq-5',/конфиденц|безопас|личн.*данн|privacy|personal.*data|saug|duomen|prywat|danych|datenschutz|конфіденц|особист.*дан/],
  ['recipient-check',/301004570|провер.*приход|готов.*приход|eligib.*parish|parapij.*status/],
- ['step-3',/пять|пяти|несколько.*лет|2030|five|penker|penki|piec|funf|п.ять/],
  ['campaign-2027',/срок|когда|до какого|како.*год|2026|2027|deadline|when|dates|which.*year|termin|kada|metai|kiedy|rok|frist|wann|welch.*jahr|коли|термін|яки.*рік/],
  ['calculation',/сколько|рассчит|калькулят|calculate|how much|kiek|skaici|ile|oblicz|wie viel|rechn|скільки|розрах/],
  ['principle-0',/зарплат|salary|wage|atlygin|alga|wynagrodz|gehalt|заробіт/],

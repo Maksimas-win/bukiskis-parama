@@ -14,7 +14,12 @@ http.createServer((request, response) => {
   let file = path.resolve(root, '.' + pathname);
   if (!file.startsWith(root + path.sep) && file !== root) { response.writeHead(403).end(); return; }
   if (fs.existsSync(file) && fs.statSync(file).isDirectory()) file = path.join(file,'index.html');
-  if (!fs.existsSync(file) || !fs.statSync(file).isFile()) { response.writeHead(404,{'Content-Type':'text/plain; charset=utf-8'}).end('404'); return; }
+  if (!fs.existsSync(file) || !fs.statSync(file).isFile()) {
+   response.writeHead(404,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});
+   if(request.method==='HEAD') response.end();
+   else fs.createReadStream(path.join(root,'404.html')).pipe(response);
+   return;
+  }
   response.writeHead(200,{'Content-Type':mime[path.extname(file)] || 'application/octet-stream','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});
   if (request.method === 'HEAD') response.end(); else fs.createReadStream(file).pipe(response);
  } catch (_) { response.writeHead(400).end('Bad request'); }

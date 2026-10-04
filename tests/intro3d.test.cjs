@@ -15,11 +15,11 @@ test('3D introduction preserves six locales and static content',()=>{
   assert.match(html,/id="intro3d-content"/);
   assert.match(html,/href="#guide"/); assert.match(html,/href="#calculator"/);
   assert.ok(html.indexOf('id="intro3d"')<html.indexOf('id="intro3d-content"'));
-  assert.match(html,/<script src="\.\.\/assets\/intro3d.js" defer>/);
+  assert.match(html,/<script src="\.\.\/assets\/js\/intro3d.js" defer>/);
   assert.match(html,/intro3d__fallback/);
   assert.ok(!read(`docs/${lang}/privacy.html`).includes('intro3d:v1'));
  }
- assert.match(read('docs/index.html'),/<script src="assets\/intro3d.js" defer>/);
+ assert.match(read('docs/index.html'),/<script src="assets\/js\/intro3d.js" defer>/);
 });
 test('fixed numeric meshes have complete finite geometry',()=>{
  const context={window:{}}; vm.runInNewContext(read('src/assets/percent3d-mesh.js'),context);
@@ -44,5 +44,5 @@ test('no external runtime dependency, motion trap or inline executable code',()=
  assert.doesNotMatch(html,/<script(?![^>]*src=)[^>]*>/);
  assert.doesNotMatch(html,/<style[\s>]/);
  for(const name of ['intro3d.js','intro3d.css','percent3d-mesh.js','percent3d-LICENSE.txt'])
-   assert.equal(read(`docs/assets/${name}`),read(`src/assets/${name}`));
+   assert.equal(read(`docs/assets/${name.endsWith(".css")?"css":"js"}/${name}`),read(`src/assets/${name}`));
 });

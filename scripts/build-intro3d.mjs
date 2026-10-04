@@ -38,7 +38,7 @@ for(const [relative,lang,prefix] of files){
   let html=fs.readFileSync(file,'utf8');
   if(html.includes('<!-- intro3d:v1:')) continue;
   if(!html.includes('<section class="hero">')||!html.includes('</head>')) throw Error(`Unexpected template: ${relative}`);
-  html=html.replace('</head>',`<link rel="stylesheet" href="${prefix}assets/intro3d.css"><script src="${prefix}assets/percent3d-mesh.js" defer></script><script src="${prefix}assets/intro3d.js" defer></script></head>`);
+  html=html.replace('</head>',`<link rel="stylesheet" href="${prefix}assets/css/intro3d.css"><script src="${prefix}assets/js/percent3d-mesh.js" defer></script><script src="${prefix}assets/js/intro3d.js" defer></script></head>`);
   html=html.replace('<section class="hero">',markup(lang)+'<div id="intro3d-content" tabindex="-1"></div><section class="hero">');
   fs.writeFileSync(file,html);
 }

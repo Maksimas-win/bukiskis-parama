@@ -254,5 +254,10 @@
     "body": "Możesz pomóc w utrzymaniu cerkwi i realizacji projektów parafialnych. Wsparcie jest dobrowolne: skorzystaj z danych do darowizny lub odwiedź stronę cerkwi, aby dowiedzieć się więcej o życiu parafii.",
     "donate": "Dane do darowizny",
     "visit": "Strona cerkwi"
+  },
+  "notFound": {
+    "title": "Nie znaleziono strony",
+    "body": "Link mógł się zmienić. Wróć do przewodnika po 1,2% GPM lub wybierz język.",
+    "home": "Otwórz przewodnik"
   }
 }

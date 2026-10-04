@@ -46,8 +46,20 @@ for (const [lang, t] of Object.entries(locales)) {
 }
 fs.rmSync(out, { recursive:true, force:true });
 fs.mkdirSync(out, { recursive:true });
-fs.cpSync(path.join(root, 'src/assets'), path.join(out, 'assets'), { recursive:true });
-for (const name of ['styles.css','app.js','math.js']) fs.copyFileSync(path.join(root, 'src', name), path.join(out, 'assets', name));
+for (const directory of ['css','js','img','fonts']) {
+ fs.mkdirSync(path.join(out,'assets',directory),{recursive:true});
+}
+fs.cpSync(path.join(root,'src/assets/images'),path.join(out,'assets/img'),{recursive:true});
+fs.cpSync(path.join(root,'src/assets/fonts'),path.join(out,'assets/fonts'),{recursive:true});
+for (const entry of fs.readdirSync(path.join(root,'src/assets'),{withFileTypes:true})) {
+ if (!entry.isFile()) continue;
+ const directory=entry.name.endsWith('.css')?'css':'js';
+ fs.copyFileSync(path.join(root,'src/assets',entry.name),path.join(out,'assets',directory,entry.name));
+}
+for (const name of ['styles.css','app.js','math.js']) {
+ const directory=name.endsWith('.css')?'css':'js';
+ fs.copyFileSync(path.join(root,'src',name),path.join(out,'assets',directory,name));
+}
 const iconPaths = {
  arrow:'<path d="M4 12h15M13 6l6 6-6 6"/>',
  back:'<path d="M20 12H5m6-6-6 6 6 6"/>',
@@ -73,7 +85,7 @@ const external = (url,label,cls='text-link') => `<a class="${cls}" href="${h(url
 const illustrationLabels = {ru:'Иллюстрация',lt:'Iliustracija',en:'Illustration',pl:'Ilustracja',de:'Illustration',uk:'Ілюстрація'};
 function mediaURL(key,prefix) {
  const item=media[key];
- return fs.existsSync(path.join(root,'src/assets/images',item.filename)) ? `${prefix}assets/images/${item.filename}` : item.url;
+ return fs.existsSync(path.join(root,'src/assets/images',item.filename)) ? `${prefix}assets/img/${item.filename}` : item.url;
 }
 function dateLabel(date,locale) {
  return new Intl.DateTimeFormat(locale,{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'}).format(new Date(date+'T12:00:00Z'));
@@ -116,11 +128,11 @@ ${config.languages.filter(code=>code!==lang).map(code=>`<meta property="og:local
 <meta name="twitter:description" content="${h(description)}">
 ${config.languages.map(code=>`<link rel="alternate" hreflang="${code}" href="${h(alternateURL(code))}">`).join('\n')}
 <link rel="alternate" hreflang="x-default" href="${h(alternateURL(config.defaultLanguage))}">
-<link rel="icon" href="${prefix}assets/images/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="${prefix}assets/styles.css">
-<script src="${prefix}assets/data-${lang}.js" defer></script>
-<script src="${prefix}assets/math.js" defer></script>
-<script src="${prefix}assets/app.js" defer></script>
+<link rel="icon" href="${prefix}assets/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="${prefix}assets/css/styles.css">
+<script src="${prefix}assets/js/data-${lang}.js" defer></script>
+<script src="${prefix}assets/js/math.js" defer></script>
+<script src="${prefix}assets/js/app.js" defer></script>
 </head><body id="top">`;
 }
 function sectionTop(kicker,title,body) {
@@ -149,7 +161,7 @@ function page(lang,prefix) {
  <section class="video-section" id="video"><div class="container video-grid"><div><div class="video-shell" id="video-shell"><div class="video-placeholder" id="video-placeholder"><span class="video-wordmark">VMI · EDS · FR0512</span><span class="play-icon" aria-hidden="true">${icon('play')}</span><button type="button" class="button js-only" id="load-video" aria-describedby="video-consent-text">${h(t.videoPlay)}</button><p id="video-consent-text">${h(t.videoPrivacy)}</p><noscript>${external(`https://www.youtube.com/watch?v=${config.video.id}`,t.videoExternal)}</noscript></div></div><div class="video-links">${external(`https://www.youtube.com/watch?v=${config.video.id}`,t.videoExternal)}<button class="video-reset" id="stop-video" type="button" hidden>${h(t.videoStop)}</button></div></div><div class="video-copy"><p class="eyebrow">${h(t.videoKicker)}</p><h2>${h(t.videoTitle)}</h2><p class="lead">${h(t.videoBody)}</p><p class="small-note">${h(t.videoCaution)}</p><a class="text-link" href="#guide">${h(t.videoTextLink)}${icon('arrow')}</a></div></div></section>
  <section class="section faq-section" id="faq"><div class="container faq-grid"><div><p class="eyebrow">${h(t.faqKicker)}</p><h2>${h(t.faqTitle)}</h2></div><div class="faq-list">${t.faq.map(([q,a])=>`<details><summary>${h(q)}</summary><p>${h(a)}</p></details>`).join('')}</div></div></section>
  <section id="sources"><div class="container sources"><div><h3>${h(t.sourcesTitle)}</h3><p>${h(t.sourcesBody)}</p><span class="review-date">${h(t.reviewed)} · ${h(dateText)}</span></div><ol>${config.sources.map((url,i)=>`<li>${external(url,t.sourceNames[i],'source-link')}</li>`).join('')}</ol></div></section>
- <section class="section help-section" id="help"><div class="container">${sectionTop(t.helpKicker,t.helpTitle,t.helpBody)}<div class="project-grid">${t.projects.map((item,i)=>`<article class="project-card reveal"><div class="project-visual" data-project="${i}"><img src="${h(mediaURL(mediaKeys[i],prefix))}" data-photo-asset="${i+1}" data-fallback="${prefix}assets/images/${i===0?'community':i===1?'kitchen':'shelter'}-outline.svg" data-fallback-caption="${h(illustrationLabels[lang])}" alt="${h(item[0]+' · '+(i===0?t.heroPhotoNote:t.conceptLabel))}" width="720" height="460" loading="lazy" referrerpolicy="no-referrer"><span class="image-caption-chip">${h(i===0?t.heroPhotoNote:t.conceptLabel)}</span><button class="icon-button js-only" type="button" data-photo="${i+1}" aria-label="${h(t.projectImageLabel+' · '+item[0])}">${icon('expand')}</button></div><div class="project-content"><p class="project-kicker">${h(item[1])}</p><h3>${h(item[0])}</h3><p>${h(item[2])}</p>${external(config.projectLinks[i],item[3])}</div></article>`).join('')}</div><p class="project-note">${h(t.projectNote)}</p></div></section>
+ <section class="section help-section" id="help"><div class="container">${sectionTop(t.helpKicker,t.helpTitle,t.helpBody)}<div class="project-grid">${t.projects.map((item,i)=>`<article class="project-card reveal"><div class="project-visual" data-project="${i}"><img src="${h(mediaURL(mediaKeys[i],prefix))}" data-photo-asset="${i+1}" data-fallback="${prefix}assets/img/${i===0?'community':i===1?'kitchen':'shelter'}-outline.svg" data-fallback-caption="${h(illustrationLabels[lang])}" alt="${h(item[0]+' · '+(i===0?t.heroPhotoNote:t.conceptLabel))}" width="720" height="460" loading="lazy" referrerpolicy="no-referrer"><span class="image-caption-chip">${h(i===0?t.heroPhotoNote:t.conceptLabel)}</span><button class="icon-button js-only" type="button" data-photo="${i+1}" aria-label="${h(t.projectImageLabel+' · '+item[0])}">${icon('expand')}</button></div><div class="project-content"><p class="project-kicker">${h(item[1])}</p><h3>${h(item[0])}</h3><p>${h(item[2])}</p>${external(config.projectLinks[i],item[3])}</div></article>`).join('')}</div><p class="project-note">${h(t.projectNote)}</p></div></section>
  <section class="section" id="donate"><div class="container donate-grid"><div class="donate-intro"><p class="eyebrow">${h(t.donateKicker)}</p><h2>${h(t.donateTitle)}</h2><p class="lead">${h(t.donateBody)}</p><p class="small-note safety-line">${icon('shield')}<span>${h(t.donateSafety)}</span></p><span class="currency-note">EUR · ${h(config.parish.bank)}</span></div><div class="bank-card"><dl>${[config.parish.legalName,config.parish.code,config.parish.bank,ibanDisplay,config.parish.bic,config.parish.purpose].map((value,i)=>`<div class="bank-row${i===3?' bank-row-iban':''}"><dt>${h(t.donateFields[i])}</dt><dd${i===0?' lang="lt"':''}>${h(value)}</dd>${[0,1,3,4,5].includes(i)?`<button type="button" class="icon-button js-only" data-copy="${h(i===3?config.parish.iban:value)}" aria-label="${h(t.copy+' · '+t.donateFields[i])}">${icon('copy')}</button>`:''}</div>`).join('')}</dl><p class="small-note">${h(t.donatePurposeExplain)}</p><button type="button" class="button button-primary js-only" data-copy-details>${icon('copy')}${h(t.copyDetails)}</button><p class="small-note">${h(t.donateNote)}</p></div></div></section>
  <section class="contact-section"><div class="container contact-grid"><div><h2>${h(t.contactTitle)}</h2><p>${h(t.contactBody)}</p></div><div class="contact-actions"><a class="button button-outline" href="tel:${config.parish.phone}" aria-label="${h(t.contact+' · '+config.parish.phoneDisplay)}">${icon('phone')}${h(config.parish.phoneDisplay)}</a>${external(config.parish.website,t.visit)}</div></div></section>
  ${supportSection(t)}
@@ -166,7 +178,7 @@ for (const lang of config.languages) {
  fs.writeFileSync(path.join(out,lang,'index.html'),page(lang,'../'));
  fs.writeFileSync(path.join(out,lang,'privacy.html'),privacyPage(lang,'../'));
  const data={config,t:locales[lang],lang,illustrationLabel:illustrationLabels[lang]};
- fs.writeFileSync(path.join(out,'assets',`data-${lang}.js`),`/* Generated; edit src/locales/${lang}.json and src/site.config.json instead. */\nwindow.PARISH = ${JSON.stringify(data).replace(/</g,'\\u003c')};\n`);
+ fs.writeFileSync(path.join(out,'assets/js',`data-${lang}.js`),`/* Generated; edit src/locales/${lang}.json and src/site.config.json instead. */\nwindow.PARISH = ${JSON.stringify(data).replace(/</g,'\\u003c')};\n`);
 }
 fs.writeFileSync(path.join(out,'index.html'),page(config.defaultLanguage,''));
 fs.writeFileSync(path.join(out,'.nojekyll'),'');
@@ -179,6 +191,10 @@ if(config.indexingEnabled && hasPublicUrl){
  const xml=`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${pages.map(url=>`  <url><loc>${h(url)}</loc><lastmod>${config.contentUpdated}</lastmod></url>`).join('\n')}\n</urlset>\n`;
  fs.writeFileSync(path.join(out,'sitemap.xml'),xml);
 }else if(fs.existsSync(path.join(out,'sitemap.xml'))) fs.unlinkSync(path.join(out,'sitemap.xml'));
-fs.writeFileSync(path.join(out,'404.html'),`<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>404 · GPM information</title><body><h1>404</h1><p>This page could not be found.</p><a href="${hasPublicUrl?h(baseUrl):'./index.html'}">1.2% GPM · Information guide</a></body></html>`);
+const errorLanguage=config.defaultLanguage, errorText=locales[errorLanguage];
+const errorBase=hasPublicUrl?baseUrl:'./';
+fs.writeFileSync(path.join(out,'404.html'),`<!doctype html>
+<html lang="${errorLanguage}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><meta name="theme-color" content="#275bd5"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; script-src 'none'; style-src 'self'; img-src 'self'; object-src 'none'; form-action 'none'"><title>404 · ${h(errorText.notFound.title)}</title><link rel="icon" href="${h(errorBase)}assets/img/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="${h(errorBase)}assets/css/styles.css"></head>
+<body class="not-found"><main class="container not-found-card"><a class="brand" href="${h(errorBase)}">${brandMark}<span class="brand-text"><strong>${h(errorText.brand[0])}</strong><small>${h(errorText.brand[1])}</small></span></a><p class="not-found-code" aria-hidden="true">404</p><h1>${h(errorText.notFound.title)}</h1><p class="lead">${h(errorText.notFound.body)}</p><a class="button button-primary" href="${h(errorBase)}">${h(errorText.notFound.home)}${icon('arrow')}</a><nav class="not-found-languages" aria-label="${h(errorText.language)}">${config.languages.map(lang=>`<a href="${h(errorBase+lang+'/index.html')}" lang="${lang}" hreflang="${lang}">${h(locales[lang].langName)}</a>`).join('')}</nav></main></body></html>`);
 console.log(`Built ${config.languages.length} languages + privacy pages in docs/. Indexing: ${config.indexingEnabled ? 'enabled':'disabled (pre-launch)'}.`);
 console.log('Media: '+Object.keys(media).map(k=>`${k}: ${fs.existsSync(path.join(root,'src/assets/images',media[k].filename))?'local':'external with local illustration fallback'}`).join('; '));

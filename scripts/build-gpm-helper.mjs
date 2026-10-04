@@ -29,7 +29,7 @@ for(const lang of config.languages){
  const allowedUrls=[...new Set([config.eds,calendar.source,...records.flatMap(x=>[...x.references,...(x.url.startsWith('https:')?[x.url]:[])])])];
  for(const u of allowedUrls)if(!/^https:\/\/[^\s]+$/.test(u))throw Error('Invalid public source');
  const data={records,calendar,warning,status:{before:t.prelaunch,open:t.openStatus,after:t.closedStatus},allowedUrls};
- fs.writeFileSync(path.join(root,'docs/assets',`gpm-data-${lang}.js`),'window.GPM_HELPER_DATA='+JSON.stringify(data).replace(/</g,'\\u003c')+';\n');
+ fs.writeFileSync(path.join(root,'docs/assets/js',`gpm-data-${lang}.js`),'window.GPM_HELPER_DATA='+JSON.stringify(data).replace(/</g,'\\u003c')+';\n');
  // Extend the existing privacy notice in generated HTML, using localized source text.
  const privacy=path.join(root,`docs/${lang}/privacy.html`);
  let html=fs.readFileSync(privacy,'utf8');
@@ -39,9 +39,9 @@ for(const lang of config.languages){
 for(const [rel,lang,prefix] of [['index.html',config.defaultLanguage,''],...config.languages.map(l=>[`${l}/index.html`,l,'../'])]){
  const ui=labels[lang],file=path.join(root,'docs',rel);let html=fs.readFileSync(file,'utf8');
  if(html.includes('id="gpm-helper"'))continue;
- html=html.replace('</head>',`<link rel="stylesheet" href="${prefix}assets/gpm-helper.css"><script src="${prefix}assets/gpm-helper.js" defer></script></head>`);
+ html=html.replace('</head>',`<link rel="stylesheet" href="${prefix}assets/css/gpm-helper.css"><script src="${prefix}assets/js/gpm-helper.js" defer></script></head>`);
  const topics=[['path-0','meaning'],['step-0','guide'],['campaign-2027','dates'],['step-2','recipient'],['faq','faq'],['projects','projects']];
- const widget=`<button hidden class="gh-launch" type="button" data-gpm-open data-ui="${esc(JSON.stringify(ui))}" data-gpm-src="${prefix}assets/gpm-data-${lang}.js" aria-haspopup="dialog" aria-controls="gpm-helper" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v12H9l-5 4V4Z"/><path d="M8 8h8M8 12h5"/></svg>${esc(ui.title)}</button>
+ const widget=`<button hidden class="gh-launch" type="button" data-gpm-open data-ui="${esc(JSON.stringify(ui))}" data-gpm-src="${prefix}assets/js/gpm-data-${lang}.js" aria-haspopup="dialog" aria-controls="gpm-helper" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v12H9l-5 4V4Z"/><path d="M8 8h8M8 12h5"/></svg>${esc(ui.title)}</button>
 <dialog class="gh-dialog" id="gpm-helper" aria-labelledby="gh-title" aria-describedby="gh-notice"><div class="gh-shell"><div class="gh-heading"><div><h2 id="gh-title">${esc(ui.title)}</h2><small>${esc(ui.mode)}</small></div><button class="gh-close" type="button" data-gpm-close aria-label="${esc(ui.close)}">×</button></div><p class="gh-notice" id="gh-notice">${esc(ui.notice)}</p><div class="gh-topics">${topics.map(([id,key])=>`<button type="button" data-gpm-topic="${id}">${esc(ui[key])}</button>`).join('')}</div><div class="gh-log" data-gpm-log role="log" aria-live="polite" aria-relevant="additions"></div><div class="gh-input" role="search"><label for="gh-query">${esc(ui.label)}</label><div class="gh-input-row"><input id="gh-query" maxlength="500" autocomplete="off" placeholder="${esc(ui.placeholder)}" enterkeyhint="send"><button class="gh-send" type="button" data-gpm-send>${esc(ui.send)}</button></div><button class="gh-reset" type="button" data-gpm-reset>${esc(ui.reset)}</button></div></div></dialog>`;
  html=html.replace('<section class="contact-section">','<section class="contact-section" id="contact">');
  html=html.replace('</body>',widget+'</body>');fs.writeFileSync(file,html);

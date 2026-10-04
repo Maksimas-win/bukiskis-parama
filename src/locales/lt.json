@@ -254,5 +254,10 @@
     "body": "Galite prisidėti prie šventovės išlaikymo ir parapijos projektų. Parama savanoriška: pasinaudokite aukojimo rekvizitais arba apsilankykite šventovės svetainėje ir sužinokite daugiau apie parapijos gyvenimą.",
     "donate": "Rekvizitai aukai",
     "visit": "Šventovės svetainė"
+  },
+  "notFound": {
+    "title": "Puslapis nerastas",
+    "body": "Nuoroda galėjo pasikeisti. Grįžkite į 1,2 % GPM gidą arba pasirinkite kalbą.",
+    "home": "Atverti gidą"
   }
 }

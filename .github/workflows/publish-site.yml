@@ -1,144 +1,69 @@
-name: Build and publish informational site
+name: Validate and publish site
 
 on:
   push:
     branches: [main]
-    paths:
-      - '.release/**'
-      - '.github/workflows/publish-site.yml'
-      - 'src/**'
-      - 'scripts/**'
-      - 'tests/**'
-      - 'package.json'
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: informational-site-pages
-  cancel-in-progress: false
+  group: site-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   build:
-    if: github.repository == 'Maksimas-win/bukiskis-parama' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    timeout-minutes: 10
-    permissions:
-      contents: write
-      pages: read
-    outputs:
-      pages_enabled: ${{ steps.pages.outputs.enabled }}
+    timeout-minutes: 15
+    env:
+      SITE_URL: https://maksimas-win.github.io/bukiskis-parama/
     steps:
-      - name: Check out the main branch
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v6
         with:
-          ref: main
-
-      - name: Restore the approved v0.2.0 sources on first run
-        shell: bash
-        run: |
-          python3 - <<'PY'
-          import base64, hashlib, io, pathlib, tarfile
-          root = pathlib.Path.cwd()
-          if (root / 'package.json').exists():
-              print('Sources already installed; keeping all subsequent edits.')
-              raise SystemExit(0)
-          parts = [root / '.release/v0.2.0' / f'part-{n:02d}.b64' for n in range(7)]
-          encoded = ''.join(''.join(p.read_text(encoding='ascii').split()) for p in parts)
-          data = base64.b64decode(encoded, validate=True)
-          expected = 'adfe2082092aa7f4f499bef9c25d60c28166afcb3b86410637b2e79feb887c2c'
-          if hashlib.sha256(data).hexdigest() != expected:
-              raise SystemExit('Source bundle checksum mismatch; no files extracted.')
-          allowed = {'.gitattributes', '.gitignore', 'AGENTS.md', 'CHANGELOG.md',
-                     'README.md', 'SOURCES.md', 'START_HERE.txt', 'package.json',
-                     'qa', 'scripts', 'src', 'tests'}
-          with tarfile.open(fileobj=io.BytesIO(data), mode='r:xz') as archive:
-              members = archive.getmembers()
-              if len(members) != 34 or sum(m.size for m in members) > 2_000_000:
-                  raise SystemExit('Unexpected source archive size.')
-              for m in members:
-                  p = pathlib.PurePosixPath(m.name)
-                  if (not m.isfile() or p.is_absolute() or '..' in p.parts
-                          or not p.parts or p.parts[0] not in allowed):
-                      raise SystemExit(f'Unsafe archive entry: {m.name}')
-                  target = root.joinpath(*p.parts)
-                  if not target.resolve().is_relative_to(root):
-                      raise SystemExit('Archive target outside checkout.')
-              for m in members:
-                  target = root / m.name
-                  target.parent.mkdir(parents=True, exist_ok=True)
-                  target.write_bytes(archive.extractfile(m).read())
-          print('SHA-256 verified. Restored 34 approved source files.')
-          PY
-
-      - name: Set up Node.js 22
-        uses: actions/setup-node@v6
+          persist-credentials: false
+      - uses: actions/setup-node@v6
         with:
           node-version: '22'
-
-      - name: Build six languages and run the tests
-        env:
-          SITE_URL: https://maksimas-win.github.io/bukiskis-parama/
+      - name: Build and test all six languages
         run: |
           npm run build
           npm test
-
-      - name: Save sources and generated docs to main
-        shell: bash
+      - name: Require committed output to match the tested build
         run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add .gitattributes .gitignore AGENTS.md CHANGELOG.md README.md SOURCES.md START_HERE.txt package.json qa scripts src tests docs
-          if ! git diff --cached --quiet; then
-            git commit -m 'Publish tested informational site v0.2.0 and six-language docs'
-            git push origin HEAD:main
-          fi
-          echo '## Repository upload complete' >> "$GITHUB_STEP_SUMMARY"
-          echo 'Source files and the tested six-language docs are committed to main. Other repositories are unchanged.' >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Check whether GitHub Pages is enabled
-        id: pages
+          git diff --exit-code -- docs
+          test -z "$(git ls-files --others --exclude-standard docs)"
+      - name: Install development-only browser checks
+        run: |
+          npm install --prefix "$RUNNER_TEMP/site-qa" --no-audit --no-fund --save-exact playwright@1.56.1
+          "$RUNNER_TEMP/site-qa/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Check responsive layouts, motion fallbacks and helper interaction
         env:
-          GH_TOKEN: ${{ github.token }}
-        shell: bash
+          PLAYWRIGHT_PACKAGE_JSON: ${{ runner.temp }}/site-qa/package.json
         run: |
-          python3 - <<'PY'
-          import json, os, urllib.request, urllib.error
-          request = urllib.request.Request(
-              'https://api.github.com/repos/Maksimas-win/bukiskis-parama/pages',
-              headers={'Authorization': 'Bearer ' + os.environ['GH_TOKEN'],
-                       'Accept': 'application/vnd.github+json',
-                       'X-GitHub-Api-Version': '2022-11-28'})
-          try:
-              with urllib.request.urlopen(request, timeout=30) as response:
-                  site = json.load(response)
-          except urllib.error.HTTPError as error:
-              if error.code != 404:
-                  raise
-              site = None
-          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
-              output.write('enabled=' + ('true' if site else 'false') + '\n')
-          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as summary:
-              if site:
-                  safe = {k: site.get(k) for k in ('html_url', 'build_type', 'status', 'source')}
-                  print(json.dumps(safe, ensure_ascii=False))
-                  summary.write('\nPages is enabled; the deployment job will publish the built artifact.\n')
-              else:
-                  print('PAGES_NOT_ENABLED: repository files are uploaded; public hosting needs initial activation.')
-                  summary.write('\n## One-time Pages activation required\n')
-                  summary.write('Open Settings > Pages > Deploy from a branch > main > /docs > Save.\n')
-                  summary.write('The docs folder is already built and committed. No archive upload or local setup is needed.\n')
-          PY
-
-      - name: Upload the built Pages artifact
-        uses: actions/upload-pages-artifact@v3
+          node scripts/check-intro3d.mjs
+          node scripts/check-gpm-helper.mjs
+      - name: Save browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-checks
+          path: |
+            qa/intro3d-review
+            qa/gpm-review
+          if-no-files-found: ignore
+          retention-days: 7
+      - name: Prepare tested Pages artifact
+        if: github.repository == 'Maksimas-win/bukiskis-parama' && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v4
         with:
           path: docs
 
   deploy:
     needs: build
-    if: needs.build.outputs.pages_enabled == 'true'
+    if: github.repository == 'Maksimas-win/bukiskis-parama' && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -148,6 +73,28 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy to GitHub Pages
+      - name: Deploy the artifact that passed all checks
         id: deployment
         uses: actions/deploy-pages@v5
+
+  verify:
+    needs: deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - name: Compare live files with the tested release
+        run: npm run check:live
+      - name: Save deployment verification
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: live-verification
+          path: qa/live
+          if-no-files-found: ignore
+          retention-days: 7

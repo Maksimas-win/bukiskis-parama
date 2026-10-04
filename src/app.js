@@ -57,9 +57,12 @@
     if (language?.open) { language.open = false; language.querySelector('summary')?.focus(); }
     if (menu?.getAttribute('aria-expanded') === 'true') { closeMenu(); menu.focus(); }
   });
-  $$('[data-language]').forEach(link => {
-    if (window.location.hash) link.hash = window.location.hash;
-  });
+  const languageLinks = $$('[data-language]');
+  function syncLanguageLinks() {
+    languageLinks.forEach(link => { link.hash = window.location.hash; });
+  }
+  syncLanguageLinks();
+  window.addEventListener('hashchange', syncLanguageLinks);
 
   function vilniusDate() {
     const parts = new Intl.DateTimeFormat('en-CA', {

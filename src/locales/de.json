@@ -254,5 +254,10 @@
     "body": "Sie können zum Erhalt der Kirche und zu den Projekten der Gemeinde beitragen. Die Unterstützung ist freiwillig: Nutzen Sie die Angaben für eine Spende oder besuchen Sie die Website der Kirche, um mehr über das Gemeindeleben zu erfahren.",
     "donate": "Angaben für eine Spende",
     "visit": "Website der Kirche"
+  },
+  "notFound": {
+    "title": "Seite nicht gefunden",
+    "body": "Der Link wurde möglicherweise geändert. Öffnen Sie den 1,2-%-GPM-Leitfaden oder wählen Sie eine Sprache.",
+    "home": "Leitfaden öffnen"
   }
 }

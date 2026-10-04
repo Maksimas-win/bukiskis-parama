@@ -87,16 +87,16 @@ test('Informational identity replaces religious imagery across all languages',()
   assert.ok(html.indexOf('id="help"')<html.indexOf('id="donate"'));
  }
  assert.doesNotMatch(read('src/styles.css'),/church-outline|hero-main/);
- assert.doesNotMatch(read('docs/assets/images/favicon.svg'),/M32 11v43|M24 11v40|[☦✝]/);
- assert.equal(fs.existsSync(path.join(root,'docs/assets/images/church-outline.svg')),false);
+ assert.doesNotMatch(read('docs/assets/img/favicon.svg'),/M32 11v43|M24 11v40|[☦✝]/);
+ assert.equal(fs.existsSync(path.join(root,'docs/assets/img/church-outline.svg')),false);
  assert.equal(fs.existsSync(path.join(root,'src/assets/images/church-outline.svg')),false);
 });
 
 test('Every stylesheet image URL resolves after removing the former assets',()=>{
- const css=read('docs/assets/styles.css');
+ const css=read('docs/assets/css/styles.css');
  for (const match of css.matchAll(/url\(['"]?([^'"\)]+)['"]?\)/g)) {
   const url=match[1];
   if (/^(?:data:|https?:)/.test(url)) continue;
-  assert.ok(fs.existsSync(path.join(root,'docs/assets',url)),`Missing CSS asset: ${url}`);
+  assert.ok(fs.existsSync(path.join(root,'docs/assets/css',url)),`Missing CSS asset: ${url}`);
  }
 });

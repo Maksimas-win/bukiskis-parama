@@ -25,8 +25,8 @@ jobs:
           root = pathlib.Path('docs')
           base = 'https://maksimas-win.github.io/bukiskis-parama/'
           languages = ['ru', 'lt', 'en', 'pl', 'de', 'uk']
-          names = ['index.html', 'assets/gpm-helper.js', 'assets/gpm-helper.css']
-          names += [f'assets/gpm-data-{lang}.js' for lang in languages]
+          names = ['index.html', 'assets/js/gpm-helper.js', 'assets/css/gpm-helper.css']
+          names += [f'assets/js/gpm-data-{lang}.js' for lang in languages]
           names += [f'{lang}/index.html' for lang in languages]
           names += [f'{lang}/privacy.html' for lang in languages]
           def check(name):

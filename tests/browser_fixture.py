@@ -18,7 +18,7 @@ def fixture(lang='ru',privacy=False):
 def load(page,lang='ru',privacy=False,js=True):
  page.set_content(fixture(lang,privacy),wait_until='load')
  if js:
-  page.evaluate((ROOT/'docs/assets'/f'data-{lang}.js').read_text())
+  page.evaluate((ROOT/'docs/assets/js'/f'data-{lang}.js').read_text())
   page.evaluate((ROOT/'src/math.js').read_text())
   page.evaluate((ROOT/'src/app.js').read_text())
  page.wait_for_timeout(150)
