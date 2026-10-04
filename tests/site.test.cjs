@@ -50,7 +50,7 @@ for(const lang of config.languages){
   const ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);
   assert.equal(new Set(ids).size,ids.length,'Unique element IDs');
   assert.ok(read(`docs/${lang}/privacy.html`).includes(t.privacy));
-  assert.match(html,/name="robots" content="noindex,follow"/);
+  assert.match(html,config.indexingEnabled?/name="robots" content="index,follow,max-image-preview:large"/:/name="robots" content="noindex,follow"/);
   assert.doesNotMatch(html,/<iframe[\s>]/i,'No iframe before consent');
   assert.doesNotMatch(html,/<form[\s>]/i,'No collection of personal data');
   for(const code of config.languages)assert.ok(html.includes(`hreflang="${code}"`));

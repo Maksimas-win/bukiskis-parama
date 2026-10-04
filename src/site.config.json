@@ -2,8 +2,10 @@
   "name": "bukiskis-parama",
   "defaultLanguage": "ru",
   "languages": ["ru", "lt", "en", "pl", "de", "uk"],
-  "publicBaseUrl": "",
-  "indexingEnabled": false,
+  "publicBaseUrl": "https://maksimas-win.github.io/bukiskis-parama/",
+  "indexingEnabled": true,
+  "contentUpdated": "2026-10-04",
+  "searchConsoleVerificationFile": "googled8db1e57cec5f564.html",
   "reviewed": "2026-09-29",
   "campaign": {
     "year": 2027,

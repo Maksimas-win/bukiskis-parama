@@ -13,14 +13,27 @@ const out = path.join(root, 'docs');
 const esc = value => String(value).replace(/[&<>"']/g, ch => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[ch]));
 const h = esc;
 const ibanDisplay = config.parish.iban.match(/.{1,4}/g).join(' ');
-const baseUrl = String(process.env.SITE_URL || config.publicBaseUrl).trim().replace(/\/?$/, '/');
-const hasPublicUrl = baseUrl !== '/';
-if (hasPublicUrl && !/^https:\/\/[A-Za-z0-9.-]+(?:\/[^\s]*)?\/$/.test(baseUrl)) throw new Error('publicBaseUrl must be an absolute HTTPS URL ending with /');
+const configuredUrl = String(process.env.SITE_URL || config.publicBaseUrl).trim();
+const publicUrl = configuredUrl ? new URL(configuredUrl) : null;
+if (publicUrl && (publicUrl.protocol !== 'https:' || publicUrl.username || publicUrl.password || publicUrl.search || publicUrl.hash)) {
+ throw new Error('publicBaseUrl must be an absolute HTTPS URL without credentials, query or fragment');
+}
+const baseUrl = publicUrl ? publicUrl.href.replace(/\/?$/, '/') : '';
+const hasPublicUrl = Boolean(publicUrl);
+const pageURL = (lang, privacy=false) => `${baseUrl}${lang}/${privacy?'privacy':'index'}.html`;
+if (!/^\d{4}-\d{2}-\d{2}$/.test(config.contentUpdated) || Number.isNaN(Date.parse(config.contentUpdated)) || new Date(config.contentUpdated).toISOString().slice(0,10) !== config.contentUpdated) {
+ throw new Error('contentUpdated must be a valid ISO calendar date');
+}
 if (!math.validIban(config.parish.iban)) throw new Error('IBAN checksum is invalid');
 if (config.parish.code !== '301004570') throw new Error('Recipient code changed: review identity before building');
 if (!/^[A-Za-z0-9_-]{11}$/.test(config.video.id)) throw new Error('Invalid YouTube ID');
 if (config.campaign.lastTaxYear - config.campaign.taxYear !== 4) throw new Error('The example must cover exactly five tax years');
-if (config.indexingEnabled && (!hasPublicUrl || !config.campaign.recipientVerified || !config.campaign.gpmBankAccountVerified)) throw new Error('Public indexing requires a public URL and completed recipient/account checks');
+// Search visibility of the guide does not certify a recipient or bank account.
+// Those separate factual checks still control the campaign warnings.
+if (config.indexingEnabled && !hasPublicUrl) throw new Error('Public indexing requires a public URL');
+if (config.searchConsoleVerificationFile && !/^google[a-f0-9]+\.html$/.test(config.searchConsoleVerificationFile)) {
+ throw new Error('Invalid Search Console verification filename');
+}
 function shape(value) {
  if (Array.isArray(value)) return value.map(shape);
  if (value && typeof value === 'object') return Object.fromEntries(Object.keys(value).sort().map(k => [k, shape(value[k])]));
@@ -74,10 +87,41 @@ function header(lang,prefix,privacy=false) {
 }
 function head(lang,prefix,privacy=false) {
  const t=locales[lang], title=privacy?`${t.privacy} · ${t.brand[0]}`:t.title;
- const canonical=hasPublicUrl?`${baseUrl}${lang}/${privacy?'privacy':'index'}.html`:'';
- const robots=config.indexingEnabled&&!privacy?'index,follow':'noindex,follow';
+ const description=privacy?t.privacyText:t.description;
+ const canonical=hasPublicUrl?pageURL(lang,privacy):'';
+ const robots=config.indexingEnabled&&!privacy?'index,follow,max-image-preview:large':'noindex,follow';
  const csp="default-src 'self'; base-uri 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: https://raw.githubusercontent.com; frame-src https://www.youtube-nocookie.com; connect-src 'none'; object-src 'none'; form-action 'none'";
- return `<!doctype html>\n<html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="color-scheme" content="light"><meta name="theme-color" content="#275bd5"><meta name="referrer" content="strict-origin-when-cross-origin"><meta http-equiv="Content-Security-Policy" content="${h(csp)}"><meta name="robots" content="${robots}"><meta name="asset-base" content="${prefix}assets/"><title>${h(title)}</title><meta name="description" content="${h(privacy?t.privacyText:t.description)}">${canonical?`<link rel="canonical" href="${h(canonical)}"><meta property="og:url" content="${h(canonical)}">`:''}<meta property="og:type" content="website"><meta property="og:title" content="${h(title)}"><meta property="og:description" content="${h(t.description)}"><meta property="og:locale" content="${t.locale.replace('-','_')}">${config.languages.map(code=>`<link rel="alternate" hreflang="${code}" href="${h(hasPublicUrl?`${baseUrl}${code}/${privacy?'privacy':'index'}.html`:`${prefix}${code}/${privacy?'privacy':'index'}.html`)}">`).join('')}<link rel="alternate" hreflang="x-default" href="${h(hasPublicUrl?`${baseUrl}${config.defaultLanguage}/index.html`:`${prefix}${config.defaultLanguage}/index.html`)}"><link rel="icon" href="${prefix}assets/images/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="${prefix}assets/styles.css"><script src="${prefix}assets/data-${lang}.js" defer></script><script src="${prefix}assets/math.js" defer></script><script src="${prefix}assets/app.js" defer></script></head><body id="top">`;
+ const alternateURL = code => hasPublicUrl?pageURL(code,privacy):`${prefix}${code}/${privacy?'privacy':'index'}.html`;
+ return `<!doctype html>
+<html lang="${lang}"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#275bd5">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta http-equiv="Content-Security-Policy" content="${h(csp)}">
+<meta name="robots" content="${robots}">
+<meta name="asset-base" content="${prefix}assets/">
+<title>${h(title)}</title>
+<meta name="description" content="${h(description)}">
+${canonical?`<link rel="canonical" href="${h(canonical)}"><meta property="og:url" content="${h(canonical)}">`:''}
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="${h(t.brand.join(' · '))}">
+<meta property="og:title" content="${h(title)}">
+<meta property="og:description" content="${h(description)}">
+<meta property="og:locale" content="${h(t.locale.replace('-','_'))}">
+${config.languages.filter(code=>code!==lang).map(code=>`<meta property="og:locale:alternate" content="${h(locales[code].locale.replace('-','_'))}">`).join('\n')}
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="${h(title)}">
+<meta name="twitter:description" content="${h(description)}">
+${config.languages.map(code=>`<link rel="alternate" hreflang="${code}" href="${h(alternateURL(code))}">`).join('\n')}
+<link rel="alternate" hreflang="x-default" href="${h(alternateURL(config.defaultLanguage))}">
+<link rel="icon" href="${prefix}assets/images/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="${prefix}assets/styles.css">
+<script src="${prefix}assets/data-${lang}.js" defer></script>
+<script src="${prefix}assets/math.js" defer></script>
+<script src="${prefix}assets/app.js" defer></script>
+</head><body id="top">`;
 }
 function sectionTop(kicker,title,body) {
  return `<div class="section-top reveal"><div><p class="eyebrow">${h(kicker)}</p><h2>${h(title)}</h2></div><p>${h(body)}</p></div>`;
@@ -97,8 +141,8 @@ function page(lang,prefix) {
  const t=locales[lang], pct=lang==='en'?'1.2':'1,2';
  const mediaKeys=['community','kitchen','shelter'];
  const dateText=dateLabel(config.reviewed,t.locale);
- let result=head(lang,prefix)+header(lang,prefix)+`<noscript><p class="no-js-notice">${h(t.noJs)}</p></noscript><main id="main">
- <section class="hero"><div class="container"><div class="hero-grid"><div class="hero-copy"><p class="eyebrow">${h(t.eyebrow)}</p><h1><span>${h(t.hero[0])}</span><em>${h(t.hero[1])}</em></h1><p class="lead">${h(t.lead)}</p><div class="hero-actions"><a class="button button-primary" href="#guide">${h(t.primary)}${icon('arrow')}</a><a class="text-link" href="#video">${icon('play')}${h(t.secondary)}</a></div><p class="hero-small">2026 → 2027 · FR0512 · VMI</p></div><aside class="info-visual" aria-labelledby="info-title"><div class="info-top"><span class="info-label">GPM / INFO</span><span class="info-year">2027</span></div><div class="percent-lockup"><strong class="percent-figure">${pct}<span>%</span></strong><div class="percent-text"><p>${h(t.info.badge)}</p><a class="text-link" href="#calculator">${h(t.info.link)}${icon('arrow')}</a></div></div><div class="hero-explainer"><h2 id="info-title">${h(t.info.title)}</h2>${t.info.items.map((item,i)=>`<details${i===0?' open':''}><summary><span class="info-number">0${i+1}</span><span>${h(item[0])}</span>${icon('chevron')}</summary><p>${h(item[1])}</p></details>`).join('')}</div><p class="info-caption">${h(t.info.caption)}</p></aside></div><div class="facts"><div class="fact"><small>${h(t.facts[0])}</small><strong>${config.campaign.taxYear}</strong></div><div class="fact"><small>${h(t.facts[1])}</small><strong>${h(t.deadline)}</strong></div><div class="fact"><small>${h(t.facts[2])}</small><strong class="fact-form">FR0512</strong></div></div><div class="campaign-notice">${icon('clock')}<p id="campaign-status">${h(t.prelaunch)}</p></div><p class="source-inline">${external(config.sources[0],'VMI · 2027')}</p></div></section>
+ let result=head(lang,prefix)+header(lang,prefix)+`<noscript><p class="no-js-notice">${h(t.noJs)}</p></noscript><main id="main" itemscope itemtype="https://schema.org/WebPage"><meta itemprop="inLanguage" content="${lang}">${hasPublicUrl?`<link itemprop="url" href="${h(pageURL(lang))}">`:""}
+ <section class="hero"><div class="container"><div class="hero-grid"><div class="hero-copy"><p class="eyebrow">${h(t.eyebrow)}</p><h1 itemprop="name"><span>${h(t.hero[0])}</span><em>${h(t.hero[1])}</em></h1><p class="lead" itemprop="description">${h(t.lead)}</p><div class="hero-actions"><a class="button button-primary" href="#guide">${h(t.primary)}${icon('arrow')}</a><a class="text-link" href="#video">${icon('play')}${h(t.secondary)}</a></div><p class="hero-small">2026 → 2027 · FR0512 · VMI</p></div><aside class="info-visual" aria-labelledby="info-title"><div class="info-top"><span class="info-label">GPM / INFO</span><span class="info-year">2027</span></div><div class="percent-lockup"><strong class="percent-figure">${pct}<span>%</span></strong><div class="percent-text"><p>${h(t.info.badge)}</p><a class="text-link" href="#calculator">${h(t.info.link)}${icon('arrow')}</a></div></div><div class="hero-explainer"><h2 id="info-title">${h(t.info.title)}</h2>${t.info.items.map((item,i)=>`<details${i===0?' open':''}><summary><span class="info-number">0${i+1}</span><span>${h(item[0])}</span>${icon('chevron')}</summary><p>${h(item[1])}</p></details>`).join('')}</div><p class="info-caption">${h(t.info.caption)}</p></aside></div><div class="facts"><div class="fact"><small>${h(t.facts[0])}</small><strong>${config.campaign.taxYear}</strong></div><div class="fact"><small>${h(t.facts[1])}</small><strong>${h(t.deadline)}</strong></div><div class="fact"><small>${h(t.facts[2])}</small><strong class="fact-form">FR0512</strong></div></div><div class="campaign-notice">${icon('clock')}<p id="campaign-status">${h(t.prelaunch)}</p></div><p class="source-inline">${external(config.sources[0],'VMI · 2027')}</p></div></section>
  <section class="section ways"><div class="container">${sectionTop(t.introKicker,t.introTitle,t.introBody)}<div class="ways-grid">${t.paths.map((item,i)=>`<article class="way reveal"><span class="way-num">0${i+1}</span><div><h3>${h(item[0])}</h3><p>${h(item[1])}</p><span class="tag">${h(item[2])}</span></div></article>`).join('')}</div></div></section>
  <section class="section" id="guide"><div class="container">${sectionTop(t.guideKicker,t.guideTitle,t.guideBody)}<div class="guide-grid"><div class="guide-tabs" role="tablist" aria-label="${h(t.guideTitle)}" aria-orientation="vertical">${t.steps.map((step,i)=>`<button class="guide-tab" type="button" role="tab" id="guide-tab-${i}" data-step="${i}" aria-selected="${i===0}" aria-controls="guide-panel-${i}" tabindex="${i===0?0:-1}"><span class="step-num">0${i+1}</span><span>${h(step[0])}</span>${icon('arrow')}</button>`).join('')}</div><div class="guide-panels">${t.steps.map((step,i)=>`<article id="guide-panel-${i}" class="guide-panel${i===0?' is-active':''}" role="tabpanel" aria-labelledby="guide-tab-${i}"><div class="diagram"><span class="diagram-label">${h(t.diagramLabel)}</span><div class="diagram-card">${icon(['shield','paper','person','percent','check'][i])}<small>${h(step[2])}</small><strong>${h(step[3])}</strong></div><span class="diagram-count" aria-hidden="true">0${i+1}</span></div><h3>${h(step[0])}</h3><p>${h(step[1])}</p></article>`).join('')}<div class="guide-controls"><button type="button" class="button button-outline button-small" data-step-prev disabled>${icon('back')}${h(t.guidePrev)}</button><span id="step-counter" role="status">${h(t.stepWord)} 1 ${h(t.ofWord)} 5</span><button type="button" class="button button-primary button-small" data-step-next>${h(t.guideNext)}${icon('arrow')}</button></div></div></div><div class="guide-bottom"><p class="small-note">${h(t.guideNote)}</p>${external(config.eds,t.edsLink,'button button-outline')}</div><p class="verification-note" id="recipient-verification"${config.campaign.recipientVerified?' hidden':''}>${h(t.unverified)}</p><p class="source-inline">${external(config.sources[2],'VMI · FR0512')}</p></div></section>
  <section class="calculator-section" id="calculator" aria-labelledby="calculator-title"><div class="container calculator-grid"><div><p class="eyebrow">${h(t.calcKicker)}</p><h2 id="calculator-title">${h(t.calcTitle)}</h2><p class="lead">${h(t.calcBody)}</p><div class="calculator-controls"><div class="input-group"><label for="gpm-amount">${h(t.calcTax)}</label><div class="money-input"><input id="gpm-amount" type="text" inputmode="decimal" value="3000" maxlength="15" autocomplete="off" spellcheck="false" aria-describedby="calc-note calc-error"><span aria-hidden="true">€</span></div></div><div class="input-group"><label for="people-count">${h(t.calcPeople)}</label><div class="people-line"><output for="people-count" id="people-output">25</output> <small>${h(t.peopleUnit)}</small></div><input id="people-count" type="range" min="1" max="200" value="25" step="1" aria-describedby="calc-note"></div></div><p id="calc-error" class="calc-error" hidden>${h(t.calcInvalid)}</p><p class="no-js-calculator">3 000 € × ${lang==='en'?'0.012':'0,012'} = 36 € · 25 × 36 € = 900 €</p></div><div class="calc-results"><div id="calculation-output" aria-live="polite" aria-atomic="true"><div class="calc-result-one"><strong id="single-result">${new Intl.NumberFormat(t.locale,{style:'currency',currency:'EUR'}).format(36)}</strong><span>${h(t.calcResult)}</span></div><div class="calc-result-total"><span>${h(t.calcTogether)}</span><strong id="group-result">${new Intl.NumberFormat(t.locale,{style:'currency',currency:'EUR'}).format(900)}</strong></div></div><p class="calc-formula">${h(t.calcFormula)}</p><p class="small-note" id="calc-note">${h(t.calcNote)}</p></div></div></section>
@@ -126,10 +170,13 @@ for (const lang of config.languages) {
 }
 fs.writeFileSync(path.join(out,'index.html'),page(config.defaultLanguage,''));
 fs.writeFileSync(path.join(out,'.nojekyll'),'');
+if (config.searchConsoleVerificationFile) {
+ fs.writeFileSync(path.join(out,config.searchConsoleVerificationFile),`google-site-verification: ${config.searchConsoleVerificationFile}`);
+}
 fs.writeFileSync(path.join(out,'robots.txt'),config.indexingEnabled?`User-agent: *\nAllow: /\n${hasPublicUrl?'Sitemap: '+baseUrl+'sitemap.xml\n':''}`:'User-agent: *\nDisallow: /\n');
-if(hasPublicUrl){
- const pages=config.languages.map(l=>`${baseUrl}${l}/index.html`);
- const xml=`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${pages.map(url=>`<url><loc>${h(url)}</loc><lastmod>${config.reviewed}</lastmod></url>`).join('')}</urlset>\n`;
+if(config.indexingEnabled && hasPublicUrl){
+ const pages=config.languages.map(lang=>pageURL(lang));
+ const xml=`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${pages.map(url=>`  <url><loc>${h(url)}</loc><lastmod>${config.contentUpdated}</lastmod></url>`).join('\n')}\n</urlset>\n`;
  fs.writeFileSync(path.join(out,'sitemap.xml'),xml);
 }else if(fs.existsSync(path.join(out,'sitemap.xml'))) fs.unlinkSync(path.join(out,'sitemap.xml'));
 fs.writeFileSync(path.join(out,'404.html'),`<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>404 · GPM information</title><body><h1>404</h1><p>This page could not be found.</p><a href="${hasPublicUrl?h(baseUrl):'./index.html'}">1.2% GPM · Information guide</a></body></html>`);
