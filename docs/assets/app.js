@@ -278,6 +278,10 @@
       observer.unobserve(entry.target);
     }), { threshold: 0.08 });
     document.body.classList.add('motion-ready');
+    // Reveal the remaining content blocks too; nested candidates follow their container.
+    const blocks = $$('.section-top, .way, .guide-grid, .calculator-grid, .video-grid, .faq-list details, .sources, .project-card, .donate-intro, .bank-card, .parish-support-card');
+    blocks.filter(element => !blocks.some(other => other !== element && other.contains(element)))
+      .forEach(element => element.classList.add('reveal'));
     $$('.reveal').forEach(element => {
       if (element.getBoundingClientRect().top > window.innerHeight + 80) {
         element.classList.add('will-reveal');
