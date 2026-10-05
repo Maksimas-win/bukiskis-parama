@@ -1,4 +1,4 @@
-/* Public GPM guide: local retrieval only. No model requests, storage or secret keys. */
+/* Public GPM guide: local sources plus explicitly consented AI. No storage or keys. */
 (function(host){
 'use strict';
 const norm=s=>String(s).normalize('NFKD').replace(/\p{M}/gu,'').toLowerCase().replace(/ё/g,'е');
@@ -15,7 +15,7 @@ const multiYearQuestion = new RegExp([
 ].map(pattern => `(?:${pattern})`).join('|'), 'u');
 function sensitive(s){
  const clean=String(s).replace(/\b301004570\b/g,'');
- return /sk-[\w-]{12,}|[\w.+-]+@[\w.-]+\.[a-z]{2,}|\b[A-Z]{2}\s?\d{2}(?:\s?[A-Z0-9]){12,30}\b|(?:\d[ -]?){9,}|(?:password|пароль|slaptazodis|haslo)\s*[:=]\s*\S+/i.test(norm(clean));
+ return /AQ\.[\w-]{15,}|AIza[\w-]{15,}|sk-[\w-]{12,}|[\w.+-]+@[\w.-]+\.[a-z]{2,}|\b[A-Z]{2}\s?\d{2}(?:\s?[A-Z0-9]){12,30}\b|(?:\d[ -]?){9,}|(?:password|пароль|slaptazodis|haslo|passwort|api[_ -]?key)\s*[:=]\s*\S+/i.test(norm(clean));
 }
 const routes=[
  ['faq-4',/gpm\s?311|декларац.*доход|income.*declar|pajamu.*deklar|deklarac.*dochod|einkommensteuererklar|декларац.*дохід/],
@@ -64,6 +64,8 @@ const log=dialog.querySelector('[data-gpm-log]'),input=dialog.querySelector('inp
 const el=(tag,text,cls)=>{const n=document.createElement(tag);if(text)n.textContent=text;if(cls)n.className=cls;return n;};
 let data=null,loading=null,step=-1;
 const ui=JSON.parse(opener.dataset.ui);
+const aiButton=dialog.querySelector('[data-gpm-ai]'),cancelButton=dialog.querySelector('[data-gpm-cancel]');
+let consent=false,history=[],activeRequest=null,consentPanel=null,operation=0;
 const today=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Vilnius',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
 function scroll(){log.scrollTop=log.scrollHeight;}
 function block(text,own=false){const n=el('div',null,own?'gh-message gh-own':'gh-message');if(text)n.append(el('p',text));log.append(n);while(log.children.length>24)log.firstElementChild.remove();scroll();return n;}
@@ -94,6 +96,7 @@ function answer(r,guided=false){
 }
 function choices(records,label){const n=block(label);for(const r of records)action(n,r.title,()=>answer(r,r.id.startsWith('step-')));scroll();}
 function welcome(){
+ cancelAI();consent=false;history=[];
  log.replaceChildren();input.value='';step=-1;block(ui.welcome);
  if(data){const n=block();calendar(n);
  if((Date.parse(today())-Date.parse(data.calendar.checkedOn))/86400000>90)n.append(el('small',ui.stale,'gh-important'));
@@ -111,6 +114,7 @@ function load(){
 }
 async function ready(){try{await load();send.disabled=false;return true;}catch{block(ui.loadError);return false;}}
 async function submit(){
+ cancelAI();
  const q=input.value.trim().slice(0,500);if(!q)return;input.value='';
  if(sensitive(q)){block(ui.redacted,true);block(ui.safety);return;}
  block(q,true);if(!await ready())return;
@@ -122,18 +126,80 @@ async function submit(){
  else if(hits.length)choices(hits.map(x=>x.record),ui.found);
  else{const n=block(ui.noMatch);link(n,ui.contact,'#contact');}
 }
+function cancelAI(){
+ operation++;
+ if(activeRequest){activeRequest.controller.abort();activeRequest.node.remove();activeRequest=null;}
+ if(consentPanel){consentPanel.remove();consentPanel=null;}
+ if(aiButton)aiButton.disabled=false;
+ if(cancelButton)cancelButton.hidden=true;
+}
+function localFallback(q){
+ const hits=resolve(q,data.records);
+ if(hits[0]?.score>=100)answer(hits[0].record,hits[0].record.id.startsWith('step-'));
+ else if(hits.length)choices(hits.map(hit=>hit.record),ui.found);
+ else {const n=block(ui.noMatch);link(n,ui.contact,'#contact');}
+}
+async function askAI(q){
+ cancelAI();
+ const token=operation;
+ if(!consent||!host.GpmAI||!dialog.open)return;
+ input.value='';block(q,true);
+ const node=block(ui.aiLoading),controller=new AbortController();
+ activeRequest={controller,node};aiButton.disabled=true;cancelButton.hidden=false;
+ const timeout=setTimeout(()=>controller.abort(),28000);
+ try{
+  const reply=await host.GpmAI.request({message:q,language:document.documentElement.lang,history,consent,signal:controller.signal});
+  if(token!==operation||!dialog.open)return;
+  node.replaceChildren(el('h3',ui.aiAnswer+' · '+(reply.provider==='openai'?'OpenAI':'Gemini')),el('p',reply.answer));
+  for(const source of reply.sources){
+   // Transport has already checked these exact HTTPS URLs; never render model HTML.
+   const a=el('a',source.title);a.href=source.url;a.target='_blank';a.rel='noopener noreferrer';node.append(a);
+  }
+  if(reply.sourceSnapshotDate)node.append(el('small',ui.date+' '+reply.sourceSnapshotDate));
+  node.append(el('small',ui.aiCaution));
+  history=host.GpmAI.remember(history,q,reply.answer);
+ }catch(error){
+  if(token!==operation||!dialog.open)return;
+  node.replaceChildren(el('p',error.status===429?ui.aiRateLimit:error.status===400?ui.safety:ui.aiError));
+  action(node,ui.aiLocal,()=>localFallback(q));
+ }finally{
+  clearTimeout(timeout);
+  if(token===operation){activeRequest=null;aiButton.disabled=false;cancelButton.hidden=true;scroll();}
+ }
+}
+async function submitAI(){
+ const q=input.value.trim().slice(0,500);if(!q||activeRequest)return;
+ cancelAI();const token=operation;
+ if(sensitive(q)){input.value='';block(ui.redacted,true);block(ui.safety);return;}
+ if(!await ready()||token!==operation||!dialog.open)return;
+ if(consent){void askAI(q);return;}
+ const panel=block();consentPanel=panel;
+ const heading=el('h3',ui.aiConsentTitle);heading.tabIndex=-1;
+ panel.append(heading,el('p',ui.aiConsent),el('p',q,'gh-consent-query'));
+ const privacy=el('a',ui.aiPrivacy);privacy.href=opener.dataset.gpmPrivacy;privacy.target='_blank';privacy.rel='noopener noreferrer';panel.append(privacy);
+ const actions=el('div',null,'gh-stepnav');
+ action(actions,ui.aiAccept,()=>{if(consentPanel!==panel)return;consent=true;void askAI(q);});
+ action(actions,ui.aiCancel,()=>{cancelAI();input.focus();});panel.append(actions);
+ log.scrollTop+=panel.getBoundingClientRect().top-log.getBoundingClientRect().top;
+ heading.focus({preventScroll:true});
+}
+if(aiButton&&cancelButton&&host.GpmAI){
+ aiButton.hidden=false;aiButton.addEventListener('click',submitAI);
+ cancelButton.addEventListener('click',()=>{cancelAI();block(ui.aiCancelled);input.focus();});
+}
 opener.hidden=false;
 opener.addEventListener('click',async()=>{
  dialog.showModal();opener.setAttribute('aria-expanded','true');document.body.classList.add('gpm-dialog-open');
  if(!log.childElementCount){welcome();send.disabled=true;if(await ready())welcome();}
  input.focus();
 });
-dialog.addEventListener('close',()=>{document.body.classList.remove('gpm-dialog-open');opener.setAttribute('aria-expanded','false');opener.focus({preventScroll:true});});
+dialog.addEventListener('close',()=>{cancelAI();consent=false;history=[];document.body.classList.remove('gpm-dialog-open');opener.setAttribute('aria-expanded','false');opener.focus({preventScroll:true});});
 dialog.querySelector('[data-gpm-close]').addEventListener('click',()=>dialog.close());
 dialog.querySelector('[data-gpm-reset]').addEventListener('click',welcome);
 send.addEventListener('click',submit);
 input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.isComposing){e.preventDefault();submit();}});
 dialog.querySelectorAll('[data-gpm-topic]').forEach(button=>button.addEventListener('click',async()=>{
+ cancelAI();
  if(!await ready())return;const id=button.dataset.gpmTopic;
  if(id==='faq')choices(data.records.filter(x=>x.id.startsWith('faq-')&&x.kind==='gpm'),ui.faq);
  else if(id==='projects')choices(data.records.filter(x=>x.kind==='parish_support'),ui.projects);

@@ -1,0 +1,18 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "bukiskis-ai-router",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-10-05",
+  "workers_dev": true,
+  "vars": {
+    "ALLOWED_ORIGINS": "https://maksimas-win.github.io",
+    "OPENAI_MODEL": "gpt-4.1-mini"
+  },
+  "ratelimits": [
+    {
+      "name": "CHAT_RATE_LIMITER",
+      "namespace_id": "2026100501",
+      "simple": { "limit": 10, "period": 60 }
+    }
+  ]
+}

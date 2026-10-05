@@ -55,8 +55,10 @@ test('Campaign boundaries never promise current submission after the deadline',(
  const c=data().calendar;assert.equal(core.campaignStatus(c,'2026-10-03'),'before');
  assert.equal(core.campaignStatus(c,'2027-01-01'),'open');assert.equal(core.campaignStatus(c,'2027-05-03'),'open');assert.equal(core.campaignStatus(c,'2027-05-04'),'after');
 });
-test('Runtime has no model calls, persistence, HTML evaluation or calculator reads',()=>{
+test('Local helper keeps secrets, storage, calculator values and HTML evaluation out of the AI flow',()=>{
  const js=read('src/assets/gpm-helper.js');assert.doesNotMatch(js,/\bfetch\(|XMLHttpRequest|sendBeacon|localStorage|sessionStorage|innerHTML|eval\(|OPENAI_API_KEY|single-result/);
  assert.match(js,/textContent/);assert.match(js,/showModal/);assert.match(js,/Europe\/Vilnius/);
- const html=read('docs/index.html');assert.match(html,/connect-src &#39;none&#39;/);assert.doesNotMatch(html,/data-gpm-endpoint/);
+ const ai=read('src/assets/gpm-ai.js');assert.doesNotMatch(ai,/localStorage|sessionStorage|innerHTML|eval\(|OPENAI_API_KEY|GEMINI_API_KEY|single-result|gpm-amount/);
+ const html=read('docs/index.html');assert.match(html,/connect-src https:\/\/bukiskis-ai-router\.maksimas1982\.workers\.dev;/);
+ assert.match(html,/data-gpm-ai/);assert.doesNotMatch(html,/unsafe-inline|api\.openai\.com|generativelanguage\.googleapis\.com/);
 });
