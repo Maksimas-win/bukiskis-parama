@@ -18,7 +18,7 @@ function noNetwork(t) {
 test('health does not require or reveal configuration', async () => {
   const result = await worker.fetch(new Request('https://worker.example/health'), {});
   assert.equal(result.status, 200);
-  assert.deepEqual(await result.json(), {ok: true, service: 'bukiskis-ai-router', version: '1.1.0', provider: 'openai'});
+  assert.deepEqual(await result.json(), {ok: true, service: 'bukiskis-ai-router', version: '1.2.0', provider: 'openai'});
 });
 
 test('only the exact allowed origin gets CORS access', async t => {

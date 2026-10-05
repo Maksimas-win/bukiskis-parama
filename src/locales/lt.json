@@ -26,7 +26,7 @@
   "secondary": "Žiūrėti vaizdo įrašą",
   "heroPhotoNote": "Iliustracija · patalpų priežiūra",
   "prelaunch": "2027 metų kampanija: prašymai teikiami nuo 2027 m. sausio 1 d. iki gegužės 3 d. Dabar galite susipažinti su instrukcija.",
-  "unverified": "Prieš pateikdami prašymą EDS patikrinkite gavėją pagal kodą 301004570. Parapijos pasirengimas gauti GPM dalį 2027 m. dar tikslinamas.",
+  "unverified": "Religinių bendruomenių teisė gauti šią paramą atkuriama nuo 2027 m. Ši svetainė nepatvirtina, kad parapija, kurios kodas 301004570, prieinama EDS ir jos GPM sąskaita įregistruota Mano VMI. Prieš teikdami prašymą patikrinkite gavėją EDS; sąskaitos duomenis turi patikrinti pati parapija.",
   "openStatus": "2027 metų kampanija: prašymas už 2026 metų pajamas teikiamas iki 2027 m. gegužės 3 d. imtinai.",
   "closedStatus": "Pirminio prašymo už 2026 metus pateikimo terminas baigėsi. Dėl tikslinimo ir naujų terminų kreipkitės į VMI.",
   "facts": [
@@ -55,13 +55,13 @@
   ],
   "calcKicker": "PAŽVELKIME Į PAVYZDĮ",
   "calcTitle": "Kokią sumą sudaro 1,2 %?",
-  "calcBody": "Įrašykite metinę GPM sumą, nuo kurios skiriama parama, o ne atlyginimą. Tai pavyzdys, ne VMI mokesčio apskaičiavimas.",
+  "calcBody": "Įrašykite metinę GPM sumą, nuo kurios skiriama parama: ne atlyginimą, ne deklaracijoje nurodytą primokėti ar grąžinti skirtumą. Apie skaičiavimo pagrindą skaitykite atsakymuose žemiau. Skaičiuoklė pateikia tik pavyzdį.",
   "calcTax": "Metinė GPM suma, €",
   "calcPeople": "Dalyvių skaičius pavyzdyje",
   "calcResult": "1,2 % nuo įrašytos GPM sumos",
   "calcTogether": "Bendra suma šiame pavyzdyje",
   "calcFormula": "Metinis GPM × 0,012",
-  "calcNote": "Skaičiuojama tik jūsų naršyklėje. Įvestos reikšmės niekur nesiunčiamos. Galutinę pervedamą sumą nustato VMI.",
+  "calcNote": "Skaičiavimas lieka naršyklėje. Galutinę sumą nustato VMI. Mažesnė kaip 3 € suma vienam gavėjui už mokestinius metus nepervedama; skaičiuoklė šios ribos netaiko.",
   "calcInvalid": "Įrašykite sumą nuo 0 iki 100 000 000, ne daugiau kaip du skaitmenis po kablelio.",
   "peopleUnit": "asm.",
   "guideKicker": "INTERAKTYVI INSTRUKCIJA",
@@ -76,7 +76,7 @@
     ],
     [
       "Raskite formą FR0512",
-      "EDS pasirinkite Deklaravimas → Pildyti formą → Prašymas skirti paramą. Prašymas pildomas elektroniniu vedliu.",
+      "EDS pasirinkite Deklaravimas → Pildyti formą → Dažniausiai pildomos formos → Prašymas skirti paramą. Prašymas pildomas elektroniniu vedliu.",
       "Prašymo forma",
       "FR0512"
     ],
@@ -140,7 +140,7 @@
       "Peržiūrėti projektą"
     ]
   ],
-  "projectNote": "Surinktų lėšų skaitiklio čia nėra: sumos bus paskelbtos jas suderinus. Dėl projektų būklės ir biudžeto teiraukitės parapijoje.",
+  "projectNote": "Patvirtintos surinktų lėšų sumos ir biudžetai čia nepaskelbti. Dabartinę projektų būklę ir pagalbos būdus pasitikslinkite parapijoje.",
   "projectImageLabel": "Atverti vaizdą su paaiškinimu",
   "conceptLabel": "Koncepcija, ne atlikti darbai",
   "currentLabel": "Projekto medžiaga",
@@ -184,27 +184,47 @@
     ],
     [
       "Kas gali skirti GPM dalį?",
-      "Šis mechanizmas susijęs su gyventojų pajamų mokesčiu Lietuvoje ir VMI nustatytomis sąlygomis. Vien svetainės kalba, pilietybė ar gyvenimas užsienyje teisės skirti GPM nenulemia. Savo mokestinę situaciją pasitikrinkite VMI."
+      "GPM dalį gali skirti nuolatiniai Lietuvos gyventojai mokesčių prasme, atitinkamais metais gavę GPM apmokestinamų pajamų. 2027 m. kampanija skirta 2026 m. pajamoms. Vien pilietybė šios teisės nesuteikia ir neatima. Mokestinis rezidavimas nustatomas pagal mokesčių taisykles, ne pagal svetainės kalbą; gyvenant užsienyje statusą reikėtų pasitikslinti VMI."
     ],
     [
       "Ar galima paremti kelis gavėjus?",
-      "Taip. Bendra šios kategorijos gavėjams skiriama dalis negali viršyti 1,2 %. Kaip ją padalyti, sprendžiate jūs."
+      "Taip: bendra šios kategorijos gavėjams skiriama dalis negali viršyti 1,2 %. Atskirai galima skirti iki 0,6 % politinėms organizacijoms ir iki 0,6 % profesinėms sąjungoms ar jų susivienijimams — šios ribos nemažina 1,2 %. Mažesnė kaip 3 € suma vienam gavėjui už mokestinius metus nepervedama."
     ],
     [
       "Anksčiau skyriau keleriems metams. Ar teikti iš naujo?",
-      "Patikrinkite galiojančius prašymus EDS. Ankstesnių prašymų vykdymas nuo 2027 metų atkūrus religinių bendruomenių teisę gauti šią paramą dar tikslinamas; automatinio atnaujinimo nežadame."
+      "Paprastai pakartotinai teikti nereikia, jei galiojantis prašymas apima reikiamus mokestinius metus, gavėjas turi teisę gauti paramą ir nieko nekeičiate. EDS patikrinkite laikotarpį, gavėją ir prašymo būseną. Nuo 2027 m. įstatymas leidžia paramą religinėms bendruomenėms, tačiau savaime nepatvirtina jūsų ankstesnio prašymo vykdymo."
     ],
     [
       "Ar reikia deklaracijos GPM311?",
-      "Jei privalote deklaruoti pajamas, deklaraciją būtina pateikti VMI nustatytu laiku. FR0512 jos nepakeičia. Deklaravimo reikalavimų nesilaikymas gali sutrukdyti pervesti paramą."
+      "FR0512 nepakeičia GPM311. Jei privalote pateikti metinę pajamų deklaraciją, pateikite ją nustatytu laiku: jos nepateikus ar pavėlavus, parama nepervedama. Jei tokios prievolės nėra, vien dėl FR0512 teikti GPM311 nereikia. Taikomus terminus ir savo prievolę pasitikrinkite VMI."
     ],
     [
       "Ar per šią svetainę parapija gaus mano mokesčių duomenis?",
-      "Ne. Svetainėje nėra mokestinių duomenų pateikimo formos. Prašymas teikiamas tik EDS. Skaičiuoklės duomenys lieka naršyklėje."
+      "FR0512 ir pajamų deklaracija teikiamos EDS, ne šioje svetainėje. VMI gavėjams pateikia bendras sumas, o ne kiekvieno juos parėmusio gyventojo duomenis. Skaičiuoklės reikšmės lieka naršyklėje. Gavus atskirą sutikimą, mygtuku „Klausti DI“ klausimas siunčiamas per Cloudflare į OpenAI; neįrašykite asmeninių mokesčių duomenų."
     ],
     [
       "Kaip prisidėti neskiriant GPM?",
       "Galite savanoriškai pervesti lėšų pagal paramos parapijai skyriuje nurodytus rekvizitus. Dėl pagalbos medžiagomis ar darbais susisiekite su parapija."
+    ],
+    [
+      "Ar nuo 2027 m. galima skirti 1,2 % religinei bendruomenei?",
+      "Taip. 2027 m. sausio 1 d. įsigaliojantis įstatymo pakeitimas į gavėjų sąrašą įtraukia religines bendruomenes, bendrijas ir religinius centrus. Taip pat įtraukiamos valstybinės ir savivaldybių mokyklos, pastatų savininkų ir sodininkų bendrijos. Konkretaus gavėjo duomenis tikrinkite VMI/EDS; šios parapijos duomenys 2027 m. kampanijai čia nepatvirtinti."
+    ],
+    [
+      "Ar galima pakeisti arba atšaukti prašymą?",
+      "Pirminį prašymą už 2026 m. pateikite iki 2027 m. gegužės 3 d. Pagal galiojančias taisykles jau pateiktą prašymą dėl šių metų pajamų mokesčio dalies galima patikslinti EDS iki 2027 m. birželio 30 d.: pakeisti gavėją, dalį ar laikotarpį. Norint atsisakyti paramos visiems gavėjams teikiamas patikslintas prašymas be gavėjų. Birželio 30 d. yra tikslinimo, ne pirminio pateikimo termino pratęsimas."
+    ],
+    [
+      "Kada parama pervedama ir kur patikrinti rezultatą?",
+      "Pagal bendrąją tvarką VMI apskaičiuoja ir perveda paramą nuo kitų metų liepos 1 d. iki lapkričio 15 d.: nuo 2026 m. pajamų — 2027 m. Tai nėra konkrečios mokėjimo datos garantija. Rezultatą tikrinkite EDS skiltyje Pranešimai arba Mano VMI; FR0512 priėmimas dar nereiškia, kad lėšos pervestos."
+    ],
+    [
+      "Nuo kokios sumos skaičiuojami 1,2 %?",
+      "Nuo metinio GPM pagal deklaraciją, ne nuo atlyginimo ar deklaracijoje nurodyto primokėti arba grąžinti skirtumo. VMI taip pat prideda fiksuotą GPM už verslo liudijimą ir atima užsienyje sumokėtą pajamų mokestį. Kai deklaracija nepateikta ir jos teikti neprivaloma, skaičiuojama nuo mokestį išskaičiuojančio asmens išskaičiuoto GPM. Tikslią sumą nustato VMI; skaičiuoklė tik daugina įrašytą sumą iš 0,012."
+    ],
+    [
+      "Ar pensininkas arba nedirbantis žmogus gali skirti GPM dalį?",
+      "Vien pensininko statusas ar darbo neturėjimas neužkerta kelio. Svarbus mokestinis rezidavimas ir pajamos, nuo kurių atitinkamais metais apskaičiuotas ar išskaičiuotas GPM. Jei gaunamos tik neapmokestinamos pajamos ir GPM lygus nuliui, nėra ką paskirstyti. Turint kitų apmokestinamų pajamų, dalyvauti galima laikantis VMI sąlygų."
     ]
   ],
   "sourcesTitle": "Oficialūs šaltiniai",
@@ -214,7 +234,10 @@
     "Pakeitimai religinėms bendruomenėms",
     "FR0512 pateikimas ir vaizdo įrašas",
     "Deklaracija GPM311",
-    "1,2 % paskirstymas keliems gavėjams"
+    "1,2 % paskirstymas keliems gavėjams",
+    "Bendrosios taisyklės ir VMI leidinys (atsižvelkite į 2027 m. pakeitimus)",
+    "FR0512 pateikimas ir tikslinimas: VMI 2026 m. paaiškinimas",
+    "Paramos gavėjų paieška VMI"
   ],
   "reviewed": "Patikrinta",
   "contactTitle": "Reikia paaiškinimo?",

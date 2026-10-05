@@ -26,7 +26,7 @@
   "secondary": "Obejrzyj film",
   "heroPhotoNote": "Ilustracja · utrzymanie pomieszczeń",
   "prelaunch": "Kampania 2027: wnioski można składać od 1 stycznia do 3 maja 2027 roku. Już teraz możesz zapoznać się z instrukcją.",
-  "unverified": "Przed wysłaniem wniosku sprawdź w EDS odbiorcę o kodzie 301004570. Gotowość parafii do otrzymania wsparcia z GPM w kampanii 2027 jest jeszcze potwierdzana.",
+  "unverified": "Od 2027 r. wspólnoty religijne odzyskują prawo do tego wsparcia. Strona nie potwierdza dostępności parafii o kodzie 301004570 w EDS ani zarejestrowania jej rachunku GPM w Mano VMI. Przed złożeniem wniosku sprawdź odbiorcę w EDS; dane rachunku powinna sprawdzić sama parafia.",
   "openStatus": "Kampania 2027: wniosek dotyczący dochodów za 2026 rok należy złożyć do 3 maja 2027 roku włącznie.",
   "closedStatus": "Termin złożenia pierwszego wniosku za 2026 rok minął. Zasady korekty i kolejne terminy sprawdź w VMI.",
   "facts": [
@@ -55,13 +55,13 @@
   ],
   "calcKicker": "ZOBACZMY NA PRZYKŁADZIE",
   "calcTitle": "Ile wynosi 1,2%?",
-  "calcBody": "Wpisz roczną kwotę GPM, od której przekazywane jest wsparcie, a nie wynagrodzenie. To przykład, nie wyliczenie podatku przez VMI.",
+  "calcBody": "Wpisz roczną kwotę GPM stanowiącą podstawę wsparcia: nie wynagrodzenie, pozostałą dopłatę ani zwrot z deklaracji. Podstawę obliczenia opisano w odpowiedziach poniżej. Kalkulator podaje jedynie przykład.",
   "calcTax": "Roczna kwota litewskiego GPM, €",
   "calcPeople": "Liczba osób w przykładzie",
   "calcResult": "1,2% podanej kwoty GPM",
   "calcTogether": "Razem w tym przykładzie",
   "calcFormula": "Roczny GPM × 0,012",
-  "calcNote": "Obliczenia odbywają się wyłącznie w przeglądarce. Wpisane wartości nie są wysyłane. Ostateczną kwotę przelewu ustala VMI.",
+  "calcNote": "Obliczenie pozostaje w przeglądarce. Ostateczną kwotę ustala VMI. Kwota poniżej 3 € dla jednego odbiorcy za rok podatkowy nie jest przekazywana; kalkulator nie uwzględnia tego progu.",
   "calcInvalid": "Wpisz kwotę od 0 do 100 000 000, z maksymalnie dwiema cyframi po przecinku.",
   "peopleUnit": "osób",
   "guideKicker": "INTERAKTYWNA INSTRUKCJA",
@@ -76,7 +76,7 @@
     ],
     [
       "Znajdź formularz FR0512",
-      "W EDS wybierz Deklaravimas → Pildyti formą → Prašymas skirti paramą. Wniosek wypełnia się przy użyciu elektronicznego kreatora.",
+      "W EDS wybierz Deklaravimas → Pildyti formą → Dažniausiai pildomos formos → Prašymas skirti paramą. Wniosek wypełnia się przy użyciu elektronicznego kreatora.",
       "Formularz wniosku",
       "FR0512"
     ],
@@ -140,7 +140,7 @@
       "Zobacz projekt"
     ]
   ],
-  "projectNote": "Nie pokazujemy tutaj licznika zbiórki: kwoty zostaną opublikowane po ich uzgodnieniu. O aktualny stan i budżet projektów pytaj w parafii.",
+  "projectNote": "Nie opublikowano tu potwierdzonych kwot zbiórki ani budżetów. Aktualny stan projektów i sposoby pomocy sprawdź w parafii.",
   "projectImageLabel": "Otwórz obraz z objaśnieniem",
   "conceptLabel": "Koncepcja, nie wykonane prace",
   "currentLabel": "Materiały projektu",
@@ -184,27 +184,47 @@
     ],
     [
       "Kto może skorzystać z GPM?",
-      "Mechanizm dotyczy podatku dochodowego na Litwie i warunków VMI. Sam język strony, obywatelstwo lub zamieszkanie za granicą nie przesądza o uprawnieniu. Swoją sytuację podatkową sprawdź w VMI."
+      "Uczestniczyć mogą rezydenci podatkowi Litwy (nuolatiniai Lietuvos gyventojai), którzy w danym roku uzyskali dochody opodatkowane GPM. Kampania 2027 dotyczy dochodów z 2026 r. Samo obywatelstwo nie daje ani nie wyklucza tego prawa. Rezydencję określają przepisy podatkowe, a nie język strony; mieszkając za granicą, sprawdź swój status w VMI."
     ],
     [
       "Czy można wesprzeć kilku odbiorców?",
-      "Tak. Łączna część podatku dla odbiorców w tej kategorii nie może przekroczyć 1,2%. Sposób jej podziału zależy od ciebie."
+      "Tak: suma udziałów w tej kategorii nie może przekroczyć 1,2%. Osobno można przekazać do 0,6% organizacjom politycznym oraz do 0,6% związkom zawodowym lub ich zrzeszeniom — te limity nie zmniejszają 1,2%. Kwota poniżej 3 € dla jednego odbiorcy za rok podatkowy nie jest przekazywana."
     ],
     [
       "Wcześniej wskazałem kilka lat. Czy składać nowy wniosek?",
-      "Sprawdź obowiązujące wskazania w EDS. Realizacja dawnych wniosków po przywróceniu uprawnień wspólnotom religijnym od 2027 roku jest jeszcze wyjaśniana; nie obiecujemy automatycznego wznowienia."
+      "Zwykle nie trzeba składać ponownie, jeśli ważny wniosek obejmuje dany rok podatkowy, odbiorca nadal jest uprawniony i nie zmieniasz wskazania. Sprawdź okres, odbiorcę i status wniosku w EDS. Ustawa dopuszcza wspólnoty religijne od 2027 r., ale sama nie potwierdza realizacji wcześniejszego wniosku."
     ],
     [
       "Czy potrzebna jest deklaracja GPM311?",
-      "Jeżeli masz obowiązek deklarowania dochodów, złóż deklarację w terminie VMI. FR0512 jej nie zastępuje. Niedopełnienie obowiązku może uniemożliwić przekazanie wsparcia."
+      "FR0512 nie zastępuje GPM311. Jeżeli musisz złożyć roczną deklarację dochodów, złóż ją w terminie: brak wymaganej deklaracji lub opóźnienie oznacza, że wsparcie nie zostanie przekazane. Bez takiego obowiązku samo FR0512 nie wymaga złożenia GPM311. Obowiązek i właściwe terminy sprawdź w VMI."
     ],
     [
       "Czy strona przekaże parafii moje dane podatkowe?",
-      "Nie. Nie ma tu formularza wysyłania danych podatkowych. Wniosek składa się tylko w EDS. Dane kalkulatora pozostają w przeglądarce."
+      "FR0512 i deklarację dochodów składa się w EDS, nie na tej stronie. VMI podaje odbiorcom sumy zbiorcze, a nie dane każdej wspierającej osoby. Dane kalkulatora pozostają w przeglądarce. Po osobnej zgodzie „Zapytaj AI” przesyła pytanie przez Cloudflare do OpenAI; nie wpisuj osobistych danych podatkowych."
     ],
     [
       "Jak pomóc bez GPM?",
       "Możesz wykonać dobrowolny przelew, korzystając z danych w dziale pomocy parafii. W sprawie pomocy materiałami lub pracą skontaktuj się z parafią."
+    ],
+    [
+      "Czy od 2027 r. można przekazać 1,2% wspólnocie religijnej?",
+      "Tak. Zmiana ustawy obowiązująca od 1 stycznia 2027 r. obejmuje wspólnoty, związki i ośrodki religijne. Dodaje także szkoły państwowe i samorządowe, wspólnoty właścicieli budynków oraz stowarzyszenia ogrodnicze. Konkretnego odbiorcę sprawdź w VMI/EDS; dane tej parafii na kampanię 2027 nie są tutaj potwierdzone."
+    ],
+    [
+      "Czy można zmienić lub wycofać wniosek?",
+      "Pierwszy wniosek za 2026 r. złóż do 3 maja 2027 r. Zgodnie z obecnymi zasadami złożony wniosek dotyczący tego roku można poprawić w EDS do 30 czerwca 2027 r.: zmienić odbiorcę, udział lub okres. Aby zrezygnować ze wsparcia wszystkich odbiorców, złóż korektę bez odbiorców. 30 czerwca to termin korekty, nie przedłużenie pierwszego składania."
+    ],
+    [
+      "Kiedy środki są przekazywane i gdzie sprawdzić wynik?",
+      "Według ogólnych zasad VMI oblicza i przekazuje wsparcie od 1 lipca do 15 listopada następnego roku: za dochody z 2026 r. — w 2027 r. Nie gwarantuje to konkretnej daty przelewu. Wynik sprawdź w powiadomieniach EDS (Pranešimai) lub Mano VMI; przyjęcie FR0512 nie oznacza jeszcze przekazania pieniędzy."
+    ],
+    [
+      "Od jakiej kwoty oblicza się 1,2%?",
+      "Od rocznego GPM obliczonego w deklaracji, nie od pensji, pozostałej dopłaty ani zwrotu. VMI uwzględnia też stały GPM za verslo liudijimas i odejmuje podatek dochodowy zapłacony za granicą. Gdy deklaracja nie została złożona i nie jest wymagana, podstawą jest GPM potrącony przez płatnika dochodu. Dokładną kwotę ustala VMI; kalkulator tylko mnoży podaną podstawę przez 0,012."
+    ],
+    [
+      "Czy emeryt lub osoba niepracująca może przekazać GPM?",
+      "Sam status emeryta lub brak pracy nie wyklucza udziału. Liczą się rezydencja podatkowa i dochody, od których za dany rok naliczono lub potrącono GPM. Jeśli wszystkie dochody są nieopodatkowane, a GPM wynosi zero, nie ma podatku do podziału. Inne opodatkowane dochody mogą umożliwić udział na warunkach VMI."
     ]
   ],
   "sourcesTitle": "Oficjalne źródła",
@@ -214,7 +234,10 @@
     "Zmiany dla wspólnot religijnych",
     "Składanie FR0512 i film",
     "Deklaracja GPM311",
-    "Podział 1,2% między odbiorców"
+    "Podział 1,2% między odbiorców",
+    "Ogólne zasady i poradnik VMI (uwzględnij zmiany od 2027 r.)",
+    "Składanie i korekta FR0512: wyjaśnienie VMI z 2026 r.",
+    "Wyszukiwarka odbiorców wsparcia VMI"
   ],
   "reviewed": "Sprawdzono",
   "contactTitle": "Potrzebujesz wyjaśnienia?",

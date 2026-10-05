@@ -1,6 +1,8 @@
 # Public GPM assistant
 
-The 24-topic local guide remains available in all six languages. **Ask AI** sends a free-form question to the bukiskis-ai-router Cloudflare Worker only after the visitor accepts the in-dialog disclosure. Production provider: OpenAI, gpt-4.1-mini, Responses API. Gemini is not called or used as a fallback.
+The 29-topic local guide remains available in all six languages. **Ask AI** sends a free-form question to the bukiskis-ai-router Cloudflare Worker only after the visitor accepts the in-dialog disclosure. Production provider: OpenAI, gpt-4.1-mini, Responses API. Gemini is not called or used as a fallback.
+
+`npm run build` now derives both `workers/ai-router/knowledge.json` and the final `KNOWLEDGE` block in the standalone Worker from the public translations. Do not edit these generated snapshots independently. A content change also requires deploying the rebuilt Worker to `bukiskis-ai-router`; GitHub Pages deployment alone does not update Cloudflare. See `qa/CONTENT_AUDIT_2026-10-05.md` for sources and the remaining verification boundary.
 
 ## Data flow
 

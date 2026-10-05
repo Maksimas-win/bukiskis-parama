@@ -1,12 +1,19 @@
 {
   "name": "bukiskis-parama",
   "defaultLanguage": "ru",
-  "languages": ["ru", "lt", "en", "pl", "de", "uk"],
+  "languages": [
+    "ru",
+    "lt",
+    "en",
+    "pl",
+    "de",
+    "uk"
+  ],
   "publicBaseUrl": "https://maksimas-win.github.io/bukiskis-parama/",
   "indexingEnabled": true,
-  "contentUpdated": "2026-10-04",
+  "contentUpdated": "2026-10-05",
   "searchConsoleVerificationFile": "googled8db1e57cec5f564.html",
-  "reviewed": "2026-09-29",
+  "reviewed": "2026-10-05",
   "campaign": {
     "year": 2027,
     "taxYear": 2026,
@@ -43,6 +50,50 @@
     "https://www.vmi.lt/evmi/labdaros-ir-paramos-istatymo-pakeitimai-nuo-2027-m.",
     "https://www.vmi.lt/evmi/kaip-galiu-paskirti-pajamu-mokescio-dali-pasirinktam-paramos-gavejui-ir-/-ar-politinei-organizacijai",
     "https://www.vmi.lt/evmi/ar-kartu-su-prasymu-fr0512-privalau-pateikti-metine-pajam%C5%B3-mokescio-deklaracija-gpm311",
-    "https://www.vmi.lt/evmi/paramos-skyrimas-34-str.-1"
+    "https://www.vmi.lt/evmi/paramos-skyrimas-34-str.-1",
+    "https://www.vmi.lt/evmi/documents/20142/391092/KD-0001792%2BGyventojo%2Bpajam%C5%B3%2Bmokes%C4%8Dio%2Bdalis%2Bparamai.pdf/585f2f5f-0aef-3a9e-4edb-1d45b1872077?t=1645609469304",
+    "https://www.vmi.lt/evmi/documents/20142/737112/R-780.pdf",
+    "https://www.vmi.lt/evmi/web/guest/paramos-gaveju-ir-politiniu-organizaciju-duomenys"
+  ],
+  "faqSourceIndices": [
+    [
+      0
+    ],
+    [
+      6
+    ],
+    [
+      0,
+      5
+    ],
+    [
+      5,
+      1
+    ],
+    [
+      3,
+      6
+    ],
+    [
+      5
+    ],
+    [],
+    [
+      1
+    ],
+    [
+      6
+    ],
+    [
+      6,
+      0
+    ],
+    [
+      5,
+      6
+    ],
+    [
+      6
+    ]
   ]
 }

@@ -26,7 +26,7 @@
   "secondary": "Video ansehen",
   "heroPhotoNote": "Illustration · Pflege der Räumlichkeiten",
   "prelaunch": "Aktion 2027: Anträge können vom 1. Januar bis zum 3. Mai 2027 gestellt werden. Die Anleitung können Sie schon jetzt lesen.",
-  "unverified": "Prüfen Sie vor dem Absenden den Empfänger mit der Kennnummer 301004570 in EDS. Ob die Gemeinde für den Empfang der GPM-Zuwendungen 2027 bereit ist, wird noch abschließend geprüft.",
+  "unverified": "Religiöse Gemeinschaften sind ab 2027 wieder für diese Unterstützung berechtigt. Diese Website bestätigt weder die Verfügbarkeit der Gemeinde mit Kennnummer 301004570 in EDS noch die Registrierung ihres GPM-Kontos in Mano VMI. Prüfen Sie den Empfänger vor dem Antrag in EDS; ihre Kontodaten muss die Gemeinde selbst prüfen.",
   "openStatus": "Aktion 2027: Den Antrag für Einkünfte des Jahres 2026 können Sie bis einschließlich 3. Mai 2027 stellen.",
   "closedStatus": "Die Frist für den erstmaligen Antrag für 2026 ist abgelaufen. Regeln für Berichtigungen und neue Termine finden Sie bei VMI.",
   "facts": [
@@ -55,13 +55,13 @@
   ],
   "calcKicker": "EIN RECHENBEISPIEL",
   "calcTitle": "Wie viel sind 1,2 %?",
-  "calcBody": "Geben Sie den jährlichen GPM-Betrag ein, aus dem die Unterstützung zugewiesen wird, nicht Ihr Gehalt. Dies ist ein Beispiel, keine Steuerberechnung der VMI.",
+  "calcBody": "Geben Sie den jährlichen GPM-Betrag ein, der als Grundlage dient: nicht Ihr Gehalt, die verbleibende Nachzahlung oder Ihre Erstattung. Die FAQ unten erläutern die Berechnungsgrundlage. Der Rechner zeigt nur ein Beispiel.",
   "calcTax": "Jährliche litauische GPM, €",
   "calcPeople": "Personen in diesem Beispiel",
   "calcResult": "1,2 % des eingegebenen GPM-Betrags",
   "calcTogether": "Zusammen in diesem Beispiel",
   "calcFormula": "Jährliche GPM × 0,012",
-  "calcNote": "Die Berechnung erfolgt nur in Ihrem Browser. Es werden keine Werte übermittelt. Den tatsächlichen Überweisungsbetrag bestimmt VMI.",
+  "calcNote": "Die Berechnung bleibt im Browser. VMI bestimmt den endgültigen Betrag. Weniger als 3 € an einen Empfänger für ein Steuerjahr werden nicht überwiesen; der Rechner wendet diese Grenze nicht an.",
   "calcInvalid": "Geben Sie einen Betrag von 0 bis 100 000 000 mit höchstens zwei Nachkommastellen ein.",
   "peopleUnit": "Personen",
   "guideKicker": "INTERAKTIVE ANLEITUNG",
@@ -76,7 +76,7 @@
     ],
     [
       "Formular FR0512 finden",
-      "Wählen Sie in EDS Deklaravimas → Pildyti formą → Prašymas skirti paramą. Der elektronische Assistent führt durch den Antrag.",
+      "Wählen Sie in EDS Deklaravimas → Pildyti formą → Dažniausiai pildomos formos → Prašymas skirti paramą. Der elektronische Assistent führt durch den Antrag.",
       "Antragsformular",
       "FR0512"
     ],
@@ -140,7 +140,7 @@
       "Projekt ansehen"
     ]
   ],
-  "projectNote": "Hier wird kein Spendenstand angezeigt: Beträge werden nach Abgleich veröffentlicht. Den aktuellen Projektstand und das Budget erfahren Sie bei der Gemeinde.",
+  "projectNote": "Bestätigte Spendensummen und Budgets sind hier nicht veröffentlicht. Den aktuellen Projektstand und Möglichkeiten zur Hilfe erfahren Sie bei der Gemeinde.",
   "projectImageLabel": "Bild mit Erklärung öffnen",
   "conceptLabel": "Konzept, keine abgeschlossenen Arbeiten",
   "currentLabel": "Projektunterlagen",
@@ -184,27 +184,47 @@
     ],
     [
       "Wer kann das GPM-Verfahren nutzen?",
-      "Das Verfahren betrifft die litauische Einkommensteuer und die VMI-Voraussetzungen. Sprache der Website, Staatsangehörigkeit oder Wohnsitz im Ausland allein bestimmen die Berechtigung nicht. Klären Sie Ihre Steuersituation mit VMI."
+      "Teilnehmen können in Litauen steuerlich ansässige Personen (nuolatiniai Lietuvos gyventojai) mit GPM-pflichtigen Einkünften im betreffenden Jahr. Die Kampagne 2027 betrifft Einkünfte aus 2026. Die Staatsangehörigkeit allein begründet oder verhindert die Berechtigung nicht. Maßgeblich sind die Regeln zur steuerlichen Ansässigkeit, nicht die Sprache der Website; bei Wohnsitz im Ausland klären Sie Ihren Status mit VMI."
     ],
     [
       "Kann ich mehrere Empfänger unterstützen?",
-      "Ja. Der Gesamtanteil für Empfänger dieser Kategorie darf 1,2 % nicht überschreiten. Wie Sie diesen Anteil verteilen, entscheiden Sie selbst."
+      "Ja: Die Anteile dieser Empfängerkategorie dürfen zusammen höchstens 1,2 % betragen. Separat sind bis zu 0,6 % für politische Organisationen und bis zu 0,6 % für Gewerkschaften oder deren Zusammenschlüsse möglich; diese Grenzen verringern die 1,2 % nicht. Weniger als 3 € an einen Empfänger für ein Steuerjahr werden nicht überwiesen."
     ],
     [
       "Ich habe früher mehrere Jahre gewählt. Muss ich neu beantragen?",
-      "Prüfen Sie bestehende Zuweisungen in EDS. Die Ausführung älterer Anträge nach Wiederherstellung der Berechtigung religiöser Gemeinschaften ab 2027 wird noch geklärt. Eine automatische Wiederaufnahme versprechen wir nicht."
+      "In der Regel ist kein neuer Antrag nötig, wenn der gültige Antrag das betreffende Steuerjahr umfasst, der Empfänger berechtigt bleibt und Sie nichts ändern möchten. Prüfen Sie Zeitraum, Empfänger und Antragsstatus in EDS. Das Gesetz lässt religiöse Gemeinschaften ab 2027 zu, bestätigt aber allein noch nicht die Ausführung Ihres früheren Antrags."
     ],
     [
       "Muss ich GPM311 abgeben?",
-      "Wenn Sie zur Einkommenserklärung verpflichtet sind, geben Sie diese innerhalb der VMI-Frist ab. FR0512 ersetzt sie nicht. Werden Erklärungspflichten nicht erfüllt, kann dies die Überweisung der Unterstützung verhindern."
+      "FR0512 ersetzt GPM311 nicht. Wenn Sie eine jährliche Einkommensteuererklärung abgeben müssen, tun Sie dies fristgerecht: Fehlt die erforderliche Erklärung oder geht sie verspätet ein, wird die Unterstützung nicht überwiesen. Ohne Erklärungspflicht müssen Sie GPM311 nicht allein wegen FR0512 abgeben. Klären Sie Ihre Pflicht und die geltenden Fristen mit VMI."
     ],
     [
       "Erhält die Gemeinde über diese Website meine Steuerdaten?",
-      "Nein. Hier gibt es kein Formular zur Übermittlung von Steuerdaten. Anträge werden nur in EDS gestellt. Rechnerwerte bleiben in Ihrem Browser."
+      "FR0512 und Steuererklärungen werden in EDS eingereicht, nicht auf dieser Website. VMI nennt den Empfängern Gesamtbeträge, keine Angaben zu einzelnen Unterstützern. Rechnerwerte bleiben im Browser. Nach gesonderter Zustimmung sendet „KI fragen“ Ihre Frage über Cloudflare an OpenAI; geben Sie keine persönlichen Steuerdaten ein."
     ],
     [
       "Wie kann ich ohne GPM helfen?",
       "Sie können freiwillig auf das im Abschnitt zur Gemeindeunterstützung genannte Konto überweisen. Für Sachspenden oder praktische Hilfe wenden Sie sich an die Gemeinde."
+    ],
+    [
+      "Können religiöse Gemeinschaften ab 2027 die 1,2 % erhalten?",
+      "Ja. Eine Gesetzesänderung zum 1. Januar 2027 nimmt religiöse Gemeinschaften, Vereinigungen und Zentren in den Empfängerkreis auf. Hinzu kommen staatliche und kommunale Schulen, Gebäudeeigentümergemeinschaften und Gartenvereinigungen. Prüfen Sie konkrete Empfänger in VMI/EDS; die Angaben dieser Gemeinde für die Kampagne 2027 sind hier nicht bestätigt."
+    ],
+    [
+      "Kann ich einen Antrag ändern oder zurücknehmen?",
+      "Reichen Sie den Erstantrag für 2026 bis zum 3. Mai 2027 ein. Nach den geltenden Regeln lässt sich ein bereits gestellter Antrag für diese Jahreszuweisung bis zum 30. Juni 2027 in EDS berichtigen: Empfänger, Anteil oder Zeitraum ändern. Um alle Zuweisungen zu widerrufen, reichen Sie eine Berichtigung ohne Empfänger ein. Der 30. Juni ist eine Berichtigungsfrist, keine Verlängerung für Erstanträge."
+    ],
+    [
+      "Wann wird die Unterstützung überwiesen und wo sehe ich das Ergebnis?",
+      "Nach dem allgemeinen Verfahren berechnet und überweist VMI die Unterstützung vom 1. Juli bis 15. November des Folgejahres: für Einkünfte aus 2026 also im Jahr 2027. Ein bestimmter Zahlungstag ist damit nicht garantiert. Prüfen Sie EDS-Mitteilungen (Pranešimai) oder Mano VMI; die Annahme von FR0512 bedeutet noch keine erfolgte Überweisung."
+    ],
+    [
+      "Aus welchem Betrag werden die 1,2 % berechnet?",
+      "Aus dem jährlichen GPM laut Steuererklärung, nicht aus Gehalt, verbleibender Nachzahlung oder Erstattung. VMI berücksichtigt auch den festen GPM für ein verslo liudijimas und zieht im Ausland gezahlte Einkommensteuer ab. Wird keine Erklärung abgegeben und ist sie nicht vorgeschrieben, dient der vom Einkommenszahler einbehaltene GPM als Grundlage. VMI bestimmt den genauen Betrag; der Rechner multipliziert die Eingabe lediglich mit 0,012."
+    ],
+    [
+      "Können Rentner oder Menschen ohne Arbeit GPM zuweisen?",
+      "Rentenbezug oder Arbeitslosigkeit allein schließen die Teilnahme nicht aus. Entscheidend sind die steuerliche Ansässigkeit und Einkünfte, für die im betreffenden Jahr GPM berechnet oder einbehalten wurde. Bei ausschließlich steuerfreien Einkünften und GPM von null gibt es nichts zuzuweisen. Andere steuerpflichtige Einkünfte können eine Teilnahme unter den VMI-Bedingungen ermöglichen."
     ]
   ],
   "sourcesTitle": "Offizielle Quellen",
@@ -214,7 +234,10 @@
     "Änderungen für religiöse Gemeinschaften",
     "FR0512-Antrag und Video",
     "Einkommenserklärung GPM311",
-    "1,2 % auf mehrere Empfänger verteilen"
+    "1,2 % auf mehrere Empfänger verteilen",
+    "Allgemeine Regeln und VMI-Leitfaden (Änderungen ab 2027 beachten)",
+    "FR0512 einreichen und berichtigen: VMI-Erläuterung von 2026",
+    "VMI-Empfängersuche"
   ],
   "reviewed": "Geprüft",
   "contactTitle": "Brauchen Sie eine Erklärung?",

@@ -18,6 +18,11 @@ function sensitive(s){
  return /AQ\.[\w-]{15,}|AIza[\w-]{15,}|sk-[\w-]{12,}|[\w.+-]+@[\w.-]+\.[a-z]{2,}|\b[A-Z]{2}\s?\d{2}(?:\s?[A-Z0-9]){12,30}\b|(?:\d[ -]?){9,}|(?:password|пароль|slaptazodis|haslo|passwort|api[_ -]?key)\s*[:=]\s*\S+/i.test(norm(clean));
 }
 const routes=[
+ ['faq-8',/исправ|измен.*заяв|отмен.*заяв|уточн.*заяв|correct.*appl|amend|cancel.*appl|pakeisti.*prasym|atsaukti|tikslin|zmien.*wnios|wycof|korekt|antrag.*andern|bericht|zurucknehm|виправ|змін.*заяв|скасув/],
+ ['faq-9',/когда.*(?:перечис|перевед|получ.*деньг)|результат.*(?:заяв|поддерж)|when.*(?:transfer|paid|pay)|kada.*(?:perved|gaus)|kiedy.*(?:przekaz|przelew)|wann.*(?:uberwies|ausgezahlt)|коли.*(?:перекаж|переказ|отрима.*грош)/],
+ ['faq-10',/от какои сумм|доплат|возврат.*(?:налог|gpm)|расчет.*баз|calculation base|refund|outstanding|nuo kokios sum|primok|grazint|od jakiej kwot|doplat|zwrot|berechnungsgrund|nachzahl|erstattung|від якоі сум|повернен.*(?:подат|gpm)/],
+ ['faq-11',/пенсион|не работ|нет.*(?:доход|gpm)|retir|pension|unemploy|no.*taxable income|pensin|nedirb|emeryt|nieprac|rentner|arbeitslos|пенсіон|непрац/],
+ ['faq-7',/религиозн|religious|religin|religijn|religios|релігі/],
  ['faq-4',/gpm\s?311|декларац.*доход|income.*declar|pajamu.*deklar|deklarac.*dochod|einkommensteuererklar|декларац.*дохід/],
  ['faq-3',/уже.*подав|раньше.*подав|заново|повторн|ранее|already|previous|renew|anks[cč]iau|jau.*teik|ponownie|wczesniej|bereits|erneut|вже.*подав|повторно/],
  ['step-3',multiYearQuestion],
