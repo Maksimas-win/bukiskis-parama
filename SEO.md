@@ -6,7 +6,7 @@
 
 - Шесть доступных без JavaScript информационных страниц с `index,follow,max-image-preview:large`.
 - Локализованные title, description, OpenGraph и Twitter summary.
-- Canonical на `/ru/index.html`, `/lt/index.html`, `/en/index.html`, `/pl/index.html`, `/de/index.html`, `/uk/index.html`. Корневая страница — копия русской с тем же canonical, поэтому повторно в sitemap не включается.
+- Чистые адреса и canonical: `/ru/`, `/lt/`, `/en/`, `/pl/`, `/de/`, `/uk/` (страницы конфиденциальности — `/ru/privacy.html` и т. д.). На hram.lt старые адреса вида `/ru/index.html` и `/index.html` переадресуются на чистые с кодом 301. Корневая страница — копия русской с тем же canonical, поэтому повторно в sitemap не включается.
 - Взаимные hreflang для шести языков и x-default. Для страниц конфиденциальности ссылки указывают на их переводы.
 - Microdata schema.org на существующем HTML без inline-скриптов и ослабления CSP:
   - `WebPage` с `name`, `description`, `inLanguage`, `url`, `dateModified` (из `contentUpdated`) и `isPartOf` → `WebSite`;

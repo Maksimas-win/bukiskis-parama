@@ -22,7 +22,10 @@ Only static docs/ files reach public_html. Source, tests, credentials and the
 Worker never go into the web root. hosting/.htaccess is included by the build;
 it serves the custom 404, redirects HTTP/www to https://hram.lt, disables
 directory listings, blocks dotfiles and revalidates stable asset filenames.
-It also sends HSTS for one year without includeSubDomains or preload. The
+Old /index.html and /<lang>/index.html addresses redirect (301) to the clean
+/ and /<lang>/ form in one hop; only the visitor request is matched, so the
+internal DirectoryIndex lookup cannot loop. It also sends HSTS for one year
+without includeSubDomains or preload. The
 Hostinger CDN upgrades http://www.hram.lt to https://www.hram.lt before the
 request reaches .htaccess, so that first-visit hop is a panel setting; HSTS
 lets returning browsers skip it.

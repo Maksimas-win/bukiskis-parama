@@ -7,6 +7,10 @@ ErrorDocument 404 /404.html
   RewriteEngine On
   # Do not serve repository metadata; allow standard ACME validation.
   RewriteRule (^|/)\.(?!well-known(?:/|$)) - [F,L]
+  # Clean addresses: /ru/index.html -> /ru/. Only the visitor's own request is matched,
+  # so the internal DirectoryIndex lookup cannot loop. The query string is kept.
+  RewriteCond %{THE_REQUEST} \s/+((?:[^\s?]*/)?)index\.html[?\s] [NC]
+  RewriteRule ^ https://hram.lt/%1 [R=301,L,NE]
   RewriteCond %{HTTP_HOST} ^www\.hram\.lt$ [NC,OR]
   RewriteCond %{HTTPS} !=on
   RewriteRule ^ https://hram.lt%{REQUEST_URI} [R=301,L,NE]
