@@ -104,7 +104,8 @@ function head(lang,prefix,privacy=false) {
  const description=privacy?t.privacyText:t.description;
  const canonical=hasPublicUrl?pageURL(lang,privacy):'';
  const robots=config.indexingEnabled&&!privacy?'index,follow,max-image-preview:large':'noindex,follow';
- const csp="default-src 'self'; base-uri 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: https://raw.githubusercontent.com; frame-src https://www.youtube-nocookie.com; connect-src https://bukiskis-ai-router.maksimas1982.workers.dev; object-src 'none'; form-action 'none'";
+ const remoteImages=Object.values(media).some(item=>!fs.existsSync(path.join(root,'src/assets/images',item.filename)));
+ const csp="default-src 'self'; base-uri 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:"+(remoteImages?" https://raw.githubusercontent.com":"")+"; frame-src https://www.youtube-nocookie.com; connect-src https://bukiskis-ai-router.maksimas1982.workers.dev; object-src 'none'; form-action 'none'";
  const alternateURL = code => hasPublicUrl?pageURL(code,privacy):`${prefix}${code}/${privacy?'privacy':'index'}.html`;
  return `<!doctype html>
 <html lang="${lang}"><head>
