@@ -18,21 +18,25 @@
     box.classList.add('is-visible');
     toastTimer = window.setTimeout(() => box.classList.remove('is-visible'), 4200);
   }
-  async function copy(value) {
+  async function copy(value, button) {
     try {
       if (!navigator.clipboard || !window.isSecureContext) throw new Error('Clipboard unavailable');
       await navigator.clipboard.writeText(value);
+      if (button) {
+        button.classList.add('is-copied');
+        window.setTimeout(() => button.classList.remove('is-copied'), 2200);
+      }
       announce(t.copied);
     } catch (_) {
       // Never report a successful copy when the browser denied permission.
       announce(t.copyError);
     }
   }
-  $$('[data-copy]').forEach(button => button.addEventListener('click', () => copy(button.dataset.copy)));
+  $$('[data-copy]').forEach(button => button.addEventListener('click', () => copy(button.dataset.copy, button)));
   $$('[data-copy-details]').forEach(button => button.addEventListener('click', () => {
     const p = config.parish;
     const values = [p.legalName, p.code, p.bank, p.iban, p.bic, p.purpose];
-    copy(values.map((value, i) => `${t.donateFields[i]}: ${value}`).join('\n'));
+    copy(values.map((value, i) => `${t.donateFields[i]}: ${value}`).join('\n'), button);
   }));
 
   // Navigation: no personal preferences or identifiers are persisted.
@@ -83,9 +87,15 @@
   const people = $('#people-count');
   if (amount && people) {
     const money = new Intl.NumberFormat(t.locale, { style: 'currency', currency: 'EUR' });
+    function updateSlider(count) {
+      const min = Number(people.min) || 1, max = Number(people.max) || 200;
+      const pct = Math.max(0, Math.min(100, ((count - min) / (max - min)) * 100));
+      people.style.setProperty('--val', pct.toFixed(1) + '%');
+    }
     function calculate() {
       const cents = math.parseAmountToCents(amount.value);
       const count = Math.max(1, Math.min(200, Number.parseInt(people.value, 10) || 1));
+      updateSlider(count);
       $('#people-output').textContent = String(count);
       $('#calc-error').hidden = cents !== null;
       amount.setAttribute('aria-invalid', String(cents === null));
