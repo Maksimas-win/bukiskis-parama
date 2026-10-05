@@ -1,3 +1,11 @@
+# 0.5.5 — 2026-10-05
+
+- Depth and light on the existing layout: the hero card, project images and step diagrams tilt towards a mouse pointer and catch a soft highlight; diagram rings move at different depths.
+- Hero colour fields drift slowly and follow the pointer; the calculator panel light follows the pointer; donation and parish cards get a pointer spotlight.
+- Wide screens: section headings unfold and project images drift inside their frames while scrolling. Diagram cards float gently on every screen.
+- The example total responds when its inputs change; the brand mark turns on hover.
+- Touch screens, reduced motion, forced colours and print keep the flat presentation; markup and texts are unchanged.
+
 # 0.5.4 — 2026-10-05
 
 - Visual polish on the existing layout: reading progress bar and header elevation, accent lines on section labels, animated navigation underline, button and copy-button feedback, card hover lift.
