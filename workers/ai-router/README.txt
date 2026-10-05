@@ -1,4 +1,4 @@
-BUKISKIS AI ROUTER — OpenAI version 1.1.0 (prepared 2026-10-05)
+BUKISKIS AI ROUTER — OpenAI version 1.2.0 (prepared 2026-10-05)
 
 Endpoint: POST https://bukiskis-ai-router.maksimas1982.workers.dev/api/chat
 Health: GET /health
@@ -31,8 +31,10 @@ own terms. Cancelling a browser request may not stop upstream processing.
 
 Run tests: npm test (Node 22+, no runtime dependencies).
 Deployment: update only bukiskis-ai-router after adding OPENAI_API_KEY.
-Then check /health version 1.1.0 and a real POST from the allowed site origin.
+Then check /health version 1.2.0 and a real POST from the allowed site origin.
 The public site must be built and tested before publishing its AI interface.
+
+1.2.0: source snapshot synchronised with the corrected 2027 GPM guidance.
 
 Source snapshot: 2026-10-05. Calendar source checked 2026-10-03; this is not a
 live VMI lookup. Recipient verification flags are unchanged.

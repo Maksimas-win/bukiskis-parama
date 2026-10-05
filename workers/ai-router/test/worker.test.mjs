@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
 import worker from '../worker.mjs';
 
 const origin = 'https://maksimas-win.github.io';
@@ -19,6 +20,12 @@ test('health does not require or reveal configuration', async () => {
   const result = await worker.fetch(new Request('https://worker.example/health'), {});
   assert.equal(result.status, 200);
   assert.deepEqual(await result.json(), {ok: true, service: 'bukiskis-ai-router', version: '1.2.0', provider: 'openai'});
+});
+
+test('deployment notes name the same version as health', async () => {
+  const {version} = await (await worker.fetch(new Request('https://worker.example/health'), {})).json();
+  const notes = readFileSync(new URL('../README.txt', import.meta.url), 'utf8');
+  assert.deepEqual([...notes.matchAll(/version (\d+\.\d+\.\d+)/g)].map(m => m[1]), [version, version]);
 });
 
 test('only the exact allowed origin gets CORS access', async t => {
