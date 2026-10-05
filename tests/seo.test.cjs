@@ -13,7 +13,7 @@ test('Each public locale has matching canonical, social metadata and a reciproca
  for (const lang of config.languages) {
   const t = JSON.parse(read(`src/locales/${lang}.json`));
   const html = read(`docs/${lang}/index.html`);
-  assert.equal(canonical(html), `${base}${lang}/index.html`);
+  assert.equal(canonical(html), `${base}${lang}/`);
   assert.equal(decode(html.match(/<title>(.*?)<\/title>/)[1]), t.title);
   for (const [attribute,name,expected] of [
    ['name','description',t.description], ['property','og:title',t.title],
@@ -25,10 +25,10 @@ test('Each public locale has matching canonical, social metadata and a reciproca
   const alternates = [...html.matchAll(/<link rel="alternate" hreflang="([^"]+)" href="([^"]+)"/g)];
   assert.equal(alternates.length,config.languages.length+1);
   for(const code of [...config.languages,'x-default']) {
-   assert.equal(alternates.find(m=>m[1]===code)?.[2], `${base}${code==='x-default'?config.defaultLanguage:code}/index.html`);
+   assert.equal(alternates.find(m=>m[1]===code)?.[2], `${base}${code==='x-default'?config.defaultLanguage:code}/`);
   }
  }
- assert.equal(canonical(read('docs/index.html')), `${base}${config.defaultLanguage}/index.html`);
+ assert.equal(canonical(read('docs/index.html')), `${base}${config.defaultLanguage}/`);
 });
 
 test('Only canonical indexable pages are advertised in sitemap',()=>{
@@ -61,7 +61,7 @@ test('Structured page data is present without weakening CSP or requiring inline 
   const html=read(`docs/${lang}/index.html`);
   assert.match(html,/<main id="main" itemscope itemtype="https:\/\/schema.org\/WebPage">/);
   assert.ok(html.includes(`<meta itemprop="inLanguage" content="${lang}">`));
-  assert.ok(html.includes(`<link itemprop="url" href="${base}${lang}/index.html">`));
+  assert.ok(html.includes(`<link itemprop="url" href="${base}${lang}/">`));
   assert.match(html,/<h1 itemprop="name">/);
   assert.match(html,/<p class="lead" itemprop="description">/);
   assert.doesNotMatch(html,/unsafe-inline|<script(?![^>]*\bsrc=)[^>]*>/i);

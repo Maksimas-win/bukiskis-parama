@@ -20,7 +20,8 @@ if (publicUrl && (publicUrl.protocol !== 'https:' || publicUrl.username || publi
 }
 const baseUrl = publicUrl ? publicUrl.href.replace(/\/?$/, '/') : '';
 const hasPublicUrl = Boolean(publicUrl);
-const pageURL = (lang, privacy=false) => `${baseUrl}${lang}/${privacy?'privacy':'index'}.html`;
+// Clean public addresses: /ru/ for the guide, /ru/privacy.html for privacy.
+const pageURL = (lang, privacy=false) => `${baseUrl}${lang}/${privacy?'privacy.html':''}`;
 if (!/^\d{4}-\d{2}-\d{2}$/.test(config.contentUpdated) || Number.isNaN(Date.parse(config.contentUpdated)) || new Date(config.contentUpdated).toISOString().slice(0,10) !== config.contentUpdated) {
  throw new Error('contentUpdated must be a valid ISO calendar date');
 }
@@ -94,11 +95,11 @@ function dateLabel(date,locale) {
  return new Intl.DateTimeFormat(locale,{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'}).format(new Date(date+'T12:00:00Z'));
 }
 function languageLinks(lang,prefix,privacy=false) {
- return config.languages.map(code => `<a href="${prefix}${code}/${privacy?'privacy':'index'}.html" hreflang="${code}" lang="${code}" data-language="${code}"${lang===code?' aria-current="page"':''}><b>${code.toUpperCase()}</b><span>${h(locales[code].langName)}</span></a>`).join('');
+ return config.languages.map(code => `<a href="${prefix}${code}/${privacy?'privacy.html':''}" hreflang="${code}" lang="${code}" data-language="${code}"${lang===code?' aria-current="page"':''}><b>${code.toUpperCase()}</b><span>${h(locales[code].langName)}</span></a>`).join('');
 }
 function header(lang,prefix,privacy=false) {
- const t=locales[lang], home=privacy?'index.html':'';
- return `<a class="skip" href="#main">${h(t.skip)}</a><header class="site-header"><div class="container header-inner"><a class="brand" href="${privacy?'index.html':'#top'}">${brandMark}<span class="brand-text"><strong>${h(t.brand[0])}</strong><small>${h(t.brand[1])}</small></span></a><nav class="desktop-nav" aria-label="${h(t.menu)}">${['guide','video','faq','help'].map((id,i)=>`<a href="${home}#${id}">${h(t.nav[i])}</a>`).join('')}</nav><div class="header-tools"><details class="language" id="language-control"><summary aria-label="${h(t.language)}"><span>${lang.toUpperCase()}</span>${icon('chevron')}</summary><nav class="language-panel" aria-label="${h(t.language)}">${languageLinks(lang,prefix,privacy)}</nav></details><button type="button" class="menu-toggle js-only" aria-expanded="false" aria-controls="mobile-nav" aria-label="${h(t.menu)}">${icon('menu')}</button></div></div><nav class="container mobile-nav" id="mobile-nav" aria-label="${h(t.menu)}" hidden>${['guide','video','faq','help'].map((id,i)=>`<a href="${home}#${id}">${h(t.nav[i])}</a>`).join('')}</nav></header>`;
+ const t=locales[lang], home=privacy?'./':'';
+ return `<a class="skip" href="#main">${h(t.skip)}</a><header class="site-header"><div class="container header-inner"><a class="brand" href="${privacy?'./':'#top'}">${brandMark}<span class="brand-text"><strong>${h(t.brand[0])}</strong><small>${h(t.brand[1])}</small></span></a><nav class="desktop-nav" aria-label="${h(t.menu)}">${['guide','video','faq','help'].map((id,i)=>`<a href="${home}#${id}">${h(t.nav[i])}</a>`).join('')}</nav><div class="header-tools"><details class="language" id="language-control"><summary aria-label="${h(t.language)}"><span>${lang.toUpperCase()}</span>${icon('chevron')}</summary><nav class="language-panel" aria-label="${h(t.language)}">${languageLinks(lang,prefix,privacy)}</nav></details><button type="button" class="menu-toggle js-only" aria-expanded="false" aria-controls="mobile-nav" aria-label="${h(t.menu)}">${icon('menu')}</button></div></div><nav class="container mobile-nav" id="mobile-nav" aria-label="${h(t.menu)}" hidden>${['guide','video','faq','help'].map((id,i)=>`<a href="${home}#${id}">${h(t.nav[i])}</a>`).join('')}</nav></header>`;
 }
 function head(lang,prefix,privacy=false) {
  const t=locales[lang], title=privacy?`${t.privacy} · ${t.brand[0]}`:t.title;
@@ -107,7 +108,7 @@ function head(lang,prefix,privacy=false) {
  const robots=config.indexingEnabled&&!privacy?'index,follow,max-image-preview:large':'noindex,follow';
  const remoteImages=Object.values(media).some(item=>!fs.existsSync(path.join(root,'src/assets/images',item.filename)));
  const csp="default-src 'self'; base-uri 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:"+(remoteImages?" https://raw.githubusercontent.com":"")+"; frame-src https://www.youtube-nocookie.com; connect-src https://bukiskis-ai-router.maksimas1982.workers.dev; object-src 'none'; form-action 'none'";
- const alternateURL = code => hasPublicUrl?pageURL(code,privacy):`${prefix}${code}/${privacy?'privacy':'index'}.html`;
+ const alternateURL = code => hasPublicUrl?pageURL(code,privacy):`${prefix}${code}/${privacy?'privacy.html':''}`;
  return `<!doctype html>
 <html lang="${lang}"><head>
 <meta charset="utf-8">
@@ -146,7 +147,7 @@ function sectionTop(kicker,title,body,reveal=true) {
 }
 function footer(lang,prefix,privacy=false) {
  const t=locales[lang];
- return `<footer class="site-footer"><div class="container"><div class="footer-main"><div><strong>${h(t.footerThanks)}</strong><small>${h(config.parish.legalName)} · ${config.parish.code}<br>© 2026 · GPM 2027</small></div><div class="footer-tools"><a href="${privacy?'privacy.html':`${prefix}${lang}/privacy.html`}">${h(t.privacy)}</a><button type="button" class="js-only" data-share>${h(t.share)}</button><button type="button" data-cookie-open hidden>${h(t.cookieNotice.reopen)}</button><button type="button" class="js-only" data-print>${h(t.print)}</button></div></div><nav class="footer-languages" aria-label="${h(t.language)}">${config.languages.map(code=>`<a lang="${code}" hreflang="${code}" data-language="${code}" href="${prefix}${code}/${privacy?'privacy':'index'}.html"${code===lang?' aria-current="page"':''}>${h(locales[code].langName)}</a>`).join('')}</nav></div></footer>${cookieNotice(lang,prefix,privacy)}<div class="toast" role="status" aria-live="polite" aria-atomic="true"></div>`;
+ return `<footer class="site-footer"><div class="container"><div class="footer-main"><div><strong>${h(t.footerThanks)}</strong><small>${h(config.parish.legalName)} · ${config.parish.code}<br>© 2026 · GPM 2027</small></div><div class="footer-tools"><a href="${privacy?'privacy.html':`${prefix}${lang}/privacy.html`}">${h(t.privacy)}</a><button type="button" class="js-only" data-share>${h(t.share)}</button><button type="button" data-cookie-open hidden>${h(t.cookieNotice.reopen)}</button><button type="button" class="js-only" data-print>${h(t.print)}</button></div></div><nav class="footer-languages" aria-label="${h(t.language)}">${config.languages.map(code=>`<a lang="${code}" hreflang="${code}" data-language="${code}" href="${prefix}${code}/${privacy?'privacy.html':''}"${code===lang?' aria-current="page"':''}>${h(locales[code].langName)}</a>`).join('')}</nav></div></footer>${cookieNotice(lang,prefix,privacy)}<div class="toast" role="status" aria-live="polite" aria-atomic="true"></div>`;
 }
 function cookieNotice(lang,prefix,privacy) {
  const t=locales[lang].cookieNotice;
@@ -182,7 +183,7 @@ function page(lang,prefix) {
 }
 function privacyPage(lang,prefix) {
  const t=locales[lang];
- return head(lang,prefix,true)+header(lang,prefix,true)+`<main id="main" class="section"><div class="container"><p class="eyebrow">${h(t.brand[0])}</p><h1>${h(t.privacy)}</h1><div class="section-top"><div><p>${h(t.privacyText)}</p><p>${h(t.cookieNotice.body)}</p></div></div><div class="sources"><div><h3>${h(t.donateFields[0])}</h3><p lang="lt">${h(config.parish.legalName)}</p><p>${config.parish.code}</p><p><a href="tel:${config.parish.phone}">${h(config.parish.phoneDisplay)}</a></p></div><div><p>${h(t.donateSafety)}</p><p>${h(t.reviewed)}: ${h(dateLabel(config.reviewed,t.locale))}</p><a class="text-link" href="index.html">${icon('back')}${h(t.brand[0])}</a></div></div></div></main>`+footer(lang,prefix,true)+'</body></html>';
+ return head(lang,prefix,true)+header(lang,prefix,true)+`<main id="main" class="section"><div class="container"><p class="eyebrow">${h(t.brand[0])}</p><h1>${h(t.privacy)}</h1><div class="section-top"><div><p>${h(t.privacyText)}</p><p>${h(t.cookieNotice.body)}</p></div></div><div class="sources"><div><h3>${h(t.donateFields[0])}</h3><p lang="lt">${h(config.parish.legalName)}</p><p>${config.parish.code}</p><p><a href="tel:${config.parish.phone}">${h(config.parish.phoneDisplay)}</a></p></div><div><p>${h(t.donateSafety)}</p><p>${h(t.reviewed)}: ${h(dateLabel(config.reviewed,t.locale))}</p><a class="text-link" href="./">${icon('back')}${h(t.brand[0])}</a></div></div></div></main>`+footer(lang,prefix,true)+'</body></html>';
 }
 for (const lang of config.languages) {
  fs.mkdirSync(path.join(out,lang),{recursive:true});
@@ -206,6 +207,6 @@ const errorLanguage=config.defaultLanguage, errorText=locales[errorLanguage];
 const errorBase=hasPublicUrl?baseUrl:'./';
 fs.writeFileSync(path.join(out,'404.html'),`<!doctype html>
 <html lang="${errorLanguage}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><meta name="theme-color" content="#275bd5"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; script-src 'none'; style-src 'self'; img-src 'self'; object-src 'none'; form-action 'none'"><title>404 · ${h(errorText.notFound.title)}</title><link rel="icon" href="${h(errorBase)}assets/img/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="${h(errorBase)}assets/css/styles.css"></head>
-<body class="not-found"><main class="container not-found-card"><a class="brand" href="${h(errorBase)}">${brandMark}<span class="brand-text"><strong>${h(errorText.brand[0])}</strong><small>${h(errorText.brand[1])}</small></span></a><p class="not-found-code" aria-hidden="true">404</p><h1>${h(errorText.notFound.title)}</h1><p class="lead">${h(errorText.notFound.body)}</p><a class="button button-primary" href="${h(errorBase)}">${h(errorText.notFound.home)}${icon('arrow')}</a><nav class="not-found-languages" aria-label="${h(errorText.language)}">${config.languages.map(lang=>`<a href="${h(errorBase+lang+'/index.html')}" lang="${lang}" hreflang="${lang}">${h(locales[lang].langName)}</a>`).join('')}</nav></main></body></html>`);
+<body class="not-found"><main class="container not-found-card"><a class="brand" href="${h(errorBase)}">${brandMark}<span class="brand-text"><strong>${h(errorText.brand[0])}</strong><small>${h(errorText.brand[1])}</small></span></a><p class="not-found-code" aria-hidden="true">404</p><h1>${h(errorText.notFound.title)}</h1><p class="lead">${h(errorText.notFound.body)}</p><a class="button button-primary" href="${h(errorBase)}">${h(errorText.notFound.home)}${icon('arrow')}</a><nav class="not-found-languages" aria-label="${h(errorText.language)}">${config.languages.map(lang=>`<a href="${h(errorBase+lang+'/')}" lang="${lang}" hreflang="${lang}">${h(locales[lang].langName)}</a>`).join('')}</nav></main></body></html>`);
 console.log(`Built ${config.languages.length} languages + privacy pages in docs/. Indexing: ${config.indexingEnabled ? 'enabled':'disabled (pre-launch)'}.`);
 console.log('Media: '+Object.keys(media).map(k=>`${k}: ${fs.existsSync(path.join(root,'src/assets/images',media[k].filename))?'local':'external with local illustration fallback'}`).join('; '));

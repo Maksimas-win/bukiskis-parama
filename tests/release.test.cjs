@@ -23,7 +23,7 @@ test('404 uses the site design and has absolute recovery links for nested missin
  assert.match(html,/<main class="container not-found-card">/);
  assert.match(html,/<meta name="robots" content="noindex">/);
  assert.ok(html.includes(`href="${base}assets/css/styles.css"`));
- for(const lang of config.languages) assert.ok(html.includes(`href="${base}${lang}/index.html"`));
+ for(const lang of config.languages) assert.ok(html.includes(`href="${base}${lang}/"`));
  assert.doesNotMatch(html,/<script|unsafe-inline|style=/);
 });
 
@@ -54,4 +54,16 @@ test('Hostinger configuration enforces HTTPS on the apex domain without locking 
  assert.match(htaccess,/Header always set Strict-Transport-Security "max-age=31536000"/);
  assert.doesNotMatch(htaccess,/includeSubDomains|preload/i);
  assert.match(htaccess,/RewriteRule \^ https:\/\/hram\.lt%\{REQUEST_URI\} \[R=301,L,NE\]/);
+});
+
+test('Public pages link to clean addresses and Hostinger redirects old index.html URLs',()=>{
+ for(const rel of ['index.html','404.html',...config.languages.flatMap(l=>[`${l}/index.html`,`${l}/privacy.html`])]) {
+  assert.doesNotMatch(read(rel),/href="[^"]*index\.html/,rel);
+ }
+ assert.doesNotMatch(read('sitemap.xml'),/index\.html/);
+ const htaccess=read('.htaccess');
+ const rule=String.raw`RewriteCond %{THE_REQUEST} \s/+((?:[^\s?]*/)?)index\.html[?\s] [NC]`;
+ assert.ok(htaccess.includes(rule));
+ assert.ok(htaccess.includes('RewriteRule ^ https://hram.lt/%1 [R=301,L,NE]'));
+ assert.ok(htaccess.indexOf(rule)<htaccess.indexOf('RewriteCond %{HTTP_HOST}'));
 });

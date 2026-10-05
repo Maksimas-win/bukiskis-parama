@@ -1,3 +1,8 @@
+# 0.5.7 — 2026-10-05
+
+- Clean addresses: pages, language switchers, canonical, hreflang, sitemap and microdata use /ru/, /lt/ … instead of /ru/index.html.
+- hram.lt redirects old /index.html and /<lang>/index.html addresses to the clean form with 301 in one hop; the query string is kept.
+
 # 0.5.6 — 2026-10-05
 
 - SEO: schema.org microdata now includes dateModified, the WebSite the page belongs to, and FAQPage questions and answers in all six languages.
