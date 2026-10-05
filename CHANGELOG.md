@@ -2,7 +2,8 @@
 
 - Integrate the reviewed Antigravity visual refresh: system typography, consistent cards and controls, refreshed 3D introduction and assistant, copy feedback and calculator slider fill.
 - Preserve keyboard focus, narrow translated layouts, mobile-only navigation and privacy heading wrapping; remove the new continuous hotspot pulse and improve copy feedback contrast.
-- Add browser regression checks for slider keyboard operation, menu visibility and all translated privacy pages. Rebuild current and legacy asset paths from the same sources.
+- Keep the mobile assistant launcher compact over the introduction so it does not cover the guide and calculator links.
+- Add browser regression checks for slider keyboard operation, menu visibility, unobstructed introduction links and all translated privacy pages. Rebuild current and legacy asset paths from the same sources.
 
 # 0.5.7 — 2026-10-05
 

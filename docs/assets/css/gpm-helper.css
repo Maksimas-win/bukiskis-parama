@@ -245,7 +245,7 @@ body.gpm-dialog-open .mobile-cta { visibility: hidden; }
 
 @media (max-width: 700px) {
   .gh-launch { bottom: calc(84px + env(safe-area-inset-bottom)); right: 12px; padding: 10px 14px; }
-  .intro3d-in-view .gh-launch { bottom: calc(48px + env(safe-area-inset-bottom)); font-size: 11px; gap: 7px; padding: 9px 12px; }
+  .intro3d-in-view .gh-launch { bottom: calc(12px + env(safe-area-inset-bottom)); width: 48px; justify-content: center; font-size: 0; gap: 0; padding: 12px; }
   .gh-launch small { display: none; }
   .gh-dialog {
     inset: auto 8px max(8px, env(safe-area-inset-bottom)) 8px;
