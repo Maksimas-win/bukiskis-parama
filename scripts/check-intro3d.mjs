@@ -63,11 +63,18 @@ try {
     info[label]=await page.locator('.intro3d').getAttribute('data-progress');
     assert.ok(Math.abs(Number(info[label])-fraction*100)<3,`${label}: scroll does not drive the scene`);
    }
-   await page.locator('.intro3d__primary').click();await page.waitForTimeout(800);
+   await page.locator('.intro3d__primary').click();
+   // Wait for the anchor to arrive before reversing the scroll. A fixed delay
+   // races smooth scrolling when the CI renderer is using software WebGL.
+   await page.waitForFunction(()=>{
+    const target=document.getElementById('guide');
+    const inset=parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop)+parseFloat(getComputedStyle(target).scrollMarginTop);
+    return Math.abs(target.getBoundingClientRect().top-inset)<3;
+   },null,{timeout:15000});
    assert.equal(new URL(page.url()).hash,'#guide');
    info.guideTop=await page.locator('#guide').evaluate(el=>el.getBoundingClientRect().top);
    await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
-   await page.waitForFunction(()=>Number(document.querySelector('.intro3d').dataset.progress)<2,null,{timeout:5000});
+   await page.waitForFunction(()=>scrollY<2&&Number(document.querySelector('.intro3d').dataset.progress)<2,null,{timeout:10000});
    assert.ok(Number(await page.locator('.intro3d').getAttribute('data-progress'))<2,'Reverse scroll must reassemble the numerals');
    await page.locator('.intro3d__skip').click();await page.waitForTimeout(800);
    assert.equal(new URL(page.url()).hash,'#intro3d-content');
