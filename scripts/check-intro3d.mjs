@@ -73,8 +73,22 @@ try {
    },null,{timeout:15000});
    assert.equal(new URL(page.url()).hash,'#guide');
    info.guideTop=await page.locator('#guide').evaluate(el=>el.getBoundingClientRect().top);
-   await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
-   await page.waitForFunction(()=>scrollY<2&&Number(document.querySelector('.intro3d').dataset.progress)<2,null,{timeout:10000});
+   // Use the site's return link so Chromium finishes its anchor navigation
+   // before starting the reverse animation, just as a visitor would.
+   await page.locator('.site-header .brand').click();
+   try {
+    await page.waitForFunction(()=>scrollY<2&&Number(document.querySelector('.intro3d').dataset.progress)<2,null,{timeout:10000});
+   } catch(error) {
+    info.reverseFailure=await page.evaluate(()=>{
+     const root=document.querySelector('.intro3d');
+     return {scrollY,progress:root.dataset.progress,top:root.getBoundingClientRect().top,
+      classes:root.className,bodyClass:document.body.className,visibility:document.visibilityState,hash:location.hash};
+    });
+    results.push({name,...info,errors,external});
+    await page.screenshot({path:path.join(output,'reverse-failure.png')});
+    console.error('Reverse-scroll state:',JSON.stringify(info.reverseFailure));
+    throw error;
+   }
    assert.ok(Number(await page.locator('.intro3d').getAttribute('data-progress'))<2,'Reverse scroll must reassemble the numerals');
    await page.locator('.intro3d__skip').click();await page.waitForTimeout(800);
    assert.equal(new URL(page.url()).hash,'#intro3d-content');
