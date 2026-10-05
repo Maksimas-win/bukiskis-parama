@@ -7,6 +7,7 @@ if (repository !== 'Maksimas-win/bukiskis-parama' || !/^[a-f0-9]{40}$/.test(sour
   throw new Error('This publisher requires the expected repository, commit and CI token');
 }
 const branch = 'hostinger';
+const message = `Publish hram.lt from ${source}`;
 const base = `https://api.github.com/repos/${repository}`;
 async function api(route, method = 'GET', body, allowMissing = false) {
   const response = await fetch(`${base}${route}`, {
@@ -26,13 +27,13 @@ if (!output) throw new Error('The tested commit has no docs tree');
 const current = await api(`/git/ref/heads/${branch}`, 'GET', undefined, true);
 if (current) {
   const previous = await api(`/git/commits/${current.object.sha}`);
-  if (previous.tree.sha === output.sha) {
+  if (previous.tree.sha === output.sha && previous.message === message) {
     console.log(`Hostinger already has the tested tree from ${source}`);
     process.exit(0);
   }
 }
 const release = await api('/git/commits', 'POST', {
-  message: `Publish hram.lt from ${source}`,
+  message,
   tree: output.sha, parents: current ? [current.object.sha] : [],
 });
 if (current) {
