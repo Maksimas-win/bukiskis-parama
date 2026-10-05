@@ -180,3 +180,89 @@ main.section h1{font-size:clamp(28px,4.5vw,52px);line-height:1.18;letter-spacing
 .dialog-appeal-details .button { margin-top:20px; }
 @media(max-width:730px) { .dialog-appeal-details { padding:16px; } }
 @media print { .project-actions [data-photo] { display:none!important; } }
+
+/* Version 0.6 — visual polish on the existing layout. Effects are decorative only:
+   content stays readable without JavaScript, motion respects reduced-motion and print stays plain. */
+:root { --ease-out:cubic-bezier(.22,1,.36,1); --lift:0 18px 42px #1f3a6a1c; }
+.section-top p, .way p, .guide-panel>p, .faq-list p, .project-content p, .donate-intro p { text-wrap:pretty; }
+
+/* A short accent line makes each section label easy to spot while scrolling. */
+.eyebrow::before { content:''; display:inline-block; width:18px; height:2px; margin-right:10px; vertical-align:middle; border-radius:2px; background:currentColor; opacity:.55; }
+
+/* Scroll reveal: the transition must live on the visible state, otherwise blocks appear without fading. */
+.motion-ready .reveal { transition:opacity .7s var(--ease-out), transform .7s var(--ease-out), box-shadow .35s, border-color .35s; }
+.motion-ready .reveal.will-reveal { transform:translateY(22px); }
+.motion-ready .way.reveal:nth-child(2), .motion-ready .project-card.reveal:nth-child(2) { transition-delay:.08s; }
+.motion-ready .project-card.reveal:nth-child(3) { transition-delay:.16s; }
+
+/* Reading progress and header elevation, driven by scroll position without JavaScript. */
+@supports (animation-timeline:scroll()) {
+  @media (prefers-reduced-motion:no-preference) {
+    .site-header::after { content:''; position:absolute; left:0; right:0; bottom:-1px; height:3px; background:linear-gradient(90deg,var(--accent),#5fa3ff); transform-origin:0 50%; transform:scaleX(0); animation:read-progress linear both; animation-timeline:scroll(root); pointer-events:none; }
+    .site-header { animation:header-lift linear both; animation-timeline:scroll(root); animation-range:0 160px; }
+  }
+}
+@keyframes read-progress { to { transform:scaleX(1); } }
+@keyframes header-lift { to { box-shadow:0 10px 30px #1a2f5812; } }
+
+/* Navigation and buttons: animated underline, gentle press and arrow nudge. */
+.desktop-nav a { background:linear-gradient(currentColor,currentColor) 0 calc(100% - 10px)/0 1.5px no-repeat; transition:background-size .3s var(--ease-out), color .2s; }
+.desktop-nav a:hover { text-decoration:none; background-size:100% 1.5px; }
+.button-primary { background-image:linear-gradient(135deg,#3b70f0,var(--accent) 60%); }
+.button:active { transform:translateY(0) scale(.98); }
+.icon-button { transition:background-color .2s, border-color .2s, transform .15s; }
+.icon-button:hover { border-color:#c3d3ec; }
+.icon-button:active { transform:scale(.92); }
+.button .icon, .text-link .icon, .sources a .icon { transition:transform .25s var(--ease-out); }
+.sources a { transition:color .2s; }
+.sources a:hover { color:var(--accent); }
+@media (hover:hover) {
+  .button:hover .icon, .text-link:hover .icon, .sources a:hover .icon { transform:translateX(3px); }
+  .project-visual { transition:transform .4s var(--ease-out), box-shadow .4s var(--ease-out); }
+  .project-card:hover .project-visual { transform:translateY(-4px); box-shadow:var(--lift); }
+  .bank-card:hover, .parish-support-card:hover { box-shadow:var(--lift); border-color:#c3d3ec; }
+  .guide-tab:not([aria-selected=true]):hover { background:var(--paper-2); }
+}
+
+/* Hero: the key figure gets a slow sheen and the card a soft light. */
+.info-visual::after { content:''; position:absolute; inset:0; z-index:-1; border-radius:inherit; background:radial-gradient(320px circle at 100% 0,#7aa7ff2e,transparent 70%); pointer-events:none; }
+.percent-figure { background:linear-gradient(120deg,var(--accent) 20%,#5b8dff 45%,var(--accent) 70%) 100% 0/220% 100%; -webkit-background-clip:text; background-clip:text; color:transparent; }
+@media (prefers-reduced-motion:no-preference) { .percent-figure { animation:figure-shine 8s ease-in-out infinite; } }
+@keyframes figure-shine { 50% { background-position:0 0; } }
+@media (forced-colors:active) { .percent-figure { background:none; color:CanvasText; } }
+
+/* Step guide: clear selected state and a short entrance when a step changes. */
+.guide-tab { transition:background-color .25s, color .25s, border-color .25s, box-shadow .25s; }
+.guide-tab[aria-selected=true] { box-shadow:0 10px 24px #275bd52e; }
+@media (prefers-reduced-motion:no-preference) { .enhanced .guide-panel.is-active { animation:panel-in .45s var(--ease-out); } }
+@keyframes panel-in { from { opacity:0; transform:translateY(10px); } }
+
+/* Calculator: soft light behind the dark panel, visible focus and a glowing total. */
+.calculator-section { isolation:isolate; }
+.calculator-section::after { content:''; position:absolute; inset:0; z-index:-1; background:radial-gradient(560px circle at 88% 12%,#4c7ff040,transparent 70%), radial-gradient(420px circle at 4% 100%,#2aa9a01c,transparent 70%); pointer-events:none; }
+.money-input { transition:border-color .25s; }
+.money-input:focus-within { border-color:#83b9ff; }
+.calc-result-total strong { text-shadow:0 0 42px #5fa3ff4d; }
+
+/* FAQ: a drawn chevron that turns, and smooth opening where the browser supports it. */
+.faq-list summary { padding-right:44px; transition:color .2s; }
+.faq-list summary:hover { color:var(--accent); }
+.faq-list summary::after, .faq-list details[open] summary::after { content:''; top:50%; right:8px; width:9px; height:9px; border-right:2px solid var(--accent-2); border-bottom:2px solid var(--accent-2); transform:translateY(-70%) rotate(45deg); transition:transform .3s var(--ease-out); }
+.faq-list details[open] summary::after { transform:translateY(-30%) rotate(225deg); }
+@supports (interpolate-size:allow-keywords) {
+  @media (prefers-reduced-motion:no-preference) {
+    .faq-list { interpolate-size:allow-keywords; }
+    .faq-list details::details-content { block-size:0; overflow:hidden; transition:block-size .35s var(--ease-out), content-visibility .35s allow-discrete; }
+    .faq-list details[open]::details-content { block-size:auto; }
+  }
+}
+
+/* Footer links and buttons share one baseline. */
+.footer-tools a, .footer-tools button { display:inline-flex; align-items:center; }
+
+@media print {
+  .site-header::after, .info-visual::after, .calculator-section::after { display:none; }
+  .percent-figure { background:none; color:var(--accent); }
+  .faq-list details::details-content { block-size:auto!important; overflow:visible; }
+  .eyebrow::before { display:none; }
+}

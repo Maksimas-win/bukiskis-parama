@@ -1,3 +1,11 @@
+# 0.5.4 — 2026-10-05
+
+- Visual polish on the existing layout: reading progress bar and header elevation, accent lines on section labels, animated navigation underline, button and copy-button feedback, card hover lift.
+- Fix the scroll reveal so blocks actually fade in, and extend it to the remaining sections with a short stagger for cards.
+- FAQ: drawn chevron that turns on open, smooth opening where supported; footer links aligned on one baseline.
+- Hero figure sheen, calculator background light and focus state; step panels fade in when switching.
+- All effects respect reduced motion, forced colours and print; content stays readable without JavaScript.
+
 # 0.5.3 — 2026-10-05
 
 - Automatically show the parish appeal once per tab session; retain manual reopening, keyboard closing and focus restoration.
