@@ -122,7 +122,7 @@
   "helpBody": "Atskiras skyrius apie Bukiškio cerkvės poreikius, parapijos projektus ir banko rekvizitus. Auka savanoriška; šiuo gidu galima naudotis neaukojant.",
   "projects": [
     [
-      "Šventovė ir parapijos gyvenimas",
+      "Parapijos gyvenimas",
       "Kasdieniai poreikiai",
       "Cerkvės išlaikymas, komunalinės išlaidos, patalpų priežiūra ir parapijos gyvenimas.",
       "Mūsų parapija"
@@ -273,10 +273,10 @@
     ]
   },
   "support": {
-    "title": "Paremkite šventovę",
-    "body": "Galite prisidėti prie šventovės išlaikymo ir parapijos projektų. Parama savanoriška: pasinaudokite aukojimo rekvizitais arba apsilankykite šventovės svetainėje ir sužinokite daugiau apie parapijos gyvenimą.",
+    "title": "Paremkite parapiją",
+    "body": "Galite prisidėti prie mūsų parapijos išlaikymo ir jos projektų. Parama savanoriška: pasinaudokite aukojimo rekvizitais arba apsilankykite parapijos svetainėje ir sužinokite daugiau apie jos gyvenimą.",
     "donate": "Rekvizitai aukai",
-    "visit": "Šventovės svetainė"
+    "visit": "Parapijos svetainė"
   },
   "notFound": {
     "title": "Puslapis nerastas",
@@ -294,12 +294,12 @@
   "parishAppeal": {
     "heading": "Mieli parapijiečiai!",
     "paragraphs": [
-      "Nuoširdžiai dėkojame visiems, kurie jau remia mūsų šventovę.",
-      "Mūsų šventovei vis dar reikia jūsų pagalbos. Jei turite galimybę, prašome suteikti finansinę paramą. Ypač svarbu padengti komunalines išlaidas ir dabartinius parapijos poreikius.",
+      "Nuoširdžiai dėkojame visiems, kurie jau remia mūsų parapiją.",
+      "Mūsų parapijai vis dar reikia jūsų pagalbos. Jei turite galimybę, prašome suteikti finansinę paramą. Ypač svarbu padengti komunalines išlaidas ir dabartinius parapijos poreikius.",
       "Net ir nedidelis indėlis labai svarbus. Dėkojame už jūsų pagalbą ir paramą!"
     ],
     "caption": "Parapijos kreipimasis · originalas rusų kalba",
-    "imageAlt": "Kreipimasis dėl paramos šventovei: padėka parapijiečiams, pagalba apmokant komunalines išlaidas ir tenkinant dabartinius poreikius, aukojimo rekvizitai.",
+    "imageAlt": "Kreipimasis dėl paramos parapijai: padėka parapijiečiams, pagalba apmokant komunalines išlaidas ir tenkinant dabartinius poreikius, aukojimo rekvizitai.",
     "openImage": "Atverti viso dydžio vaizdą",
     "donate": "Pereiti prie rekvizitų"
   }
