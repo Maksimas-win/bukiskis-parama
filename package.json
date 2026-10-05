@@ -1,6 +1,6 @@
 {
   "name": "bukiskis-parama",
-  "version": "0.5.7",
+  "version": "0.5.8",
   "private": true,
   "description": "Six-language informational guide to Lithuania’s 1.2% GPM, with a separate optional parish-support section.",
   "scripts": {

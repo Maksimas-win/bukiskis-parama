@@ -30,6 +30,13 @@ try{
   }
   if(await page.locator('[data-cookie-confirm]').isVisible()) await page.locator('[data-cookie-confirm]').click();await page.waitForTimeout(250);
   assert.ok(!requests.some(u=>u.includes('gpm-data-')),'corpus must be lazy');
+  assert.ok(await page.evaluate(()=>{
+   const launcher=document.querySelector('[data-gpm-open]').getBoundingClientRect();
+   return [...document.querySelectorAll('.intro3d__actions a')].every(link=>{
+    const bounds=link.getBoundingClientRect();
+    return Math.min(bounds.right,launcher.right)<=Math.max(bounds.left,launcher.left)||Math.min(bounds.bottom,launcher.bottom)<=Math.max(bounds.top,launcher.top);
+   });
+  }),'The assistant launcher must not cover the introduction links');
   await page.locator('[data-gpm-open]').click();await page.waitForFunction(()=>!!window.GPM_HELPER_DATA);
   await page.locator('[data-gpm-topic="step-0"]').click();
   await page.locator('.gh-stepnav button').last().click();assert.match(await page.locator('[data-gpm-log]').innerText(),/FR0512/);
