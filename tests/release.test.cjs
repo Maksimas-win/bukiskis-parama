@@ -47,3 +47,11 @@ test('Support information and privacy notice remain localized without hiding the
   for(const project of t.projects) assert.ok(html.includes(project[2]));
  }
 });
+
+test('Hostinger configuration enforces HTTPS on the apex domain without locking subdomains',()=>{
+ const htaccess=read('.htaccess');
+ assert.equal(htaccess,fs.readFileSync(path.join(__dirname,'../hosting/.htaccess'),'utf8'));
+ assert.match(htaccess,/Header always set Strict-Transport-Security "max-age=31536000"/);
+ assert.doesNotMatch(htaccess,/includeSubDomains|preload/i);
+ assert.match(htaccess,/RewriteRule \^ https:\/\/hram\.lt%\{REQUEST_URI\} \[R=301,L,NE\]/);
+});
