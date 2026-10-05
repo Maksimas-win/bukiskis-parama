@@ -46,7 +46,7 @@ for(const lang of config.languages){
   assert.ok(html.includes(t.faq[0][0]));
   assert.ok(html.includes('LT40 7044 0600 0624 4432'));
   assert.ok(html.includes('301004570'));
-  assert.equal(t.steps.length,5);assert.equal(t.faq.length,7);
+  assert.equal(t.steps.length,5);assert.equal(t.faq.length,12);
   const ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);
   assert.equal(new Set(ids).size,ids.length,'Unique element IDs');
   assert.ok(read(`docs/${lang}/privacy.html`).includes(t.privacy));

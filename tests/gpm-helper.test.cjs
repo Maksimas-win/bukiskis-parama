@@ -4,9 +4,9 @@ const core=require('../src/assets/gpm-helper.js');
 function data(lang='ru'){const box={window:{}};vm.runInNewContext(read(`docs/assets/js/gpm-data-${lang}.js`),box);return box.window.GPM_HELPER_DATA;}
 test('Public corpus is complete, current-source derived, and isolated from private drafts',()=>{
  for(const lang of ['ru','lt','en','pl','de','uk']){
-  const d=data(lang),t=JSON.parse(read(`src/locales/${lang}.json`));assert.equal(d.records.length,24);assert.equal(new Set(d.records.map(r=>r.id)).size,24);
+  const d=data(lang),t=JSON.parse(read(`src/locales/${lang}.json`));assert.equal(d.records.length,29);assert.equal(new Set(d.records.map(r=>r.id)).size,29);
   assert.equal(d.records[0].body,t.faq[0][1]);assert.equal(d.records.find(r=>r.id==='step-2').body,t.steps[2][1]);assert.equal(d.warning,t.unverified);
-  assert.equal(d.calendar.checkedOn,'2026-10-03');assert.equal(d.calendar.deadline,'2027-05-03');
+  assert.equal(d.calendar.checkedOn,'2026-10-05');assert.equal(d.calendar.deadline,'2027-05-03');
   for(const r of d.records){assert.ok(r.body&&r.url&&r.date);for(const u of r.references)assert.ok(d.allowedUrls.includes(u));}
   const html=read(`docs/${lang}/index.html`);assert.equal((html.match(/id="gpm-helper"/g)||[]).length,1);
   assert.match(html,/data-gpm-src="..\/assets\/js\/gpm-data-/);assert.doesNotMatch(html,/<script src="[^\"]*gpm-data-/);

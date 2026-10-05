@@ -37,7 +37,8 @@ try{
    await page.locator('#gh-query').fill('Какие сроки в 2027 году?');await page.locator('#gh-query').press('Enter');
    assert.match(await page.locator('[data-gpm-log]').innerText(),/3 мая 2027/);
    await page.locator('#gh-query').fill('301004570');await page.locator('#gh-query').press('Enter');
-   assert.match(await page.locator('[data-gpm-log]').innerText(),/ещё подтверждается/);
+   assert.match(await page.locator('[data-gpm-log]').innerText(),/не подтверждает доступность прихода/);
+   assert.match(await page.locator('[data-gpm-log]').innerText(),/Mano VMI/);
   }
   await page.screenshot({path:path.join(out,`${lang}-${w}x${h}.png`)});
   const dims=await page.evaluate(()=>({scrollWidth:document.documentElement.scrollWidth,win:innerWidth,inputBottom:document.querySelector('#gh-query').getBoundingClientRect().bottom}));

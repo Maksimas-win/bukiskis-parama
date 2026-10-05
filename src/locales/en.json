@@ -26,7 +26,7 @@
   "secondary": "Watch the video",
   "heroPhotoNote": "Illustration · maintaining facilities",
   "prelaunch": "2027 campaign: applications run from 1 January to 3 May 2027. You can explore the guide now.",
-  "unverified": "Before submitting, check the recipient with code 301004570 in EDS. The parish’s readiness to receive GPM support in the 2027 campaign is still being confirmed.",
+  "unverified": "Religious communities regain eligibility for this support from 2027. This site has not verified that the parish with code 301004570 is available in EDS or that its GPM account is registered in Mano VMI. Check the recipient in EDS before applying; the parish itself must check its account details.",
   "openStatus": "2027 campaign: submit the application for 2026 income by 3 May 2027 inclusive.",
   "closedStatus": "The initial application deadline for 2026 has passed. Check VMI for amendment rules and future deadlines.",
   "facts": [
@@ -55,13 +55,13 @@
   ],
   "calcKicker": "EXPLORE AN EXAMPLE",
   "calcTitle": "How much is 1.2%?",
-  "calcBody": "Enter the annual GPM amount from which support would be allocated, not your salary. This is an illustration, not a VMI tax assessment.",
+  "calcBody": "Enter the annual GPM amount used to allocate support: not your salary, the outstanding tax balance or your refund. The FAQ below explains the calculation base. This calculator provides an illustration only.",
   "calcTax": "Annual Lithuanian GPM, €",
   "calcPeople": "People in this example",
   "calcResult": "1.2% of the entered GPM",
   "calcTogether": "Together in this example",
   "calcFormula": "Annual GPM × 0.012",
-  "calcNote": "The calculation runs only in your browser. Values are not transmitted. VMI determines the actual amount transferred.",
+  "calcNote": "The calculation stays in your browser. VMI determines the final amount. An allocation below €3 to one recipient for a tax year is not transferred; this calculator does not apply that threshold.",
   "calcInvalid": "Enter an amount from 0 to 100,000,000 with no more than two decimal places.",
   "peopleUnit": "people",
   "guideKicker": "INTERACTIVE GUIDE",
@@ -76,7 +76,7 @@
     ],
     [
       "Find form FR0512",
-      "In EDS, select Deklaravimas → Pildyti formą → Prašymas skirti paramą. Complete the application with the electronic wizard.",
+      "In EDS, select Deklaravimas → Pildyti formą → Dažniausiai pildomos formos → Prašymas skirti paramą. Complete the application with the electronic wizard.",
       "Application form",
       "FR0512"
     ],
@@ -140,7 +140,7 @@
       "Explore the project"
     ]
   ],
-  "projectNote": "No fundraising total is displayed here: amounts will be published after reconciliation. Contact the parish for current project status and budgets.",
+  "projectNote": "Verified fundraising totals and budgets are not published here. Contact the parish for current project status and ways to help.",
   "projectImageLabel": "Open image and explanation",
   "conceptLabel": "Concept, not completed work",
   "currentLabel": "Project materials",
@@ -184,27 +184,47 @@
     ],
     [
       "Who can use the GPM scheme?",
-      "The scheme concerns Lithuanian personal income tax and VMI eligibility conditions. Your website language, citizenship or residence abroad alone does not establish eligibility. Check your own tax situation with VMI."
+      "Lithuanian tax residents (nuolatiniai Lietuvos gyventojai) with income subject to GPM in the relevant year can participate. The 2027 campaign concerns 2026 income. Citizenship alone neither grants nor excludes eligibility. Tax residency follows tax rules, not the website language; check your status with VMI if you live abroad."
     ],
     [
       "Can I support several recipients?",
-      "Yes. The total allocation for recipients in this category must not exceed 1.2%. How you divide that share is your choice."
+      "Yes: allocations in this recipient category must total no more than 1.2%. You may separately allocate up to 0.6% to political organisations and up to 0.6% to trade unions or their associations; these limits do not reduce the 1.2% allowance. An amount below €3 to one recipient for a tax year is not transferred."
     ],
     [
       "I previously chose several years. Must I apply again?",
-      "Check your existing allocations in EDS. How older applications will operate after religious communities regain eligibility in 2027 is still being clarified; we do not promise automatic renewal."
+      "Usually you do not need to reapply if the valid application covers the relevant tax year, the recipient remains eligible and you are not changing the allocation. Check the period, recipient and application status in EDS. The law allows religious communities from 2027, but does not by itself confirm that your previous application will be executed."
     ],
     [
       "Do I need to file GPM311?",
-      "If you are required to declare income, file by the deadline set by VMI. FR0512 does not replace the income tax return. Failure to meet declaration requirements may prevent the support from being transferred."
+      "FR0512 does not replace GPM311. If you must file an annual income tax return, file it on time: support is not transferred if the required return is missing or late. If you have no filing obligation, FR0512 alone does not require you to file GPM311. Check your obligation and applicable deadlines with VMI."
     ],
     [
       "Will this website send my tax details to the parish?",
-      "No. There is no tax-data submission form here. Applications are made only in EDS. Calculator values stay in your browser."
+      "FR0512 and income tax returns are submitted in EDS, not on this site. VMI gives recipients aggregate amounts, not details about each person who supported them. Calculator values stay in your browser. After separate consent, “Ask AI” sends your question through Cloudflare to OpenAI; do not enter personal tax information."
     ],
     [
       "How can I help without GPM?",
       "You can make a voluntary bank transfer using the details in the parish-support section. Contact the parish about donating materials or helping with work."
+    ],
+    [
+      "Can religious communities receive 1.2% from 2027?",
+      "Yes. A legal amendment effective on 1 January 2027 includes religious communities, associations and centres as recipients. It also adds state and municipal schools, building owners’ associations and gardeners’ associations. Check each recipient in VMI/EDS; this site has not verified this parish’s details for the 2027 campaign."
+    ],
+    [
+      "Can I change or cancel an application?",
+      "Submit the initial application for 2026 by 3 May 2027. Under current rules, an existing application for that year’s allocation can be corrected in EDS until 30 June 2027: change the recipient, percentage or period. To withdraw support for all recipients, submit a corrected application with no recipients. 30 June is a correction deadline, not an extension for initial applications."
+    ],
+    [
+      "When is support transferred and where can I check it?",
+      "Under the general procedure, VMI calculates and transfers support between 1 July and 15 November of the following year: in 2027 for income received in 2026. This does not guarantee a particular payment date. Check EDS notifications (Pranešimai) or Mano VMI; acceptance of FR0512 does not mean the money has already been transferred."
+    ],
+    [
+      "What is the 1.2% calculated from?",
+      "The annual GPM calculated in the return, not salary, the outstanding balance or a refund. VMI also adds fixed GPM paid for a verslo liudijimas business certificate and subtracts income tax paid abroad. If no return is filed or required, the base is GPM withheld by the income payer. VMI determines the exact amount; the calculator only multiplies your entered base by 0.012."
+    ],
+    [
+      "Can a pensioner or someone without a job allocate GPM?",
+      "Being retired or out of work does not by itself exclude you. Tax residency and income on which GPM was calculated or withheld for the relevant year matter. If all income is tax-exempt and GPM is zero, there is no tax to allocate. Other taxable income may allow participation, subject to VMI conditions."
     ]
   ],
   "sourcesTitle": "Official sources",
@@ -214,7 +234,10 @@
     "Changes for religious communities",
     "FR0512 submission and video",
     "GPM311 income tax return",
-    "Dividing 1.2% between recipients"
+    "Dividing 1.2% between recipients",
+    "General rules and VMI guide (read with the 2027 changes)",
+    "Filing and correcting FR0512: VMI’s 2026 explanation",
+    "VMI recipient search"
   ],
   "reviewed": "Reviewed",
   "contactTitle": "Need an explanation?",
