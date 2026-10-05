@@ -98,6 +98,9 @@ function choices(records,label){const n=block(label);for(const r of records)acti
 function welcome(){
  cancelAI();consent=false;history=[];
  log.replaceChildren();input.value='';step=-1;block(ui.welcome);
+ calendarNotice();
+}
+function calendarNotice(){
  if(data){const n=block();calendar(n);
  if((Date.parse(today())-Date.parse(data.calendar.checkedOn))/86400000>90)n.append(el('small',ui.stale,'gh-important'));
  link(n,'VMI',data.calendar.source);
@@ -190,8 +193,12 @@ if(aiButton&&cancelButton&&host.GpmAI){
 opener.hidden=false;
 opener.addEventListener('click',async()=>{
  dialog.showModal();opener.setAttribute('aria-expanded','true');document.body.classList.add('gpm-dialog-open');
- if(!log.childElementCount){welcome();send.disabled=true;if(await ready())welcome();}
- input.focus();
+ if(!log.childElementCount){
+  welcome();send.disabled=true;if(aiButton)aiButton.disabled=true;
+  if(await ready())calendarNotice();
+  if(aiButton)aiButton.disabled=false;
+ }
+ if(dialog.open)input.focus();
 });
 dialog.addEventListener('close',()=>{cancelAI();consent=false;history=[];document.body.classList.remove('gpm-dialog-open');opener.setAttribute('aria-expanded','false');opener.focus({preventScroll:true});});
 dialog.querySelector('[data-gpm-close]').addEventListener('click',()=>dialog.close());

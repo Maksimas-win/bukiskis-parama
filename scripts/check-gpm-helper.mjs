@@ -66,6 +66,10 @@ try{
  const ui=JSON.parse(fs.readFileSync(path.join(root,'src/locales/gpm-helper.ui.json'),'utf8'));
  for(const lang of Object.keys(ui)){
   const page=await browser.newPage({viewport:{width:390,height:844}});
+  // A fast typist must not lose the question while the lazy guide is loading.
+  await page.route('**/gpm-data-*.js',async route=>{
+   await new Promise(resolve=>setTimeout(resolve,300));await route.continue();
+  });
   const calls=[];let mode='ok',release,heldResolve;
   const held=new Promise(resolve=>{heldResolve=resolve;});
   await page.route(endpoint,async route=>{
@@ -110,7 +114,7 @@ try{
   assert.equal(calls.length,3);assert.ok(!(await page.locator('[data-gpm-log]').innerText()).includes('name@example.com'));
   mode='hold';await page.locator('#gh-query').fill('What is GPM?');await page.locator('[data-gpm-ai]').click();
   await page.getByRole('button',{name:ui[lang].aiAccept,exact:true}).click();
-  await held;
+  await Promise.race([held,new Promise((_,reject)=>setTimeout(()=>reject(Error('AI request did not reach the mock')),5000))]);
   await page.waitForFunction(()=>!document.querySelector('[data-gpm-cancel]').hidden);
   await page.locator('[data-gpm-cancel]').click();
   if(release)release();
