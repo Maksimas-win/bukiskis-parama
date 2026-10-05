@@ -5,7 +5,7 @@
   "compatibility_date": "2026-10-05",
   "workers_dev": true,
   "vars": {
-    "ALLOWED_ORIGINS": "https://maksimas-win.github.io",
+    "ALLOWED_ORIGINS": "https://hram.lt,https://maksimas-win.github.io",
     "OPENAI_MODEL": "gpt-4.1-mini"
   },
   "ratelimits": [

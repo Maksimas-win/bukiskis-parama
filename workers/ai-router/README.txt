@@ -1,11 +1,12 @@
-BUKISKIS AI ROUTER — OpenAI version 1.2.0 (prepared 2026-10-05)
+BUKISKIS AI ROUTER — OpenAI version 1.2.1 (prepared 2026-10-05)
 
 Endpoint: POST https://bukiskis-ai-router.maksimas1982.workers.dev/api/chat
 Health: GET /health
 Model: gpt-4.1-mini (same model as the existing Bukiskis Project Studio).
 Secret: OPENAI_API_KEY, encrypted Cloudflare variable. No key is included here.
 CHAT_RATE_LIMITER: namespace 2026100501, 10 requests / 60 seconds per IP.
-Allowed browser origin: https://maksimas-win.github.io
+Allowed browser origins: https://hram.lt, https://maksimas-win.github.io
+Public site: https://hram.lt/
 
 This code uses only OpenAI. It does not call Gemini or switch providers automatically.
 The existing GEMINI_API_KEY can remain unused in Cloudflare. The separate
@@ -31,9 +32,10 @@ own terms. Cancelling a browser request may not stop upstream processing.
 
 Run tests: npm test (Node 22+, no runtime dependencies).
 Deployment: update only bukiskis-ai-router after adding OPENAI_API_KEY.
-Then check /health version 1.2.0 and a real POST from the allowed site origin.
+Then check /health version 1.2.1 and a real POST from the allowed site origin.
 The public site must be built and tested before publishing its AI interface.
 
+1.2.1: hram.lt migration; GitHub Pages remains an allowed compatibility origin.
 1.2.0: source snapshot synchronised with the corrected 2027 GPM guidance.
 
 Source snapshot: 2026-10-05. Calendar source checked 2026-10-03; this is not a

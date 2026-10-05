@@ -46,6 +46,7 @@ for (const [lang, t] of Object.entries(locales)) {
 }
 fs.rmSync(out, { recursive:true, force:true });
 fs.mkdirSync(out, { recursive:true });
+fs.copyFileSync(path.join(root,'hosting/.htaccess'),path.join(out,'.htaccess'));
 for (const directory of ['css','js','img','fonts']) {
  fs.mkdirSync(path.join(out,'assets',directory),{recursive:true});
 }

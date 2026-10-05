@@ -5,6 +5,7 @@
   const SOURCES = new Set([
     'https://www.vmi.lt/evmi/paramos-skyrimas-34-str.-1',
     'https://deklaravimas.vmi.lt/',
+    'https://hram.lt/',
     'https://maksimas-win.github.io/bukiskis-parama/'
   ]);
   function remember(history, message, answer) {
