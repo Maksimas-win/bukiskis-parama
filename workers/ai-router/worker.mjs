@@ -2,9 +2,9 @@
 const MAX_BODY_BYTES = 16384;
 const MAX_MESSAGE_CHARS = 500;
 const LANGUAGES = new Set(['ru', 'lt', 'en', 'pl', 'de', 'uk']);
-const DEFAULT_ORIGIN = 'https://maksimas-win.github.io';
+const DEFAULT_ORIGIN = 'https://hram.lt,https://maksimas-win.github.io';
 const DEFAULT_MODEL = 'gpt-4.1-mini';
-const SITE = 'https://maksimas-win.github.io/bukiskis-parama/';
+const SITE = 'https://hram.lt/';
 const SYSTEM = `You are the public information assistant for bukiskis-parama.
 Answer only questions about this guide, Lithuania's 1.2% GPM / FR0512 process,
 and the optional parish projects described in the server's source snapshot.
@@ -137,7 +137,7 @@ async function generateReply(env, input) {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    if (url.pathname === '/health' && request.method === 'GET') return response({ok: true, service: 'bukiskis-ai-router', version: '1.2.0', provider: 'openai'});
+    if (url.pathname === '/health' && request.method === 'GET') return response({ok: true, service: 'bukiskis-ai-router', version: '1.2.1', provider: 'openai'});
     if (url.pathname !== '/api/chat') return response({error: {code: 'NOT_FOUND'}}, 404);
     const origin = allowedOrigin(request, env);
     if (!origin) return response({error: {code: 'ORIGIN_NOT_ALLOWED'}}, 403);

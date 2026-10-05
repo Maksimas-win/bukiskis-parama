@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import worker from '../worker.mjs';
 
-const origin = 'https://maksimas-win.github.io';
+const origin = 'https://hram.lt';
 const valid = {message: 'Что такое 1,2 % GPM?', language: 'ru', consent: true};
 const goodEnv = () => ({OPENAI_API_KEY: 'test-secret-not-a-real-key', CHAT_RATE_LIMITER: {limit: async () => ({success: true})}});
 function request(body = valid, options = {}) {
@@ -19,7 +19,7 @@ function noNetwork(t) {
 test('health does not require or reveal configuration', async () => {
   const result = await worker.fetch(new Request('https://worker.example/health'), {});
   assert.equal(result.status, 200);
-  assert.deepEqual(await result.json(), {ok: true, service: 'bukiskis-ai-router', version: '1.2.0', provider: 'openai'});
+  assert.deepEqual(await result.json(), {ok: true, service: 'bukiskis-ai-router', version: '1.2.1', provider: 'openai'});
 });
 
 test('deployment notes name the same version as health', async () => {
@@ -30,11 +30,27 @@ test('deployment notes name the same version as health', async () => {
 
 test('only the exact allowed origin gets CORS access', async t => {
   noNetwork(t);
-  for (const Origin of ['', 'null', 'https://maksimas-win.github.io.evil.test', 'http://maksimas-win.github.io']) {
+  for (const Origin of ['', 'null', 'https://maksimas-win.github.io.evil.test', 'http://maksimas-win.github.io', 'https://hram.lt.evil.test', 'http://hram.lt', 'https://www.hram.lt']) {
     const result = await worker.fetch(request(valid, {headers: {Origin}}), goodEnv());
     assert.equal(result.status, 403);
     assert.equal(result.headers.get('Access-Control-Allow-Origin'), null);
   }
+});
+
+test('migration keeps both public sites usable and an explicit environment restricts access', async t => {
+  noNetwork(t);
+  const preflight = Origin => new Request('https://worker.example/api/chat', {
+    method: 'OPTIONS', headers: {Origin, 'Access-Control-Request-Method': 'POST',
+      'Access-Control-Request-Headers': 'content-type'},
+  });
+  for (const Origin of ['https://hram.lt', 'https://maksimas-win.github.io']) {
+    const response = await worker.fetch(preflight(Origin), {});
+    assert.equal(response.status, 204);
+    assert.equal(response.headers.get('Access-Control-Allow-Origin'), Origin);
+  }
+  const response = await worker.fetch(preflight('https://maksimas-win.github.io'), {ALLOWED_ORIGINS: 'https://hram.lt'});
+  assert.equal(response.status, 403);
+  assert.equal(response.headers.get('Access-Control-Allow-Origin'), null);
 });
 
 test('preflight works without secrets; arbitrary headers/methods are rejected', async t => {

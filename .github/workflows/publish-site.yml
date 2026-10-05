@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
-      SITE_URL: https://maksimas-win.github.io/bukiskis-parama/
+      SITE_URL: https://hram.lt/
     steps:
       - uses: actions/checkout@v6
         with:
@@ -79,8 +79,35 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v5
 
+  publish-hostinger:
+    needs: build
+    if: github.repository == 'Maksimas-win/bukiskis-parama' && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - name: Publish the tested static tree for Hostinger auto-deployment
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/publish-hostinger.mjs
+
   verify:
-    needs: deploy
+    needs: [deploy, publish-hostinger]
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: hostinger
+            url: https://hram.lt/
+          - target: github-pages
+            url: https://maksimas-win.github.io/bukiskis-parama/
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -91,12 +118,14 @@ jobs:
         with:
           node-version: '22'
       - name: Compare live files with the tested release
+        env:
+          SITE_URL: ${{ matrix.url }}
         run: npm run check:live
       - name: Save deployment verification
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: live-verification
+          name: live-verification-${{ matrix.target }}
           path: qa/live
           if-no-files-found: ignore
           retention-days: 7
