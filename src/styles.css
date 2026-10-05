@@ -330,3 +330,7 @@ main.section h1{font-size:clamp(28px,4.5vw,52px);line-height:1.18;letter-spacing
   .section-top h2, .way-num, .project-visual img, .diagram-card { animation:none!important; transform:none; translate:none; scale:none; }
   .diagram-card { transform:rotate(-3deg); }
 }
+
+/* Reserve the appeal image box before the file arrives, using the size the browser settles on after
+   loading (limited by the dialog width and 60dvh). Text below no longer shifts (Lighthouse CLS). */
+#photo-dialog.is-appeal .dialog-photo img { width:min(100%, calc(60dvh * 2750 / 1938)); }

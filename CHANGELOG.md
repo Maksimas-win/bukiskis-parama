@@ -1,3 +1,9 @@
+# 0.5.6 — 2026-10-05
+
+- SEO: schema.org microdata now includes dateModified, the WebSite the page belongs to, and FAQPage questions and answers in all six languages.
+- Core Web Vitals: reserve the parish appeal image box before it loads (Lighthouse attributed CLS 0.126 to the text below it) and start the 3D introduction from the real header height (CLS 0.044).
+- SEO.md describes hram.lt as the primary address, Search Console, Bing and Yandex steps, the Hostinger CDN bot check, and the measured page speed.
+
 # 0.5.5 — 2026-10-05
 
 - Depth and light on the existing layout: the hero card, project images and step diagrams tilt towards a mouse pointer and catch a soft highlight; diagram rings move at different depths.

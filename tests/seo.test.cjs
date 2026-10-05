@@ -76,3 +76,14 @@ test('Google verification file survives a complete site build and is excluded fr
  assert.equal(read(`docs/${name}`),`google-site-verification: ${name}`);
  if(config.indexingEnabled) assert.ok(!read('docs/sitemap.xml').includes(name));
 });
+
+test('FAQ answers and page freshness are described with schema.org microdata',()=>{
+ for(const lang of config.languages) {
+  const html=read(`docs/${lang}/index.html`), t=require(`../src/locales/${lang}.json`);
+  assert.ok(html.includes(`<meta itemprop="dateModified" content="${config.contentUpdated}">`));
+  assert.match(html,new RegExp(`<span itemprop="isPartOf" itemscope itemtype="https://schema.org/WebSite"><meta itemprop="name" content="[^"]+"><link itemprop="url" href="${base.replace(/[.*+?^${}()|[\]\/]/g,'\$&')}"></span>`));
+  assert.equal((html.match(/itemtype="https:\/\/schema.org\/FAQPage"/g)||[]).length,1);
+  assert.equal((html.match(/<details itemprop="mainEntity" itemscope itemtype="https:\/\/schema.org\/Question"><summary itemprop="name">/g)||[]).length,t.faq.length);
+  assert.equal((html.match(/<p itemprop="acceptedAnswer" itemscope itemtype="https:\/\/schema.org\/Answer"><span itemprop="text">/g)||[]).length,t.faq.length);
+ }
+});
