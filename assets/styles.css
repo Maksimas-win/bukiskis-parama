@@ -266,3 +266,67 @@ main.section h1{font-size:clamp(28px,4.5vw,52px);line-height:1.18;letter-spacing
   .faq-list details::details-content { block-size:auto!important; overflow:visible; }
   .eyebrow::before { display:none; }
 }
+
+/* Version 0.7 — depth and light. Mouse pointers add tilt, parallax and soft light; time adds a slow drift.
+   Touch, reduced motion, forced colours and print keep the flat 0.6 presentation. Layout is unchanged. */
+@property --px { syntax:'<number>'; inherits:true; initial-value:0; }
+@property --py { syntax:'<number>'; inherits:true; initial-value:0; }
+@property --lit { syntax:'<number>'; inherits:true; initial-value:0; }
+@property --drift { syntax:'<number>'; inherits:true; initial-value:0; }
+:root { --px:0; --py:0; --lit:0; --drift:0; --glide:.5s var(--ease-out); }
+.hero, .info-visual, .project-visual, .diagram, .bank-card, .parish-support-card, .calculator-section { --px:0; --py:0; --lit:0; }
+.is-tilting { --lit:1; }
+
+/* Hero: soft colour fields drift slowly and shift with the pointer, behind unchanged content. */
+.hero { position:relative; isolation:isolate; }
+.hero::before { content:''; position:absolute; inset:0; z-index:-1; pointer-events:none; transition:--px 1.2s var(--ease-out), --py 1.2s var(--ease-out);
+  background:radial-gradient(circle at calc(14% + var(--drift) * 6% - var(--px) * 6%) calc(26% + var(--drift) * 4% - var(--py) * 6%), #a9c6ff3d, transparent 34%),
+    radial-gradient(circle at calc(88% - var(--drift) * 5% + var(--px) * 8%) calc(74% - var(--drift) * 6% + var(--py) * 8%), #8ed8cc29, transparent 30%),
+    radial-gradient(circle at 62% 6%, #dce8ff59, transparent 24%); }
+@media (prefers-reduced-motion:no-preference) { .hero::before { animation:hero-drift 18s ease-in-out infinite alternate; } }
+@keyframes hero-drift { to { --drift:1; } }
+
+/* Diagram cards breathe gently; time is the fourth dimension here. */
+@media (prefers-reduced-motion:no-preference) { .diagram-card { animation:card-float 7s ease-in-out infinite; } }
+@keyframes card-float { 50% { translate:0 -6px; } }
+
+/* Pointer-driven depth. The variables glide, so cards settle back smoothly when the pointer leaves. */
+@media (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
+  .depth-ready .info-visual { transform:perspective(1100px) rotateX(calc(var(--py) * -5deg)) rotateY(calc(var(--px) * 7deg)); transition:--px var(--glide), --py var(--glide), --lit .4s; }
+  .depth-ready .info-visual::after { transition:--lit .4s; background:radial-gradient(320px circle at 100% 0, #7aa7ff2e, transparent 70%), radial-gradient(260px circle at calc(50% + var(--px) * 100%) calc(50% + var(--py) * 100%), rgb(122 168 255 / calc(var(--lit) * .2)), transparent 70%); }
+  .depth-ready .project-visual { transform:perspective(1000px) rotateX(calc(var(--py) * -6deg)) rotateY(calc(var(--px) * 8deg)); transition:--px var(--glide), --py var(--glide), --lit .4s, translate .4s var(--ease-out), box-shadow .4s var(--ease-out); }
+  .depth-ready .project-card:hover .project-visual { translate:0 -4px; transform:perspective(1000px) rotateX(calc(var(--py) * -6deg)) rotateY(calc(var(--px) * 8deg)); }
+  .depth-ready .project-visual::after { content:''; position:absolute; inset:0; z-index:1; border-radius:inherit; pointer-events:none; background:radial-gradient(420px circle at calc(50% + var(--px) * 100%) calc(50% + var(--py) * 100%), rgb(255 255 255 / calc(var(--lit) * .28)), transparent 60%); }
+  .depth-ready .diagram-card { transform:perspective(700px) rotateX(calc(var(--py) * -12deg)) rotateY(calc(var(--px) * 16deg)) rotate(-3deg); transition:--px var(--glide), --py var(--glide); }
+  .depth-ready .diagram::before, .depth-ready .diagram::after { transition:--px var(--glide), --py var(--glide); }
+  .depth-ready .diagram::before { translate:calc(var(--px) * -16px) calc(var(--py) * -16px); }
+  .depth-ready .diagram::after { translate:calc(var(--px) * -28px) calc(var(--py) * -28px); }
+  .depth-ready .bank-card, .depth-ready .parish-support-card { position:relative; isolation:isolate; }
+  .depth-ready .bank-card::before, .depth-ready .parish-support-card::before { content:''; position:absolute; inset:0; z-index:-1; border-radius:inherit; pointer-events:none; transition:--px .3s, --py .3s, --lit .4s; background:radial-gradient(360px circle at calc(50% + var(--px) * 100%) calc(50% + var(--py) * 100%), rgb(39 91 213 / calc(var(--lit) * .07)), transparent 70%); }
+  .depth-ready .calculator-section::after { transition:--px var(--glide), --py var(--glide), --lit .5s; background:radial-gradient(560px circle at 88% 12%, #4c7ff040, transparent 70%), radial-gradient(420px circle at 4% 100%, #2aa9a01c, transparent 70%), radial-gradient(380px circle at calc(50% + var(--px) * 100%) calc(50% + var(--py) * 100%), rgb(120 170 255 / calc(var(--lit) * .2)), transparent 70%); }
+  .brand-mark { transition:transform .8s var(--ease-out); }
+  .brand:hover .brand-mark { transform:perspective(300px) rotateY(360deg); }
+}
+
+/* Scroll depth on wide screens: headings unfold, numbers come forward, project images drift inside their frames. */
+@supports (animation-timeline:view()) {
+  @media (min-width:961px) and (prefers-reduced-motion:no-preference) {
+    .section-top h2 { transform-origin:50% 100%; animation:heading-unfold linear both; animation-timeline:view(); animation-range:entry 10% cover 35%; }
+    .way-num { animation:number-depth linear both; animation-timeline:view(); animation-range:entry 0% cover 40%; }
+    .project-visual img { scale:1.12; animation:image-drift linear both; animation-timeline:view(); animation-range:cover; }
+  }
+}
+@keyframes heading-unfold { from { transform:perspective(700px) rotateX(24deg) translateY(10px); } }
+@keyframes number-depth { from { transform:perspective(500px) translateZ(-110px); opacity:.4; } }
+@keyframes image-drift { from { translate:0 -5%; } to { translate:0 5%; } }
+
+/* Calculator total responds when the example values change. */
+@media (prefers-reduced-motion:no-preference) { .calc-results.is-bump .calc-result-total strong { animation:value-bump .45s var(--ease-out); } }
+@keyframes value-bump { from { opacity:.55; translate:0 5px; } }
+
+@media (forced-colors:active) { .hero::before, .project-visual::after, .bank-card::before, .parish-support-card::before { display:none; } }
+@media print {
+  .hero::before, .project-visual::after, .bank-card::before, .parish-support-card::before { display:none; }
+  .section-top h2, .way-num, .project-visual img, .diagram-card { animation:none!important; transform:none; translate:none; scale:none; }
+  .diagram-card { transform:rotate(-3deg); }
+}

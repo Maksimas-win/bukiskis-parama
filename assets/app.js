@@ -293,4 +293,43 @@
       if (event.matches) { $$('.will-reveal').forEach(el => el.classList.remove('will-reveal')); observer.disconnect(); }
     });
   }
+
+  // Depth: surfaces follow a mouse or pen with tilt and light. Touch and reduced motion keep the flat design.
+  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+  if (finePointer.matches && !reducedMotion.matches) {
+    document.body.classList.add('depth-ready');
+    $$('.hero, .info-visual, .project-visual, .diagram, .bank-card, .parish-support-card, .calculator-section').forEach(surface => {
+      let frame = 0;
+      surface.addEventListener('pointermove', event => {
+        if (event.pointerType !== 'mouse' && event.pointerType !== 'pen') return;
+        window.cancelAnimationFrame(frame);
+        frame = window.requestAnimationFrame(() => {
+          const box = surface.getBoundingClientRect();
+          if (!box.width || !box.height) return;
+          surface.style.setProperty('--px', ((event.clientX - box.left) / box.width - 0.5).toFixed(3));
+          surface.style.setProperty('--py', ((event.clientY - box.top) / box.height - 0.5).toFixed(3));
+          surface.classList.add('is-tilting');
+        });
+      });
+      surface.addEventListener('pointerleave', () => {
+        window.cancelAnimationFrame(frame);
+        surface.classList.remove('is-tilting');
+        surface.style.removeProperty('--px');
+        surface.style.removeProperty('--py');
+      });
+    });
+    reducedMotion.addEventListener?.('change', event => {
+      if (event.matches) document.body.classList.remove('depth-ready');
+    });
+  }
+
+  // The example total gives a short visual response when its inputs change.
+  const results = $('.calc-results');
+  if (results && !reducedMotion.matches) {
+    $$('#gpm-amount, #people-count').forEach(input => input.addEventListener('input', () => {
+      results.classList.remove('is-bump');
+      void results.offsetWidth;
+      results.classList.add('is-bump');
+    }));
+  }
 })();
