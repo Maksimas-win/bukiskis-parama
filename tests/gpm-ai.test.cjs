@@ -1,6 +1,17 @@
 const {test}=require('node:test');
 const assert=require('node:assert/strict');
 const ai=require('../src/assets/gpm-ai.js');
+test('Browser transport is available when the host also exposes CommonJS',()=>{
+ const vm=require('node:vm');
+ const source=require('node:fs').readFileSync(require.resolve('../src/assets/gpm-ai.js'),'utf8');
+ for(const commonJS of [false,true]){
+  const browser={document:{}};
+  const context={window:browser,...(commonJS?{module:{exports:{}}}:{})};
+  vm.runInNewContext(source,context);
+  assert.equal(typeof browser.GpmAI.request,'function');
+  if(commonJS)assert.equal(context.module.exports,browser.GpmAI);
+ }
+});
 const input={message:'What is 1.2%?',language:'en',history:[],consent:true};
 const valid={answer:'A share of GPM.',provider:'gemini',sources:[],sourceSnapshotDate:'2026-10-05'};
 test('AI cannot send without consent and sends only the public chat fields',async()=>{
