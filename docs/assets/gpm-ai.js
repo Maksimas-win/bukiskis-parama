@@ -37,5 +37,5 @@
   }
   const api = {request, remember};
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
-  else host.GpmAI = api;
+  if (host.document) host.GpmAI = api;
 })(typeof window === 'undefined' ? globalThis : window);
