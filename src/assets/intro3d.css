@@ -40,3 +40,7 @@
 
 /* Avoid duplicate fixed actions while the introduction is visible. */
 body.intro3d-in-view .mobile-cta{visibility:hidden;pointer-events:none}
+
+/* Start from the real sticky header height so the footer does not jump when the script measures it. */
+.intro3d{--intro-header:87px}
+@media(max-width:730px){.intro3d{--intro-header:75px}}
