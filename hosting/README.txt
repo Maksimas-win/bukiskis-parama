@@ -25,9 +25,15 @@ directory listings, blocks dotfiles and revalidates stable asset filenames.
 
 AI remains in the separate Cloudflare Worker bukiskis-ai-router. Keep
 ALLOWED_ORIGINS=https://hram.lt,https://maksimas-win.github.io
-and preserve OPENAI_API_KEY and CHAT_RATE_LIMITER. Worker code changes require
-a separate Cloudflare deployment; ordinary site content/design changes deploy
-automatically. A changed knowledge snapshot must also be published to the Worker.
+and preserve OPENAI_API_KEY and CHAT_RATE_LIMITER. Cloudflare Workers Builds
+is connected to this repository's main branch with preview builds disabled:
+  Root directory: workers/ai-router
+  Build command: cd ../.. && npm run build && npm test
+  Deploy command: npx wrangler deploy
+Each main update rebuilds the shared knowledge snapshot, runs tests and deploys
+the Worker independently of the static Hostinger publication. Check both build
+results after changes. Its deployment token is managed by Cloudflare Builds;
+runtime API secrets remain encrypted in the existing Worker.
 Do not change the unrelated parish-assistant Worker.
 
 Rollback: revert the offending main commit and let checks/release run again.
