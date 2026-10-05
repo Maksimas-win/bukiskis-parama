@@ -80,7 +80,10 @@ try{
     {title:'Unsafe',url:'javascript:alert(1)'}]}}).catch(()=>{});
   });
   await page.goto(`${base}/${lang}/index.html`,{waitUntil:'networkidle'});
-  if(await page.locator('#photo-dialog').isVisible())await page.keyboard.press('Escape');
+  if(await page.locator('#photo-dialog').isVisible()){
+   await page.keyboard.press('Escape');
+   await page.locator('#cookie-notice').waitFor({state:'visible'});
+  }
   if(await page.locator('[data-cookie-confirm]').isVisible())await page.locator('[data-cookie-confirm]').click();
   await page.locator('#gpm-amount').fill('9876.54');
   await page.locator('[data-gpm-open]').click();
