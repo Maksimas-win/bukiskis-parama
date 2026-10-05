@@ -1,16 +1,33 @@
-# Public GPM helper v1
+# Public GPM assistant
 
-Published scope: a local source-based chatbot for the 1.2% GPM information guide, not the owner presentation studio and not a generative model. Responses are matched by topic/phrasing and drawn from the site's existing localized text. No private archive files, contracts, photos, or donor amounts are imported.
+The 24-topic local guide remains available in all six languages. **Ask AI** sends a free-form question to the bukiskis-ai-router Cloudflare Worker only after the visitor accepts the in-dialog disclosure. Production provider: OpenAI, gpt-4.1-mini, Responses API. Gemini is not called or used as a fallback.
 
-The 24-topic structure is derived from the supplied `public/gpm-knowledge.json` archive. The builder regenerates the same public index from `src/locales/*.json` and `src/site.config.json` rather than introducing stale duplicated body text. Official VMI calendar rechecked 2026-10-03: https://www.vmi.lt/evmi/paramos-skyrimas-34-str.-1 (application 2027-01-01 through 2027-05-03 for 2026).
+## Data flow
 
-## Implementation
-- `src/assets/gpm-helper.js`: local intent matching, redaction, guided steps, native accessible dialog. No network model requests or persistence; the corpus script loads from this site once on opening the dialog.
-- `src/locales/gpm-helper.ui.json`: six complete UI translations and explicit non-AI mode disclosures.
-- `scripts/build-gpm-helper.mjs`: 24 records per language from authoritative project sources, private-data allowlisting, localized privacy note.
-- `tests/gpm-helper.test.cjs`: content isolation, matching, date boundaries, sensitive-input checks and no model calls.
-- `scripts/check-gpm-helper.mjs`: development-only Chromium test on the unchanged HTTP-served site, including its CSP. Covers all languages, desktop/mobile/landscape, no-JS, no question-related requests, no overflow, focus return, input safety, and screenshots.
+- Only the question, language, consent flag and up to three recent AI message pairs are sent. Earlier long answers are clipped to the server's 500-character history limit. Topic clicks and local searches do not send questions.
+- Calculator inputs, private drafts, donor records, contacts and browser storage are never included. Sensitive-input filtering is a limited safeguard, not a guarantee that all personal information is detected.
+- Consent and context live in memory. Clear and close revoke consent and discard AI context. Closing cancels waiting for a pending answer but cannot retract a request already received by the provider.
+- The Worker sets store:false, does not log message bodies or credentials, and uses a public, server-owned source snapshot. This does not promise zero retention by Cloudflare or OpenAI.
+- Output is plain text via textContent. Source links use an exact HTTPS allowlist, independent of model text. No new runtime dependencies, inline scripts or inline styles.
+- CSP connect-src permits only https://bukiskis-ai-router.maksimas1982.workers.dev. Secrets stay in Cloudflare encrypted variables.
 
-No new server, paid account or paid model request was created. The existing CSP `connect-src 'none'` is unchanged. Actual OpenAI conversational generation requires a separately deployed, authenticated/rate-limited server with a server-side key and reviewed data disclosure; localhost is not a public production endpoint. Do not place an API key in `docs`, JavaScript, GitHub or this chat.
+## Failure handling
 
-Calendar messages follow the browser's date in Europe/Vilnius; this is not a live VMI lookup. After 90 days a freshness warning appears. Recipient verification flags are not changed. GPM and optional parish support remain distinct; general answers never select the parish for the visitor.
+One request at a time, no automatic retries, a 28-second client timeout and a 20-second provider timeout. Clear, close, local search and topic selection abort the pending request and suppress late answers. Errors and rate limits offer local materials. The Worker fails closed if its secret or rate limiter is missing. Per-IP limiting is not authentication or a strict global spending cap.
+
+## Verification
+
+- src/assets/gpm-helper.js: accessible dialogue, local search, consent and cancellation.
+- src/assets/gpm-ai.js: isolated HTTP transport and response validation.
+- src/locales/gpm-helper.ui.json: six-language disclosure and error messages.
+- workers/ai-router/: separately deployed backend, public context and tests.
+- npm run build and npm test: generated output, local behavior, transport and Worker tests.
+- scripts/check-gpm-helper.mjs: desktop/mobile/landscape, all languages, no question requests before consent, mocked success/history/rate errors/cancel/reset, XSS-safe output and no-JS guide.
+
+Browser API scenarios mock only the endpoint; HTML, scripts and CSP remain the production versions. Live smoke tests are separate from mocked results.
+
+The source snapshot is not a live VMI search. Calendar freshness and unverified recipient flags remain unchanged. General GPM answers do not select a recipient.
+
+OpenAI data controls: https://developers.openai.com/api/docs/guides/your-data
+
+Gemini is excluded because its Free tier does not satisfy Google's requirement for serving API clients to EEA users: https://ai.google.dev/gemini-api/terms
