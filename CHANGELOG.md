@@ -1,3 +1,12 @@
+# 0.5.9 — 2026-10-09
+
+- Open directly on the GPM guide. Replace the automatic poster dialog with a short, translated parish appeal in the optional support section.
+- Use the two photographs supplied by the owner, with lazy loading, declared dimensions and a manual full-size view. Keep project concepts explicitly labelled.
+- Apply VMI's €3 annual transfer minimum to each participant before calculating the group example; preserve the individual mathematical result and explain the difference.
+- Improve small type and add an optional, persistent reading mode with moderate enlargement, stronger contrast and no animation; retain keyboard and blocked-storage operation.
+- Remove the extended scroll spacer from the mobile introduction, tighten mobile spacing and keep the assistant beside the bottom action bar.
+- Extend existing browser checks for first-entry behavior, photos, threshold boundaries, reading preferences and narrow layouts across all six languages.
+
 # 0.5.8 — 2026-10-05
 
 - Integrate the reviewed Antigravity visual refresh: system typography, consistent cards and controls, refreshed 3D introduction and assistant, copy feedback and calculator slider fill.

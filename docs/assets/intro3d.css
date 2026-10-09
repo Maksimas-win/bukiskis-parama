@@ -25,8 +25,8 @@
   justify-content: space-between;
   gap: 16px;
   z-index: 2;
-  font: 700 11px/1.5 var(--sans, -apple-system, BlinkMacSystemFont, Arial, sans-serif);
-  letter-spacing: 2px;
+  font: 700 12px/1.5 var(--sans, -apple-system, BlinkMacSystemFont, Arial, sans-serif);
+  letter-spacing: 1.2px;
   text-transform: uppercase;
   color: #9cb5c9;
 }
@@ -44,12 +44,12 @@
   align-items: center;
   justify-content: flex-end;
   gap: 8px;
-  min-height: 38px;
+  min-height: 44px;
   color: #e2f1fb;
   letter-spacing: .2px;
   text-transform: none;
   text-decoration: none;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
   flex-shrink: 0;
   background: rgba(255, 255, 255, 0.08);
@@ -130,7 +130,7 @@
   color: #ffffff;
 }
 .intro3d__copy h2 span { display: block; color: #93c5fd; }
-.intro3d__copy>p { max-width: 620px; font: 400 clamp(14px, 1.15vw, 16px)/1.65 var(--sans, -apple-system, BlinkMacSystemFont, Arial, sans-serif); color: #cbd5e1; margin: 0 auto; text-wrap: pretty; }
+.intro3d__copy>p { max-width: 620px; font: 400 clamp(15px, 1.15vw, 16px)/1.65 var(--sans, -apple-system, BlinkMacSystemFont, Arial, sans-serif); color: #dbe6f1; margin: 0 auto; text-wrap: pretty; }
 
 .intro3d__actions {
   position: relative;
@@ -171,7 +171,7 @@
   align-items: center;
   min-height: 44px;
   color: #e2e8f0;
-  font: 600 13px/1.5 var(--sans, -apple-system, BlinkMacSystemFont, Arial, sans-serif);
+  font: 600 14px/1.5 var(--sans, -apple-system, BlinkMacSystemFont, Arial, sans-serif);
   text-decoration: none;
   border-bottom: 1.5px solid rgba(255, 255, 255, 0.4);
   transition: color .2s, border-color .2s;
@@ -186,8 +186,8 @@
   align-items: center;
   justify-content: space-between;
   gap: 18px;
-  font: 500 11px/1.5 var(--sans, -apple-system, BlinkMacSystemFont, Arial, sans-serif);
-  color: #94a3b8;
+  font: 500 13px/1.5 var(--sans, -apple-system, BlinkMacSystemFont, Arial, sans-serif);
+  color: #b3c3d6;
   margin-top: auto;
   padding-top: 10px;
   flex-shrink: 0;
@@ -235,7 +235,7 @@
   transform: scaleX(0);
   transform-origin: left center;
 }
-.intro3d__meta { font-size: 10px; letter-spacing: 1px; white-space: nowrap; font-weight: 700; color: #64748b; }
+.intro3d__meta { font-size: 12px; letter-spacing: .6px; white-space: nowrap; font-weight: 600; color: #b3c3d6; }
 
 .intro3d__ambient { position: absolute; inset: 0; overflow: hidden; pointer-events: none; opacity: .7; }
 .intro3d__ambient:before {
@@ -270,38 +270,46 @@
   .intro3d__copy h2 { font-size: 48px; }
 }
 
-@media (max-width: 700px) {
-  .intro3d { --intro-header: 75px; }
-  .intro3d__pin { padding: 14px 20px 18px; }
-  .intro3d__top { gap: 10px; font-size: 9px; letter-spacing: 1.2px; }
+/* Phones get a single compact introduction, with no sticky scroll spacer. */
+@media (max-width: 730px) {
+  .intro3d { --intro-header: 68px; }
+  .intro3d, .intro3d.is-animated { height: auto; }
+  .intro3d__pin, .intro3d.is-animated .intro3d__pin {
+    position: relative;
+    top: auto;
+    height: auto;
+    min-height: 0;
+    padding: 12px 20px 24px;
+  }
+  .intro3d__top { gap: 8px; font-size: 12px; letter-spacing: .4px; }
+  .intro3d__top>span { padding-inline: 8px; }
   .intro3d__top>p { display: none; }
-  .intro3d__skip { font-size: 11px; min-height: 38px; padding: 4px 12px; }
-  .intro3d__stage { width: calc(100% + 16px); min-height: 175px; height: 31svh; max-height: 360px; }
-  .intro3d__copy h2 { font-size: clamp(24px, 6.8vw, 34px); letter-spacing: -.85px; margin-bottom: 12px; }
-  .intro3d__copy>p { font-size: 13px; line-height: 1.65; max-width: 390px; }
-  .intro3d__actions { margin: 18px 0; gap: 12px 18px; }
-  .intro3d__primary { font-size: 13px; padding: 12px 22px; min-height: 48px; }
-  .intro3d__secondary { font-size: 12px; }
-  .intro3d__footer { font-size: 10px; gap: 12px; }
-  .intro3d__meta { font-size: 8px; letter-spacing: .4px; }
+  .intro3d__skip { font-size: 14px; min-height: 44px; padding: 5px 10px; flex-shrink: 1; text-align: center; }
+  .intro3d__stage { width: 100%; flex: none; min-height: 0; height: clamp(140px, 43vw, 190px); max-height: none; margin: 4px 0 10px; }
+  .intro3d__fallback { font-size: clamp(92px, 24vw, 155px); }
+  .intro3d__copy { max-width: 520px; }
+  .intro3d__copy h2 { font-size: clamp(24px, 6vw, 30px); line-height: 1.22; letter-spacing: -.5px; margin-bottom: 12px; }
+  .intro3d__copy>p { font-size: 15px; line-height: 1.6; max-width: 480px; }
+  .intro3d__actions { width: min(100%, 420px); margin: 16px 0 0; gap: 6px 12px; }
+  .intro3d__primary { flex: 1 1 180px; font-size: 14px; padding: 11px 16px; min-height: 48px; gap: 8px; }
+  .intro3d__secondary { flex: 1 1 140px; justify-content: center; font-size: 14px; text-align: center; }
+  .intro3d__footer { display: none; }
   .intro3d__progress { display: none !important; }
-  .intro3d__arrival { padding: 12px; }
-  .intro3d__arrival p { font-size: clamp(28px, 8.5vw, 46px); }
-  .intro3d__arrival small { font-size: 12px; margin-top: 16px; max-width: 300px; }
+  .intro3d__arrival { display: none; }
 }
 
 @media (max-width: 370px) {
   .intro3d__pin { padding-inline: 16px; }
-  .intro3d__actions { gap: 6px 16px; }
-  .intro3d__copy>p { font-size: 12px; }
-  .intro3d__meta { display: none; }
+  .intro3d__top { gap: 6px; }
+  .intro3d__top>span { font-size: 11px; padding-inline: 6px; }
+  .intro3d__skip { gap: 5px; padding-inline: 8px; }
 }
 
-@media (max-height: 700px) and (min-width: 701px) {
+@media (max-height: 700px) and (min-width: 731px) {
   .intro3d__pin { padding-top: 12px; padding-bottom: 12px; }
   .intro3d__stage { min-height: 150px; height: 28svh; }
   .intro3d__copy h2 { font-size: 28px; margin-bottom: 8px; }
-  .intro3d__copy>p { font-size: 12px; }
+  .intro3d__copy>p { font-size: 14px; }
   .intro3d__actions { margin: 14px 0 8px; }
   .intro3d__primary { min-height: 44px; padding-block: 10px; }
   .intro3d__footer { padding-top: 4px; }
@@ -311,17 +319,25 @@
   .intro3d.is-animated { height: auto; }
   .intro3d.is-animated .intro3d__pin { position: relative; height: auto; top: auto; }
   .intro3d__pin { min-height: 0; }
-  .intro3d__stage { height: 210px; flex: none; }
+  .intro3d__stage { height: 160px; flex: none; }
   .intro3d__footer { margin-top: 8px; }
 }
 
 @media(prefers-reduced-motion:reduce) {
   .intro3d.is-animated { height: auto; }
-  .intro3d.is-animated .intro3d__pin { position: relative; top: auto; height: auto; min-height: calc(100svh - var(--intro-header)); }
+  .intro3d__pin, .intro3d.is-animated .intro3d__pin { position: relative; top: auto; height: auto; min-height: 0; }
   .intro3d__primary { transition: none; }
-  .intro3d__hint, .intro3d__progress { visibility: hidden; }
+  .intro3d__hint, .intro3d__progress { display: none; }
   .intro3d__mouse:after { animation: none; }
 }
+
+/* The JS renderer stops as well; hiding canvas alone would keep using the GPU. */
+.intro3d.is-static { height: auto; }
+.intro3d.is-static .intro3d__pin { position: relative; top: auto; height: auto; min-height: 0; }
+.intro3d.is-static .intro3d__canvas, .intro3d.is-static .intro3d__arrival { display: none; }
+.intro3d.is-static .intro3d__fallback { visibility: visible; }
+.intro3d.is-static .intro3d__copy { opacity: 1; transform: none; }
+.intro3d.is-static .intro3d__hint, .intro3d.is-static .intro3d__progress { display: none; }
 
 @media (forced-colors: active) {
   .intro3d__pin { background: Canvas; color: CanvasText; }

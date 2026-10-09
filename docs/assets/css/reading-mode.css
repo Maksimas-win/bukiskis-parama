@@ -1,0 +1,161 @@
+/* A reversible reading mode, with normal photographs and no page-wide filters. */
+.reading-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid #c4d0df;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #17345d;
+  font: 600 14px/1.4 var(--sans, Arial, sans-serif);
+}
+.reading-ready .reading-toggle { display: inline-flex; }
+.reading-toggle>span[aria-hidden] { font-size: 18px; font-weight: 700; letter-spacing: -.5px; }
+.reading-toggle[aria-pressed=true] { background: #17345d; color: #ffffff; border-color: #17345d; }
+.reading-toggle:hover { border-color: #17345d; }
+.reading-toggle:focus-visible { outline: 3px solid #205ee8; outline-offset: 3px; }
+
+@media (max-width: 1150px) {
+  .reading-toggle { width: 44px; padding: 8px; }
+  .reading-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
+}
+
+html[data-reading=comfortable] {
+  --paper: #fffefa;
+  --paper-2: #f1f4f7;
+  --paper-card: #ffffff;
+  --ink: #142235;
+  --muted: #34445a;
+  --muted-light: #34445a;
+  --accent: #1249a0;
+  --accent-2: #164d97;
+  --accent-gradient: linear-gradient(#1249a0, #1249a0);
+  --line: #b8c5d4;
+  --line-light: #ced7e1;
+  scroll-behavior: auto;
+}
+html[data-reading=comfortable] body { font-size: 18px; line-height: 1.8; }
+html[data-reading=comfortable] *,
+html[data-reading=comfortable] *::before,
+html[data-reading=comfortable] *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+html[data-reading=comfortable] :focus-visible { outline: 3px solid #1249a0; outline-offset: 4px; }
+html[data-reading=comfortable] .site-header { background: #fffefa; backdrop-filter: none; -webkit-backdrop-filter: none; }
+html[data-reading=comfortable] main :is(p, li, dd) { font-size: 18px; line-height: 1.8; letter-spacing: normal; }
+html[data-reading=comfortable] main :is(h1, h2, h3) { line-height: 1.3; letter-spacing: normal; }
+html[data-reading=comfortable] main h1 { font-size: clamp(30px, 4vw, 42px); }
+html[data-reading=comfortable] main h2 { font-size: clamp(26px, 3vw, 34px); }
+html[data-reading=comfortable] main h3 { font-size: 24px; }
+html[data-reading=comfortable] main :is(.small-note, .campaign-notice, .verification-note, .project-note, .calc-threshold-note, .source-inline, .info-caption, .hero-small, .eyebrow, .project-kicker, .calc-formula) { font-size: 16px; line-height: 1.7; }
+html[data-reading=comfortable] main :is(small, dt, label, .image-caption-chip, figcaption, .review-date, .currency-note) { font-size: 16px; line-height: 1.6; }
+html[data-reading=comfortable] main :is(.button, .text-link, .video-reset, .guide-tab span:nth-child(2), .guide-controls>span) { font-size: 16px; }
+html[data-reading=comfortable] main a:not(.button),
+html[data-reading=comfortable] .footer-languages a {
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: .22em;
+}
+html[data-reading=comfortable] main a:not(.button):not(.intro3d__primary):not(.intro3d__secondary):not(.intro3d__skip) { color: var(--accent); }
+html[data-reading=comfortable] .hero-explainer h2 { font-size: 20px; }
+html[data-reading=comfortable] .hero-explainer summary,
+html[data-reading=comfortable] .faq-list summary { font-size: 18px; }
+html[data-reading=comfortable] .hero-explainer details>p { padding-left: 0; }
+html[data-reading=comfortable] .faq-list p { max-width: 68ch; }
+html[data-reading=comfortable] .fact small { font-size: 16px; }
+
+/* Reveal and pointer effects must not conceal or move reading content. */
+html[data-reading=comfortable] .reveal.will-reveal { opacity: 1 !important; transform: none !important; }
+html[data-reading=comfortable] :is(.hero, .info-visual, .way, .way-num, .diagram, .diagram-card, .project-card, .project-visual, .project-visual img, .bank-card, .parish-support-card, .calculator-section, .section-top h2, .button) {
+  transform: none !important;
+  translate: none !important;
+  rotate: none !important;
+  scale: none !important;
+}
+html[data-reading=comfortable] :is(.hero, .info-visual, .bank-card, .calculator-section, .parish-support-card)::before,
+html[data-reading=comfortable] :is(.site-header, .info-visual, .project-visual, .bank-card, .calculator-section, .parish-support-card)::after,
+html[data-reading=comfortable] .intro3d__ambient { display: none; }
+html[data-reading=comfortable] :is(.info-visual, .hero-explainer, .way, .project-card, .bank-card, .parish-support-card, .parish-appeal, .guide-panel) { background: #ffffff; box-shadow: none; border-color: var(--line); }
+html[data-reading=comfortable] .hero h1 em,
+html[data-reading=comfortable] .percent-figure { color: var(--accent); background: none; text-shadow: none; }
+
+html[data-reading=comfortable] .intro3d,
+html[data-reading=comfortable] .intro3d.is-animated { height: auto; background: #edf3fa; color: var(--ink); }
+html[data-reading=comfortable] .intro3d .intro3d__pin {
+  position: relative;
+  top: auto;
+  height: auto;
+  min-height: 0;
+  padding-top: 16px;
+  padding-bottom: 24px;
+  background: #edf3fa;
+  border-bottom: 1px solid var(--line);
+}
+html[data-reading=comfortable] .intro3d__stage { height: 110px; min-height: 0; max-height: none; flex: none; margin-block: 8px; }
+html[data-reading=comfortable] .intro3d__canvas,
+html[data-reading=comfortable] .intro3d__arrival,
+html[data-reading=comfortable] .intro3d__footer { display: none; }
+html[data-reading=comfortable] .intro3d .intro3d__fallback { visibility: visible; color: var(--accent); text-shadow: none; font-size: 90px; }
+html[data-reading=comfortable] .intro3d__fallback small { font-size: .78em; }
+html[data-reading=comfortable] .intro3d .intro3d__copy { opacity: 1 !important; transform: none !important; }
+html[data-reading=comfortable] .intro3d__copy h2 { font-size: 28px; }
+html[data-reading=comfortable] .intro3d :is(.intro3d__copy h2, .intro3d__copy h2 span, .intro3d__copy>p, .intro3d__top) { color: var(--ink); }
+html[data-reading=comfortable] .intro3d__copy>p { max-width: 60ch; }
+html[data-reading=comfortable] .intro3d__top>span { color: #164d97; background: #e1ebf7; border-color: #9eb6d5; }
+html[data-reading=comfortable] .intro3d__primary { color: #ffffff; background: #1249a0; border-color: #1249a0; box-shadow: none; font-size: 16px; }
+html[data-reading=comfortable] .intro3d__secondary,
+html[data-reading=comfortable] .intro3d__skip { color: #1249a0; background: #ffffff; border-color: #9eb6d5; font-size: 16px; }
+
+html[data-reading=comfortable] .calculator-section { background: #edf3fa; color: var(--ink); border: 1px solid var(--line); }
+html[data-reading=comfortable] .calculator-section :is(h2, p, small, label, .people-line, .calc-result-one strong, .calc-result-one span, .calc-result-total span, .money-input input) { color: var(--ink); }
+html[data-reading=comfortable] .calc-result-total strong,
+html[data-reading=comfortable] .money-input span { color: #1249a0; text-shadow: none; }
+html[data-reading=comfortable] .calc-error { color: #9a2525 !important; }
+html[data-reading=comfortable] .calc-threshold-note { color: #142235; background: #e1ebf7; border-color: #8da7c8; }
+html[data-reading=comfortable] .money-input { border-color: #536780; }
+html[data-reading=comfortable] .calc-result-one { border-color: #9dafc4; }
+html[data-reading=comfortable] input[type=range] { appearance: auto; accent-color: #1249a0; }
+html[data-reading=comfortable] input[type=range]::-webkit-slider-runnable-track { background: #a8bad0; }
+html[data-reading=comfortable] input[type=range]::-webkit-slider-thumb { border-color: #1249a0; box-shadow: none; }
+html[data-reading=comfortable] input[type=range]::-moz-range-track { background: #a8bad0; }
+html[data-reading=comfortable] input[type=range]::-moz-range-progress { background: #1249a0; }
+html[data-reading=comfortable] input[type=range]::-moz-range-thumb { border-color: #1249a0; box-shadow: none; }
+
+html[data-reading=comfortable] .cookie-notice p { color: var(--ink); font-size: 16px; }
+html[data-reading=comfortable] .cookie-notice-actions :is(a, button) { font-size: 16px; }
+html[data-reading=comfortable] .gh-dialog { font-size: 17px; }
+html[data-reading=comfortable] .gh-message p { font-size: 18px; }
+html[data-reading=comfortable] .gh-message h3 { font-size: 20px; }
+html[data-reading=comfortable] :is(.gh-notice, .gh-message small, .gh-heading small, .gh-message .gh-important) { font-size: 15px; }
+html[data-reading=comfortable] :is(.gh-topics button, .gh-choice, .gh-message a, .gh-reset, .gh-input label, .gh-ai-send, .gh-ai-cancel, .gh-send) { font-size: 16px; }
+html[data-reading=comfortable] .gh-input-row input { font-size: 18px; }
+html[data-reading=comfortable] .gh-heading :focus-visible { outline-color: #facc15; }
+
+@media (max-width: 730px) {
+  html[data-reading=comfortable] .container { width: calc(100% - 32px); }
+  html[data-reading=comfortable] .intro3d__copy h2 { font-size: 26px; }
+  html[data-reading=comfortable] .intro3d__actions { flex-direction: column; align-items: stretch; gap: 8px; }
+  html[data-reading=comfortable] .intro3d__actions a { flex: none; }
+  html[data-reading=comfortable] .guide-panel { padding: 20px; }
+  html[data-reading=comfortable] .guide-panel>p { max-width: 100%; }
+  html[data-reading=comfortable] .calculator-controls { grid-template-columns: 1fr; }
+  html[data-reading=comfortable] .mobile-cta .button { font-size: 16px; }
+}
+@media (max-width: 380px) {
+  html[data-reading=comfortable] .intro3d__top>span { display: none; }
+  html[data-reading=comfortable] .intro3d__skip { margin-left: auto; }
+}
+@media (forced-colors: active) {
+  .reading-toggle { background: ButtonFace; color: ButtonText; border: 1px solid ButtonText; }
+  .reading-toggle[aria-pressed=true] { background: Highlight; color: HighlightText; }
+}
+@media print {
+  .reading-toggle, [data-reading-status] { display: none !important; }
+  html[data-reading=comfortable] .intro3d { display: none !important; }
+}

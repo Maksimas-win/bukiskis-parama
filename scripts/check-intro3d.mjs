@@ -46,11 +46,17 @@ try {
    const r=document.querySelector('.intro3d'),a=r.querySelector('.intro3d__actions');
    return {webgl:r.classList.contains('has-webgl'),animated:r.classList.contains('is-animated'),
     overflow:document.documentElement.scrollWidth>innerWidth+1,actionsBottom:a.getBoundingClientRect().bottom,
+    introHeight:r.getBoundingClientRect().height,pinHeight:r.querySelector('.intro3d__pin').getBoundingClientRect().height,
     viewport:innerHeight,canvas:[r.querySelector('canvas').width,r.querySelector('canvas').height]};
   });
   assert.ok(info.webgl,`${name}: WebGL must initialize in CI`);
   assert.equal(info.overflow,false,`${name}: horizontal overflow`);
   if(info.animated) assert.ok(info.actionsBottom<=height+2,`${name}: actions clipped`);
+  if(width<=730) {
+   assert.equal(info.animated,false,`${name}: no sticky animation spacer on phones`);
+   assert.ok(Math.abs(info.introHeight-info.pinHeight)<3,`${name}: the mobile introduction must not reserve empty scroll space`);
+   assert.ok(info.introHeight<=height,`${name}: the mobile introduction must fit one screen`);
+  }
   if(motion==='reduce') assert.equal(info.animated,false);
   assert.deepEqual(errors,[],`${name}: JS/CSP errors`);assert.deepEqual(external,[],`${name}: external initial request`);
   await page.screenshot({path:path.join(output,`${name}.png`)});

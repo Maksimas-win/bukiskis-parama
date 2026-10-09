@@ -11,9 +11,10 @@
   const progress = root.querySelector('.intro3d__progress-fill');
   const header = document.querySelector('.site-header');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  const compact = matchMedia('(max-height: 560px), (max-width: 370px) and (max-height: 700px)');
+  const compact = matchMedia('(max-width: 730px), (max-height: 560px)');
   const finePointer = matchMedia('(pointer: fine)');
   const highContrast = matchMedia('(forced-colors: active)');
+  const staticPresentation = () => reduced.matches || highContrast.matches || document.documentElement.dataset.reading === 'comfortable';
   const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
   const smooth = (a, b, x) => { const t = clamp((x - a) / (b - a)); return t * t * (3 - 2 * t); };
   let gl, program, parts = [], raf = 0, failed = false, visible = true;
@@ -126,8 +127,15 @@
     targetP=clamp((headerHeight-rect.top)/Math.max(1,root.offsetHeight-pin.offsetHeight));
   }
   function updateMode() {
-    root.classList.toggle('is-animated',!failed&&!reduced.matches&&!compact.matches&&!highContrast.matches);
-    p=targetP=0; x=y=targetX=targetY=0; readProgress(); p=targetP; requestFrame();
+    const still = staticPresentation();
+    root.classList.toggle('is-static',still);
+    root.classList.toggle('is-animated',!failed&&!still&&!compact.matches);
+    p=targetP=0; x=y=targetX=targetY=0;
+    copy.style.opacity='1'; copy.style.transform='none'; arrival.style.opacity='0';
+    progress.style.transform='scaleX(0)'; root.dataset.progress='0';
+    cancelAnimationFrame(raf); raf=0;
+    if (still) return;
+    readProgress(); p=targetP; requestFrame();
   }
   function resize() {
     if (failed) return;
@@ -142,7 +150,7 @@
   }
   function paint(now) {
     raf=0;
-    if (failed || document.hidden || !visible) return;
+    if (failed || staticPresentation() || document.hidden || !visible) return;
     const dt=Math.min(48,Math.max(1,now-previous)); previous=now;
     const mix=reduced.matches?1:1-Math.exp(-dt/65);
     p+=(targetP-p)*mix; x+=(targetX-x)*mix; y+=(targetY-y)*mix;
@@ -173,7 +181,7 @@
     root.dataset.progress=String(Math.round(p*100));
     if (entry<1 || Math.abs(targetP-p)>.0005 || Math.abs(targetX-x)>.001 || Math.abs(targetY-y)>.001) requestFrame();
   }
-  function requestFrame() { if (!raf&&!failed&&visible&&!document.hidden) raf=requestAnimationFrame(paint); }
+  function requestFrame() { if (!raf&&!failed&&!staticPresentation()&&visible&&!document.hidden) raf=requestAnimationFrame(paint); }
   function fallback() {
     failed=true; cancelAnimationFrame(raf); raf=0;
     root.classList.remove('has-webgl','is-animated');
@@ -187,7 +195,7 @@
     addEventListener('scroll',()=>{readProgress();requestFrame();},{passive:true});
     addEventListener('resize',resize,{passive:true});
     stage.addEventListener('pointermove',event=>{
-      if(reduced.matches||!finePointer.matches||event.pointerType==='touch') return;
+      if(staticPresentation()||!finePointer.matches||event.pointerType==='touch') return;
       const r=stage.getBoundingClientRect(); targetX=clamp((event.clientX-r.left)/r.width,0,1)*2-1;
       targetY=clamp((event.clientY-r.top)/r.height,0,1)*2-1; requestFrame();
     },{passive:true});
@@ -199,6 +207,7 @@
     reduced.addEventListener('change',()=>{updateMode();resize();});
     compact.addEventListener('change',()=>{updateMode();resize();});
     highContrast.addEventListener('change',()=>{updateMode();resize();});
+    document.addEventListener('gpm:reading-mode-change',()=>{updateMode();resize();});
     canvas.addEventListener('webglcontextlost',event=>{event.preventDefault();fallback();});
     if ('IntersectionObserver' in window) {
       observer=new IntersectionObserver(entries=>{

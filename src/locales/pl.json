@@ -14,6 +14,12 @@
     "Pomoc parafii"
   ],
   "language": "Język strony",
+  "reading": {
+    "label": "Czytanie",
+    "toggle": "Wygodne czytanie",
+    "enabled": "Tryb wygodnego czytania włączony: większy tekst, wysoki kontrast, bez animacji.",
+    "disabled": "Przywrócono zwykły tryb czytania."
+  },
   "menu": "Menu",
   "skip": "Przejdź do treści",
   "eyebrow": "LITWA · INFORMACJE O GPM · 2027",
@@ -24,7 +30,7 @@
   "lead": "Co oznacza ta część podatku, jak wybrać odbiorcę i wypełnić FR0512. Objaśnienia, przykłady i oficjalne źródła w jednym miejscu.",
   "primary": "Otwórz instrukcję",
   "secondary": "Obejrzyj film",
-  "heroPhotoNote": "Ilustracja · utrzymanie pomieszczeń",
+  "heroPhotoNote": "Zdjęcie cerkwi Narodzenia Pańskiego w Bukiškis",
   "prelaunch": "Kampania 2027: wnioski można składać od 1 stycznia do 3 maja 2027 roku. Już teraz możesz zapoznać się z instrukcją.",
   "unverified": "Od 2027 r. wspólnoty religijne odzyskują prawo do tego wsparcia. Strona nie potwierdza dostępności parafii o kodzie 301004570 w EDS ani zarejestrowania jej rachunku GPM w Mano VMI. Przed złożeniem wniosku sprawdź odbiorcę w EDS; dane rachunku powinna sprawdzić sama parafia.",
   "openStatus": "Kampania 2027: wniosek dotyczący dochodów za 2026 rok należy złożyć do 3 maja 2027 roku włącznie.",
@@ -61,7 +67,9 @@
   "calcResult": "1,2% podanej kwoty GPM",
   "calcTogether": "Razem w tym przykładzie",
   "calcFormula": "Roczny GPM × 0,012",
-  "calcNote": "Obliczenie pozostaje w przeglądarce. Ostateczną kwotę ustala VMI. Kwota poniżej 3 € dla jednego odbiorcy za rok podatkowy nie jest przekazywana; kalkulator nie uwzględnia tego progu.",
+  "calcNote": "Obliczenia odbywają się w przeglądarce i służą jako przykład. Wynik dla jednej osoby to 1,2 % wpisanej kwoty GPM. Łączna kwota uwzględnia próg 3 € od każdego uczestnika dla jednego odbiorcy za rok podatkowy. Ostateczną kwotę ustala VMI.",
+  "calcBelowMinimum": "Kwoty poniżej 3 € dla jednego odbiorcy za rok nie są przekazywane. W tym przykładzie kwota od każdego uczestnika jest poniżej progu, dlatego łączna kwota do przekazania wynosi 0 €.",
+  "calcGroupBelowMinimum": "Po uwzględnieniu progu VMI",
   "calcInvalid": "Wpisz kwotę od 0 do 100 000 000, z maksymalnie dwiema cyframi po przecinku.",
   "peopleUnit": "osób",
   "guideKicker": "INTERAKTYWNA INSTRUKCJA",
@@ -246,7 +254,7 @@
   "visit": "Strona parafii",
   "footerThanks": "1,2% GPM · Informacje i objaśnienia",
   "privacy": "Prywatność",
-  "privacyText": "Strona nie ma analitycznych ani reklamowych narzędzi śledzących, rejestracji ani formularza płatności. Kalkulator działa lokalnie. YouTube łączy się dopiero po ostrzeżeniu i twoim działaniu. GitHub Pages, serwery obrazów i strony zewnętrzne mogą przetwarzać techniczne dane połączenia według własnych zasad.",
+  "privacyText": "Strona nie ma analitycznych ani reklamowych narzędzi śledzących, rejestracji ani formularza płatności. Kalkulator działa lokalnie. Przeglądarka zapisuje potwierdzenie komunikatu o prywatności i wybrany tryb czytania. YouTube łączy się dopiero po ostrzeżeniu i twoim działaniu. GitHub Pages, serwery obrazów i strony zewnętrzne mogą przetwarzać techniczne dane połączenia według własnych zasad.",
   "close": "Zamknij",
   "share": "Udostępnij stronę",
   "shared": "Skopiowano link",
@@ -286,7 +294,7 @@
   "projectDetails": "Więcej informacji",
   "cookieNotice": {
     "title": "Pliki cookie i prywatność",
-    "body": "Strona nie używa reklamowych ani analitycznych plików cookie. Film YouTube jest ładowany dopiero po osobnym kliknięciu. Przeglądarka zapisuje potwierdzenie tego komunikatu oraz informację o wyświetleniu apelu parafii; ta druga jest przechowywana do zamknięcia karty.",
+    "body": "Strona nie używa reklamowych ani analitycznych plików cookie. Film YouTube jest ładowany dopiero po osobnym kliknięciu. W przeglądarce lokalnie zapisywane są tylko potwierdzenie tego komunikatu i wybrany tryb czytania.",
     "confirm": "Potwierdź",
     "privacy": "O prywatności",
     "reopen": "Pliki cookie"
@@ -294,13 +302,14 @@
   "parishAppeal": {
     "heading": "Drodzy parafianie!",
     "paragraphs": [
-      "Z całego serca dziękujemy wszystkim, którzy już wspierają naszą świątynię.",
-      "Nasza świątynia nadal potrzebuje waszej pomocy. Prosimy, w miarę możliwości, o wsparcie finansowe. Szczególnie ważne jest pokrycie opłat za media i bieżących potrzeb parafii.",
-      "Nawet niewielka wpłata ma duże znaczenie. Dziękujemy za pomoc i wsparcie!"
+      "Dziękujemy wszystkim, którzy pomagają dbać o naszą cerkiew.",
+      "Parafia potrzebuje wsparcia w opłacaniu mediów i utrzymaniu pomieszczeń.",
+      "Jeśli chcecie i możecie pomóc, poniżej znajdziecie dane potrzebne do przekazania dobrowolnej darowizny."
     ],
-    "caption": "Apel parafii · oryginał w języku rosyjskim",
-    "imageAlt": "Apel o wsparcie świątyni: podziękowanie parafianom, pomoc w opłacaniu mediów i bieżących potrzeb oraz dane do darowizn.",
+    "caption": "Cerkiew Narodzenia Pańskiego w Bukiškis",
+    "imageAlt": "Zdjęcie cerkwi Narodzenia Pańskiego w Bukiškis.",
     "openImage": "Otwórz obraz w pełnym rozmiarze",
-    "donate": "Przejdź do danych do przelewu"
+    "donate": "Przejdź do danych do przelewu",
+    "photoOpen": "Zobacz zdjęcia"
   }
 }

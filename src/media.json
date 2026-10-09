@@ -1,10 +1,15 @@
 {
   "community": {
-    "filename": "community-outline.svg",
-    "kind": "schematic illustration, not a photograph",
-    "source": "Original neutral facilities illustration; no religious imagery",
-    "dialogFilename": "parish-support-appeal.png",
-    "dialogSource": "parama1356.png supplied by the site owner on 2026-10-04; original image retained unchanged for the parish support dialog"
+    "filename": "parish-exterior.webp",
+    "kind": "owner-supplied parish photograph",
+    "source": "20260917_092101.jpg supplied by the site owner on 2026-10-09; WebP encoding of the original scene, for the optional parish support section only",
+    "width": 2048,
+    "height": 1153,
+    "dialogFilename": "parish-exterior.webp",
+    "detailFilename": "parish-roof.webp",
+    "detailWidth": 2048,
+    "detailHeight": 1152,
+    "detailSource": "bukhram.lt260927.JPG supplied by the site owner on 2026-10-09; WebP encoding of the original scene, for the optional parish support section only"
   },
   "kitchen": {
     "filename": "kitchen-concept.webp",

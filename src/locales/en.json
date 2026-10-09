@@ -14,6 +14,12 @@
     "Parish support"
   ],
   "language": "Website language",
+  "reading": {
+    "label": "Reading",
+    "toggle": "Reading mode",
+    "enabled": "Reading mode is on: larger text, high contrast and no animation.",
+    "disabled": "Standard reading mode restored."
+  },
   "menu": "Menu",
   "skip": "Skip to content",
   "eyebrow": "LITHUANIA · GPM INFORMATION · 2027",
@@ -24,7 +30,7 @@
   "lead": "What this share of income tax means, how to choose a recipient and complete FR0512. Explanations, examples and official sources in one place.",
   "primary": "Read the instructions",
   "secondary": "Watch the video",
-  "heroPhotoNote": "Illustration · maintaining facilities",
+  "heroPhotoNote": "Photo of the Nativity of Christ Church in Bukiškis",
   "prelaunch": "2027 campaign: applications run from 1 January to 3 May 2027. You can explore the guide now.",
   "unverified": "Religious communities regain eligibility for this support from 2027. This site has not verified that the parish with code 301004570 is available in EDS or that its GPM account is registered in Mano VMI. Check the recipient in EDS before applying; the parish itself must check its account details.",
   "openStatus": "2027 campaign: submit the application for 2026 income by 3 May 2027 inclusive.",
@@ -61,7 +67,9 @@
   "calcResult": "1.2% of the entered GPM",
   "calcTogether": "Together in this example",
   "calcFormula": "Annual GPM × 0.012",
-  "calcNote": "The calculation stays in your browser. VMI determines the final amount. An allocation below €3 to one recipient for a tax year is not transferred; this calculator does not apply that threshold.",
+  "calcNote": "Calculations stay in your browser and are illustrative. The individual result is 1.2% of the GPM entered. The group total applies the €3 minimum to each participant’s allocation to one recipient for a tax year. VMI determines the final amount.",
+  "calcBelowMinimum": "Amounts below €3 per recipient per year are not transferred. In this example, each participant’s allocation is below the threshold, so the amount to be transferred is €0.",
+  "calcGroupBelowMinimum": "After applying the VMI threshold",
   "calcInvalid": "Enter an amount from 0 to 100,000,000 with no more than two decimal places.",
   "peopleUnit": "people",
   "guideKicker": "INTERACTIVE GUIDE",
@@ -246,7 +254,7 @@
   "visit": "Parish website",
   "footerThanks": "1.2% GPM · Information and explanations",
   "privacy": "Privacy",
-  "privacyText": "This website has no analytics or advertising trackers, registration or payment form. The calculator runs locally. YouTube connects only after a notice and your action. GitHub Pages, image servers and external websites may process technical connection data under their own policies.",
+  "privacyText": "This website has no analytics or advertising trackers, registration or payment form. The calculator runs locally. Your browser stores your acknowledgement of the privacy notice and your chosen reading mode. YouTube connects only after a notice and your action. GitHub Pages, image servers and external websites may process technical connection data under their own policies.",
   "close": "Close",
   "share": "Share this page",
   "shared": "Link copied",
@@ -286,7 +294,7 @@
   "projectDetails": "View details",
   "cookieNotice": {
     "title": "Cookies and privacy",
-    "body": "This site uses no advertising or analytics cookies. YouTube loads only after a separate click. Your browser saves acknowledgement of this notice and whether the parish appeal has been shown; the latter lasts until the tab is closed.",
+    "body": "This site uses no advertising or analytics cookies. YouTube loads only after a separate click. Only your acknowledgement of this notice and your chosen reading mode are saved locally in your browser.",
     "confirm": "Confirm",
     "privacy": "About privacy",
     "reopen": "Cookies"
@@ -294,13 +302,14 @@
   "parishAppeal": {
     "heading": "Dear parishioners!",
     "paragraphs": [
-      "We sincerely thank everyone who is already supporting our church.",
-      "Our church still needs your help. Please consider providing financial support if you can. Covering utility bills and the current needs of the parish is especially important.",
-      "Even a small contribution makes a difference. Thank you for your help and support!"
+      "Thank you to everyone who helps care for our church.",
+      "The parish needs support with utility bills and the upkeep of its premises.",
+      "If you would like to help and are able to, you can make a voluntary donation using the bank details below."
     ],
-    "caption": "Parish appeal · original in Russian",
-    "imageAlt": "Church support appeal: thanks to parishioners, help with utility bills and current needs, and donation bank details.",
+    "caption": "Nativity of Christ Church in Bukiškis",
+    "imageAlt": "Photo of the Nativity of Christ Church in Bukiškis.",
     "openImage": "Open the full-size image",
-    "donate": "Go to donation details"
+    "donate": "Go to donation details",
+    "photoOpen": "View photos"
   }
 }

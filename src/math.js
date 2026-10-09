@@ -12,6 +12,12 @@
     if (!Number.isSafeInteger(cents) || cents < 0 || cents > 10000000000) throw new RangeError('Invalid amount');
     return Math.floor((cents * 12 + 500) / 1000);
   }
+  // VMI applies the minimum to one person's annual allocation to one recipient.
+  // Small allocations cannot be pooled across people to reach that minimum.
+  function transferableSupportCents(cents) {
+    const result = supportCents(cents);
+    return result >= 300 ? result : 0;
+  }
   function campaignPhase(dateISO, campaign) {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(dateISO)) throw new TypeError('Expected an ISO date');
     if (dateISO < campaign.start) return 'prelaunch';
@@ -29,7 +35,7 @@
     }
     return remainder === 1;
   }
-  const api = Object.freeze({ parseAmountToCents, supportCents, campaignPhase, validIban });
+  const api = Object.freeze({ parseAmountToCents, supportCents, transferableSupportCents, campaignPhase, validIban });
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.ParishMath = api;
 })(globalThis);

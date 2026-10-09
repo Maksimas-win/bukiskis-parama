@@ -14,6 +14,12 @@
     "Gemeinde unterstützen"
   ],
   "language": "Sprache der Website",
+  "reading": {
+    "label": "Lesen",
+    "toggle": "Angenehmes Lesen",
+    "enabled": "Lesemodus aktiviert: größere Schrift, hoher Kontrast und keine Animationen.",
+    "disabled": "Normaler Lesemodus wiederhergestellt."
+  },
   "menu": "Menü",
   "skip": "Zum Inhalt springen",
   "eyebrow": "LITAUEN · INFORMATIONEN ZUR GPM · 2027",
@@ -24,7 +30,7 @@
   "lead": "Was dieser Steueranteil bedeutet, wie Sie einen Empfänger auswählen und FR0512 ausfüllen. Erläuterungen, Beispiele und offizielle Quellen an einem Ort.",
   "primary": "Anleitung öffnen",
   "secondary": "Video ansehen",
-  "heroPhotoNote": "Illustration · Pflege der Räumlichkeiten",
+  "heroPhotoNote": "Foto der Kirche der Geburt Christi in Bukiškis",
   "prelaunch": "Aktion 2027: Anträge können vom 1. Januar bis zum 3. Mai 2027 gestellt werden. Die Anleitung können Sie schon jetzt lesen.",
   "unverified": "Religiöse Gemeinschaften sind ab 2027 wieder für diese Unterstützung berechtigt. Diese Website bestätigt weder die Verfügbarkeit der Gemeinde mit Kennnummer 301004570 in EDS noch die Registrierung ihres GPM-Kontos in Mano VMI. Prüfen Sie den Empfänger vor dem Antrag in EDS; ihre Kontodaten muss die Gemeinde selbst prüfen.",
   "openStatus": "Aktion 2027: Den Antrag für Einkünfte des Jahres 2026 können Sie bis einschließlich 3. Mai 2027 stellen.",
@@ -61,7 +67,9 @@
   "calcResult": "1,2 % des eingegebenen GPM-Betrags",
   "calcTogether": "Zusammen in diesem Beispiel",
   "calcFormula": "Jährliche GPM × 0,012",
-  "calcNote": "Die Berechnung bleibt im Browser. VMI bestimmt den endgültigen Betrag. Weniger als 3 € an einen Empfänger für ein Steuerjahr werden nicht überwiesen; der Rechner wendet diese Grenze nicht an.",
+  "calcNote": "Die Berechnung erfolgt in Ihrem Browser und dient als Beispiel. Das Einzelergebnis entspricht 1,2 % des eingegebenen GPM-Betrags. Der Gesamtbetrag berücksichtigt die Mindestgrenze von 3 € je Teilnehmer, Empfänger und Steuerjahr. Den endgültigen Betrag bestimmt die VMI.",
+  "calcBelowMinimum": "Beträge unter 3 € je Empfänger und Jahr werden nicht überwiesen. In diesem Beispiel liegt der Anteil jedes Teilnehmers unter dieser Grenze. Der zu überweisende Gesamtbetrag beträgt daher 0 €.",
+  "calcGroupBelowMinimum": "Unter Berücksichtigung der Mindestgrenze der VMI",
   "calcInvalid": "Geben Sie einen Betrag von 0 bis 100 000 000 mit höchstens zwei Nachkommastellen ein.",
   "peopleUnit": "Personen",
   "guideKicker": "INTERAKTIVE ANLEITUNG",
@@ -246,7 +254,7 @@
   "visit": "Website der Gemeinde",
   "footerThanks": "1,2 % GPM · Informationen und Erläuterungen",
   "privacy": "Datenschutz",
-  "privacyText": "Diese Website verwendet keine Analyse- oder Werbetracker und bietet weder Registrierung noch Zahlungsformulare. Der Rechner arbeitet lokal. YouTube wird erst nach einem Hinweis und Ihrer Aktion verbunden. GitHub Pages, Bildserver und externe Websites können technische Verbindungsdaten nach ihren eigenen Regeln verarbeiten.",
+  "privacyText": "Diese Website verwendet keine Analyse- oder Werbetracker und bietet weder Registrierung noch Zahlungsformulare. Der Rechner arbeitet lokal. Ihr Browser speichert die Bestätigung des Datenschutzhinweises und den gewählten Lesemodus. YouTube wird erst nach einem Hinweis und Ihrer Aktion verbunden. GitHub Pages, Bildserver und externe Websites können technische Verbindungsdaten nach ihren eigenen Regeln verarbeiten.",
   "close": "Schließen",
   "share": "Seite teilen",
   "shared": "Link kopiert",
@@ -286,7 +294,7 @@
   "projectDetails": "Mehr erfahren",
   "cookieNotice": {
     "title": "Cookies und Datenschutz",
-    "body": "Diese Website verwendet keine Werbe- oder Analyse-Cookies. YouTube wird erst nach einem separaten Klick geladen. Ihr Browser speichert die Bestätigung dieses Hinweises und ob der Gemeindeaufruf bereits angezeigt wurde; Letzteres gilt bis zum Schließen des Tabs.",
+    "body": "Diese Website verwendet keine Werbe- oder Analyse-Cookies. YouTube wird erst nach einem separaten Klick geladen. Lokal in Ihrem Browser werden nur die Bestätigung dieses Hinweises und der gewählte Lesemodus gespeichert.",
     "confirm": "Bestätigen",
     "privacy": "Zum Datenschutz",
     "reopen": "Cookies"
@@ -294,13 +302,14 @@
   "parishAppeal": {
     "heading": "Liebe Gemeindemitglieder!",
     "paragraphs": [
-      "Wir danken allen von Herzen, die unsere Kirche bereits unterstützen.",
-      "Unsere Kirche braucht weiterhin Ihre Hilfe. Bitte unterstützen Sie uns finanziell, wenn es Ihnen möglich ist. Besonders wichtig sind die Deckung der Nebenkosten und die laufenden Bedürfnisse der Gemeinde.",
-      "Auch ein kleiner Beitrag ist wertvoll. Vielen Dank für Ihre Hilfe und Unterstützung!"
+      "Wir danken allen, die helfen, für unsere Kirche zu sorgen.",
+      "Die Gemeinde braucht Unterstützung, um die laufenden Betriebskosten zu decken und ihre Räume instand zu halten.",
+      "Wenn Sie helfen möchten und können, finden Sie unten die Bankverbindung für eine freiwillige Spende."
     ],
-    "caption": "Aufruf der Gemeinde · Original auf Russisch",
-    "imageAlt": "Spendenaufruf für die Kirche: Dank an die Gemeinde, Hilfe bei Nebenkosten und laufenden Bedürfnissen sowie Bankverbindung für Spenden.",
+    "caption": "Kirche der Geburt Christi in Bukiškis",
+    "imageAlt": "Foto der Kirche der Geburt Christi in Bukiškis.",
     "openImage": "Bild in voller Größe öffnen",
-    "donate": "Zu den Spendenangaben"
+    "donate": "Zu den Spendenangaben",
+    "photoOpen": "Fotos ansehen"
   }
 }

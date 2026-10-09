@@ -19,6 +19,16 @@ test('One-point-two percent calculations do not depend on floating point roundin
  assert.throws(()=>math.supportCents(-1));
  assert.throws(()=>math.supportCents(1.2));
 });
+test('The transfer minimum applies to each person before grouping allocations',()=>{
+ for(const [gpm,raw,eligible] of [[0,0,0],[10000,120,0],[24900,299,0],[25000,300,300],[30000,360,360],[300000,3600,3600]]) {
+  assert.equal(math.supportCents(gpm),raw);
+  assert.equal(math.transferableSupportCents(gpm),eligible);
+ }
+ assert.equal(math.transferableSupportCents(10000)*25,0);
+ assert.equal(math.transferableSupportCents(25000)*25,7500);
+ assert.throws(()=>math.transferableSupportCents(-1));
+ assert.throws(()=>math.transferableSupportCents(1.2));
+});
 test('Campaign never becomes open merely because the year changed',()=>{
  const c=config.campaign;
  assert.equal(math.campaignPhase('2026-09-29',c),'prelaunch');
@@ -58,7 +68,7 @@ for(const lang of config.languages){
 }
 test('Source scripts do not use tracking, remote fonts, personal-data storage or APIs',()=>{
  const app=read('src/app.js');
- assert.doesNotMatch(app,/localStorage|document\.cookie|\bfetch\(|XMLHttpRequest|sendBeacon|googletag|gtag\(/);
+ assert.doesNotMatch(app,/localStorage|sessionStorage|document\.cookie|\bfetch\(|XMLHttpRequest|sendBeacon|googletag|gtag\(/);
  assert.ok(app.includes('youtube-nocookie.com/embed/'));
  assert.doesNotMatch(read('docs/index.html'),/fonts\.googleapis|googletagmanager|facebook\.net/);
  assert.ok(fs.existsSync(path.join(root,'docs/.nojekyll')));

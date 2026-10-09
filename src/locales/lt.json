@@ -14,6 +14,12 @@
     "Parama parapijai"
   ],
   "language": "Svetainės kalba",
+  "reading": {
+    "label": "Skaitymas",
+    "toggle": "Patogus skaitymas",
+    "enabled": "Patogaus skaitymo režimas įjungtas: didesnis tekstas, didelis kontrastas, be animacijos.",
+    "disabled": "Įprastas skaitymo režimas atkurtas."
+  },
   "menu": "Meniu",
   "skip": "Pereiti prie turinio",
   "eyebrow": "LIETUVA · INFORMACIJA APIE GPM · 2027",
@@ -24,7 +30,7 @@
   "lead": "Ką reiškia ši mokesčio dalis, kaip pasirinkti paramos gavėją ir užpildyti FR0512. Paaiškinimai, pavyzdžiai ir oficialūs šaltiniai vienoje vietoje.",
   "primary": "Atverti instrukciją",
   "secondary": "Žiūrėti vaizdo įrašą",
-  "heroPhotoNote": "Iliustracija · patalpų priežiūra",
+  "heroPhotoNote": "Kristaus Gimimo cerkvės Bukiškyje nuotrauka",
   "prelaunch": "2027 metų kampanija: prašymai teikiami nuo 2027 m. sausio 1 d. iki gegužės 3 d. Dabar galite susipažinti su instrukcija.",
   "unverified": "Religinių bendruomenių teisė gauti šią paramą atkuriama nuo 2027 m. Ši svetainė nepatvirtina, kad parapija, kurios kodas 301004570, prieinama EDS ir jos GPM sąskaita įregistruota Mano VMI. Prieš teikdami prašymą patikrinkite gavėją EDS; sąskaitos duomenis turi patikrinti pati parapija.",
   "openStatus": "2027 metų kampanija: prašymas už 2026 metų pajamas teikiamas iki 2027 m. gegužės 3 d. imtinai.",
@@ -61,7 +67,9 @@
   "calcResult": "1,2 % nuo įrašytos GPM sumos",
   "calcTogether": "Bendra suma šiame pavyzdyje",
   "calcFormula": "Metinis GPM × 0,012",
-  "calcNote": "Skaičiavimas lieka naršyklėje. Galutinę sumą nustato VMI. Mažesnė kaip 3 € suma vienam gavėjui už mokestinius metus nepervedama; skaičiuoklė šios ribos netaiko.",
+  "calcNote": "Skaičiavimas atliekamas jūsų naršyklėje ir yra tik pavyzdys. Rodoma 1,2 % nuo įrašytos GPM sumos. Skaičiuojant bendrą sumą taikoma 3 € riba kiekvienam dalyviui — vienam gavėjui už mokestinius metus. Galutinę sumą nustato VMI.",
+  "calcBelowMinimum": "Mažesnė nei 3 € suma vienam gavėjui už metus nepervedama. Šiame pavyzdyje kiekvieno dalyvio suma nesiekia šios ribos, todėl pervestina suma — 0 €.",
+  "calcGroupBelowMinimum": "Atsižvelgus į VMI nustatytą ribą",
   "calcInvalid": "Įrašykite sumą nuo 0 iki 100 000 000, ne daugiau kaip du skaitmenis po kablelio.",
   "peopleUnit": "asm.",
   "guideKicker": "INTERAKTYVI INSTRUKCIJA",
@@ -246,7 +254,7 @@
   "visit": "Parapijos svetainė",
   "footerThanks": "1,2 % GPM · Informacija ir paaiškinimai",
   "privacy": "Privatumas",
-  "privacyText": "Svetainėje nėra analitikos ar reklamos sekimo priemonių, registracijos ar mokėjimo formos. Skaičiuoklė veikia tik jūsų naršyklėje. YouTube prijungiamas tik po įspėjimo ir jūsų veiksmo. GitHub Pages, vaizdų serveriai ir išorinės svetainės gali tvarkyti techninius ryšio duomenis pagal savo taisykles.",
+  "privacyText": "Svetainėje nėra analitikos ar reklamos sekimo priemonių, registracijos ar mokėjimo formos. Skaičiuoklė veikia tik jūsų naršyklėje. Naršyklėje išsaugomi pranešimo apie privatumą patvirtinimas ir pasirinktas skaitymo režimas. YouTube prijungiamas tik po įspėjimo ir jūsų veiksmo. GitHub Pages, vaizdų serveriai ir išorinės svetainės gali tvarkyti techninius ryšio duomenis pagal savo taisykles.",
   "close": "Uždaryti",
   "share": "Dalytis puslapiu",
   "shared": "Nuoroda nukopijuota",
@@ -286,7 +294,7 @@
   "projectDetails": "Plačiau",
   "cookieNotice": {
     "title": "Slapukai ir privatumas",
-    "body": "Svetainėje nėra reklamos ar analitikos slapukų. YouTube vaizdo įrašas įkeliamas tik atskirai paspaudus. Naršyklėje išsaugomas šio pranešimo patvirtinimas ir žyma, kad parapijos kreipimasis jau parodytas; ši žyma galioja iki skirtuko uždarymo.",
+    "body": "Svetainėje nėra reklamos ar analitikos slapukų. YouTube vaizdo įrašas įkeliamas tik atskirai paspaudus. Jūsų naršyklėje saugomi tik šio pranešimo patvirtinimas ir pasirinktas skaitymo režimas.",
     "confirm": "Patvirtinti",
     "privacy": "Apie privatumą",
     "reopen": "Slapukai"
@@ -294,13 +302,14 @@
   "parishAppeal": {
     "heading": "Mieli parapijiečiai!",
     "paragraphs": [
-      "Nuoširdžiai dėkojame visiems, kurie jau remia mūsų parapiją.",
-      "Mūsų parapijai vis dar reikia jūsų pagalbos. Jei turite galimybę, prašome suteikti finansinę paramą. Ypač svarbu padengti komunalines išlaidas ir dabartinius parapijos poreikius.",
-      "Net ir nedidelis indėlis labai svarbus. Dėkojame už jūsų pagalbą ir paramą!"
+      "Dėkojame visiems, kurie padeda rūpintis mūsų cerkve.",
+      "Parapijai reikia paramos komunalinėms išlaidoms padengti ir patalpoms prižiūrėti.",
+      "Jei norite ir galite prisidėti, žemiau rasite rekvizitus savanoriškai aukai."
     ],
-    "caption": "Parapijos kreipimasis · originalas rusų kalba",
-    "imageAlt": "Kreipimasis dėl paramos parapijai: padėka parapijiečiams, pagalba apmokant komunalines išlaidas ir tenkinant dabartinius poreikius, aukojimo rekvizitai.",
+    "caption": "Kristaus Gimimo cerkvė Bukiškyje",
+    "imageAlt": "Kristaus Gimimo cerkvės Bukiškyje nuotrauka.",
     "openImage": "Atverti viso dydžio vaizdą",
-    "donate": "Pereiti prie rekvizitų"
+    "donate": "Pereiti prie rekvizitų",
+    "photoOpen": "Peržiūrėti nuotraukas"
   }
 }

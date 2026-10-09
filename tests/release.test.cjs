@@ -45,6 +45,25 @@ test('Support information and privacy notice remain localized without hiding the
   assert.ok(html.includes(t.cookieNotice.body));
   assert.ok(read(`${lang}/privacy.html`).includes(t.cookieNotice.body));
   for(const project of t.projects) assert.ok(html.includes(project[2]));
+  const appeal=html.match(/<section class="parish-appeal"[\s\S]*?<\/section>/)?.[0];
+  assert.ok(appeal,`${lang}: visible, translated parish appeal`);
+  for(const paragraph of t.parishAppeal.paragraphs) assert.ok(appeal.includes(paragraph.replaceAll('&','&amp;').replaceAll("'",'&#39;')));
+  assert.ok(appeal.includes('parish-roof.webp'));
+  assert.ok(html.includes('parish-exterior.webp'));
+  assert.doesNotMatch(html,/parish-support-appeal\.png|dialog-appeal-details/);
+  assert.match(html,/<p class="calc-threshold-note" id="calc-threshold-note" hidden>/);
+  assert.ok(html.includes(t.calcBelowMinimum.replaceAll('&','&amp;').replaceAll("'",'&#39;')));
+ }
+});
+
+test('Reading mode is optional, localized and available on guide and privacy pages',()=>{
+ for(const lang of config.languages) for(const file of ['index.html','privacy.html']) {
+  const t=require(`../src/locales/${lang}.json`),html=read(`${lang}/${file}`);
+  assert.match(html,/class="reading-toggle js-only" data-reading-toggle aria-pressed="false"/);
+  assert.ok(html.includes(t.reading.label));
+  assert.ok(html.indexOf('reading-mode.js')<html.indexOf('app.js'));
+  const styles=[...html.matchAll(/<link rel="stylesheet" href="([^"]+)"/g)].map(match=>match[1]);
+  assert.equal(styles.at(-1),'../assets/css/reading-mode.css');
  }
 });
 
