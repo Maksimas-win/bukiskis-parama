@@ -121,6 +121,8 @@ try {
    const details=page.locator('.project-actions [data-photo="2"]');
    await details.focus();await page.keyboard.press('Enter');
    await dialog.waitFor({state:'visible'});
+   assert.equal(await page.locator('#dialog-title').innerText(),t.projects[1][0],'Keyboard activation must open the selected kitchen project');
+   assert.ok(await page.locator('#hotspots').isVisible(),'The kitchen project must display its interactive hotspots');
    assert.equal(await page.locator('#hotspot-title').innerText(),t.hotspots[0][0]);
    await page.keyboard.press('Tab');
    assert.ok(await dialog.evaluate(el=>el.contains(document.activeElement)),'Keyboard focus must stay inside an open modal');

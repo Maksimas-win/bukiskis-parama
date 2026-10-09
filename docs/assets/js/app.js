@@ -200,7 +200,19 @@
   const dialog = $('#photo-dialog');
   let dialogTrigger;
   if (dialog && typeof dialog.showModal === 'function') {
-    function closeDialog() { dialog.close(); }
+    function finishDialogClose() {
+      // A queued close event from an earlier view must not disturb a reopened dialog.
+      if (dialog.open) return;
+      document.body.classList.remove('modal-open');
+      const trigger = dialogTrigger;
+      dialogTrigger = undefined;
+      trigger?.focus({ preventScroll: true });
+    }
+    function closeDialog() {
+      if (!dialog.open) return;
+      dialog.close();
+      finishDialogClose();
+    }
     function openProject(button) {
       if (dialog.open) return;
       const index = Number(button.dataset.photo);
@@ -240,10 +252,11 @@
     $$('[data-hotspot]').forEach(button => button.addEventListener('click', () => setHotspot(Number(button.dataset.hotspot))));
     $('#dialog-image').addEventListener('error', () => { $('#dialog-caption').textContent = t.imageUnavailable; });
     $$('[data-close-dialog]').forEach(button => button.addEventListener('click', closeDialog));
-    dialog.addEventListener('close', () => {
-      document.body.classList.remove('modal-open');
-      dialogTrigger?.focus({ preventScroll: true });
+    dialog.addEventListener('cancel', event => {
+      event.preventDefault();
+      closeDialog();
     });
+    dialog.addEventListener('close', finishDialogClose);
     dialog.addEventListener('click', event => {
       if (event.target !== dialog) return;
       const box = dialog.getBoundingClientRect();
