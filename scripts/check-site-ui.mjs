@@ -129,7 +129,7 @@ try {
    await page.screenshot({path:path.join(output,`project-${lang}-${width}.png`)});
    await page.locator('#photo-dialog [data-close-dialog]').first().click();
    await dialog.waitFor({state:'hidden'});
-   // close() hides the dialog before its queued close event restores the opener focus.
+   // Allow bounded time for the browser to complete focus restoration after closing.
    try {
     await page.waitForFunction(selector=>document.querySelector(selector)===document.activeElement,'.project-actions [data-photo="2"]',{timeout:2000});
    } catch(error) {
@@ -241,6 +241,21 @@ try {
   assert.match(await page.locator('[data-gpm-log]').innerText(),/EDS/);
   await page.keyboard.press('Escape');
   await page.locator('#gpm-helper').waitFor({state:'hidden'});
+  // Escape hides the native dialog before its close event restores the helper opener.
+  try {
+   await page.waitForFunction(selector=>document.querySelector(selector)===document.activeElement,'[data-gpm-open]',{timeout:2000});
+  } catch(error) {
+   if(error.name!=='TimeoutError') throw error;
+   const state=await page.evaluate(()=>{
+    const element=document.activeElement;
+    return {
+     activeElement:element?{tag:element.tagName,id:element.id,className:element.className,dataPhoto:element.getAttribute('data-photo'),text:element.textContent?.trim().slice(0,120)}:null,
+     helperOpen:document.querySelector('#gpm-helper')?.open,
+     openerExpanded:document.querySelector('[data-gpm-open]')?.getAttribute('aria-expanded')
+    };
+   });
+   assert.fail(`${scenario}: Closing the helper did not restore focus to [data-gpm-open] within 2000 ms. State: ${JSON.stringify(state)}`);
+  }
   assert.ok(await page.locator('[data-gpm-open]').evaluate(el=>el===document.activeElement));
   await page.locator(readingSelector).click();
   await assertReading(page,true,t);
