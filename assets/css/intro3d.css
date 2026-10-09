@@ -291,7 +291,7 @@
   .intro3d__copy h2 { font-size: clamp(24px, 6vw, 30px); line-height: 1.22; letter-spacing: -.5px; margin-bottom: 12px; }
   .intro3d__copy>p { font-size: 15px; line-height: 1.6; max-width: 480px; }
   .intro3d__actions { width: min(100%, 420px); margin: 16px 0 0; gap: 6px 12px; }
-  .intro3d__primary { flex: 1 1 180px; font-size: 14px; padding: 11px 16px; min-height: 48px; gap: 8px; }
+  .intro3d__primary { flex: 1 1 180px; font-size: 14px; padding: 11px 16px; min-height: 48px; gap: 8px; white-space: nowrap; }
   .intro3d__secondary { flex: 1 1 140px; justify-content: center; font-size: 14px; text-align: center; }
   .intro3d__footer { display: none; }
   .intro3d__progress { display: none !important; }
