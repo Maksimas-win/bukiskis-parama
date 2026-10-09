@@ -8,6 +8,7 @@
   const $ = selector => document.querySelector(selector);
   const $$ = selector => Array.from(document.querySelectorAll(selector));
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const comfortableReading = () => document.documentElement.dataset.reading === 'comfortable';
   let toastTimer;
 
   function announce(message) {
@@ -39,7 +40,7 @@
     copy(values.map((value, i) => `${t.donateFields[i]}: ${value}`).join('\n'), button);
   }));
 
-  // Navigation: no personal preferences or identifiers are persisted.
+  // Navigation itself does not persist preferences or identifiers.
   const language = $('#language-control');
   const mobileNav = $('#mobile-nav');
   const menu = $('.menu-toggle');
@@ -87,6 +88,8 @@
   const people = $('#people-count');
   if (amount && people) {
     const money = new Intl.NumberFormat(t.locale, { style: 'currency', currency: 'EUR' });
+    const thresholdNote = $('#calc-threshold-note');
+    const groupLabel = $('#group-result-label');
     function updateSlider(count) {
       const min = Number(people.min) || 1, max = Number(people.max) || 200;
       const pct = Math.max(0, Math.min(100, ((count - min) / (max - min)) * 100));
@@ -99,15 +102,23 @@
       $('#people-output').textContent = String(count);
       $('#calc-error').hidden = cents !== null;
       amount.setAttribute('aria-invalid', String(cents === null));
+      if (thresholdNote) thresholdNote.hidden = true;
+      if (groupLabel) groupLabel.textContent = t.calcTogether;
       if (cents === null) {
         $('#single-result').textContent = '—';
         $('#group-result').textContent = '—';
+        $('.calc-results').classList.remove('long-numbers');
         return;
       }
       const one = math.supportCents(cents);
-      $('.calc-results').classList.toggle('long-numbers', one * count >= 10000000);
+      const transferable = math.transferableSupportCents(cents);
+      $('.calc-results').classList.toggle('long-numbers', transferable * count >= 10000000);
       $('#single-result').textContent = money.format(one / 100);
-      $('#group-result').textContent = money.format(one * count / 100);
+      $('#group-result').textContent = money.format(transferable * count / 100);
+      if (one < 300) {
+        if (thresholdNote) thresholdNote.hidden = false;
+        if (groupLabel) groupLabel.textContent = t.calcGroupBelowMinimum;
+      }
     }
     amount.addEventListener('input', calculate);
     people.addEventListener('input', calculate);
@@ -190,7 +201,7 @@
   let dialogTrigger;
   if (dialog && typeof dialog.showModal === 'function') {
     function closeDialog() { dialog.close(); }
-    function openProject(button, automatic = false) {
+    function openProject(button) {
       if (dialog.open) return;
       const index = Number(button.dataset.photo);
       const source = $(`[data-photo-asset="${index}"]`);
@@ -198,28 +209,26 @@
       const project = Math.max(0, index - 1);
       const item = t.projects[project];
       const image = $('#dialog-image');
-      const isAppeal = index === 1 && Boolean(source.dataset.dialogSrc) && Boolean(t.parishAppeal);
       const isFallback = source.dataset.usingFallback === 'true';
+      const isParishPhoto = index === 1 && !isFallback;
       const showHotspots = index === 2 && !isFallback;
-      image.src = isAppeal ? source.dataset.dialogSrc : source.currentSrc || source.src;
-      image.alt = isAppeal ? t.parishAppeal.imageAlt : source.alt;
-      image.width = isAppeal ? 2750 : 720;
-      image.height = isAppeal ? 1938 : 460;
-      dialog.classList.toggle('is-appeal', isAppeal);
+      image.src = isParishPhoto && source.dataset.dialogSrc ? source.dataset.dialogSrc : source.currentSrc || source.src;
+      image.alt = source.alt;
+      image.width = isFallback ? 720 : source.naturalWidth || source.width;
+      image.height = isFallback ? 460 : source.naturalHeight || source.height;
+      dialog.classList.toggle('is-parish-photo', isParishPhoto);
       const original = $('#dialog-original');
-      if (original) { original.href = image.src; original.hidden = !isAppeal; }
-      const appealDetails = $('#dialog-appeal-details');
-      if (appealDetails) appealDetails.hidden = !isAppeal;
+      if (original) { original.href = image.src; original.hidden = !isParishPhoto; }
       $('#dialog-title').textContent = item[0];
       $('#dialog-description').textContent = item[2];
-      $('#dialog-caption').textContent = isAppeal ? t.parishAppeal.caption : isFallback ? data.illustrationLabel : index <= 1 ? t.heroPhotoNote : t.conceptLabel;
+      $('#dialog-caption').textContent = isFallback ? data.illustrationLabel : isParishPhoto ? t.parishAppeal.caption : t.conceptLabel;
       $('#dialog-project-link').href = config.projectLinks[project];
       $('#dialog-project-link').firstChild.textContent = item[3];
       $('#hotspots').hidden = !showHotspots;
       $('#hotspot-description').hidden = !showHotspots;
       setHotspot(0);
       document.body.classList.add('modal-open');
-      dialogTrigger = automatic ? $('.brand') : button;
+      dialogTrigger = button;
       dialog.showModal();
     }
     $$('[data-photo]').forEach(button => button.addEventListener('click', () => openProject(button)));
@@ -231,7 +240,6 @@
     $$('[data-hotspot]').forEach(button => button.addEventListener('click', () => setHotspot(Number(button.dataset.hotspot))));
     $('#dialog-image').addEventListener('error', () => { $('#dialog-caption').textContent = t.imageUnavailable; });
     $$('[data-close-dialog]').forEach(button => button.addEventListener('click', closeDialog));
-    $('[data-close-appeal]')?.addEventListener('click', closeDialog);
     dialog.addEventListener('close', () => {
       document.body.classList.remove('modal-open');
       dialogTrigger?.focus({ preventScroll: true });
@@ -241,17 +249,6 @@
       const box = dialog.getBoundingClientRect();
       if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) closeDialog();
     });
-    // Remember only whether this tab has already shown the welcome appeal.
-    const welcomeKey = 'bukiskis-parama:appeal:v1';
-    let welcomeSeen = false;
-    try { welcomeSeen = window.sessionStorage.getItem(welcomeKey) === 'shown'; } catch (_) {}
-    const welcomeButton = $('[data-photo="1"]');
-    if (!welcomeSeen && welcomeButton && $('[data-photo-asset="1"]')?.dataset.dialogSrc) {
-      openProject(welcomeButton, true);
-      if (dialog.open) {
-        try { window.sessionStorage.setItem(welcomeKey, 'shown'); } catch (_) {}
-      }
-    }
   } else {
     $$('[data-photo]').forEach(button => button.remove());
   }
@@ -281,7 +278,7 @@
   $$('[data-print]').forEach(button => button.addEventListener('click', printPage));
 
   document.body.classList.add('enhanced');
-  if (!reducedMotion.matches && 'IntersectionObserver' in window) {
+  if (!reducedMotion.matches && !comfortableReading() && 'IntersectionObserver' in window) {
     const observer = new IntersectionObserver(entries => entries.forEach(entry => {
       if (!entry.isIntersecting) return;
       entry.target.classList.remove('will-reveal');
@@ -306,14 +303,16 @@
 
   // Depth: surfaces follow a mouse or pen with tilt and light. Touch and reduced motion keep the flat design.
   const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
-  if (finePointer.matches && !reducedMotion.matches) {
+  if (finePointer.matches && !reducedMotion.matches && !comfortableReading()) {
     document.body.classList.add('depth-ready');
     $$('.hero, .info-visual, .project-visual, .diagram, .bank-card, .parish-support-card, .calculator-section').forEach(surface => {
       let frame = 0;
       surface.addEventListener('pointermove', event => {
+        if (comfortableReading() || reducedMotion.matches) return;
         if (event.pointerType !== 'mouse' && event.pointerType !== 'pen') return;
         window.cancelAnimationFrame(frame);
         frame = window.requestAnimationFrame(() => {
+          if (comfortableReading() || reducedMotion.matches) return;
           const box = surface.getBoundingClientRect();
           if (!box.width || !box.height) return;
           surface.style.setProperty('--px', ((event.clientX - box.left) / box.width - 0.5).toFixed(3));
@@ -333,10 +332,19 @@
     });
   }
 
+  document.addEventListener('gpm:reading-mode-change', event => {
+    if (!event.detail?.enabled) return;
+    document.body.classList.remove('depth-ready', 'motion-ready');
+    $$('.will-reveal').forEach(element => element.classList.remove('will-reveal'));
+    $$('.is-tilting').forEach(element => element.classList.remove('is-tilting'));
+    $('.calc-results')?.classList.remove('is-bump');
+  });
+
   // The example total gives a short visual response when its inputs change.
   const results = $('.calc-results');
   if (results && !reducedMotion.matches) {
     $$('#gpm-amount, #people-count').forEach(input => input.addEventListener('input', () => {
+      if (comfortableReading() || reducedMotion.matches) return;
       results.classList.remove('is-bump');
       void results.offsetWidth;
       results.classList.add('is-bump');
