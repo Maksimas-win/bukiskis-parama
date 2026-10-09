@@ -127,6 +127,17 @@ try {
    await page.screenshot({path:path.join(output,`project-${lang}-${width}.png`)});
    await page.locator('#photo-dialog [data-close-dialog]').first().click();
    await dialog.waitFor({state:'hidden'});
+   // close() hides the dialog before its queued close event restores the opener focus.
+   try {
+    await page.waitForFunction(selector=>document.querySelector(selector)===document.activeElement,'.project-actions [data-photo="2"]',{timeout:2000});
+   } catch(error) {
+    if(error.name!=='TimeoutError') throw error;
+    const active=await page.evaluate(()=>{
+     const element=document.activeElement;
+     return element?{tag:element.tagName,id:element.id,className:element.className,dataPhoto:element.getAttribute('data-photo'),text:element.textContent?.trim().slice(0,120)}:null;
+    });
+    assert.fail(`${lang}/${width}: Closing the dialog did not restore focus to .project-actions [data-photo="2"] within 2000 ms. Active element: ${JSON.stringify(active)}`);
+   }
    assert.ok(await details.evaluate(el=>el===document.activeElement));
    await page.locator('[data-cookie-open]').click();
    assert.ok(await notice.isVisible());
