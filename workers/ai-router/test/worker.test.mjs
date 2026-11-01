@@ -53,6 +53,21 @@ test('migration keeps both public sites usable and an explicit environment restr
   assert.equal(response.headers.get('Access-Control-Allow-Origin'), null);
 });
 
+test('deployment explicitly admits the companion and preserves exact original origins', async t => {
+  noNetwork(t);
+  const config = JSON.parse(readFileSync(new URL('../wrangler.jsonc', import.meta.url), 'utf8'));
+  const makePreflight = Origin => new Request('https://worker.example/api/chat', {
+    method: 'OPTIONS', headers: {Origin, 'Access-Control-Request-Method': 'POST', 'Access-Control-Request-Headers': 'content-type'},
+  });
+  for (const Origin of ['https://hram.lt', 'https://maksimas-win.github.io', 'https://lightgray-hyena-459238.hostingersite.com']) {
+    const response = await worker.fetch(makePreflight(Origin), {ALLOWED_ORIGINS: config.vars.ALLOWED_ORIGINS});
+    assert.equal(response.status, 204);
+    assert.equal(response.headers.get('Access-Control-Allow-Origin'), Origin);
+  }
+  const denied = await worker.fetch(makePreflight('https://lightgray-hyena-459238.hostingersite.com.evil.test'), {ALLOWED_ORIGINS: config.vars.ALLOWED_ORIGINS});
+  assert.equal(denied.status, 403);
+});
+
 test('preflight works without secrets; arbitrary headers/methods are rejected', async t => {
   noNetwork(t);
   for (const [method, headers, status] of [['POST', 'content-type', 204], ['DELETE', '', 403], ['POST', 'authorization', 403]]) {
