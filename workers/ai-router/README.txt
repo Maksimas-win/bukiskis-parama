@@ -5,7 +5,8 @@ Health: GET /health
 Model: gpt-4.1-mini (same model as the existing Bukiskis Project Studio).
 Secret: OPENAI_API_KEY, encrypted Cloudflare variable. No key is included here.
 CHAT_RATE_LIMITER: namespace 2026100501, 10 requests / 60 seconds per IP.
-Allowed browser origins: https://hram.lt, https://maksimas-win.github.io
+Allowed browser origins: https://hram.lt, https://maksimas-win.github.io,
+https://lightgray-hyena-459238.hostingersite.com (owner's companion test service).
 Public site: https://hram.lt/
 
 This code uses only OpenAI. It does not call Gemini or switch providers automatically.
